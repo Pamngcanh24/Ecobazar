@@ -1,0 +1,566 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.top-bar {
+    background: #ffffff;
+    color: rgb(160, 157, 157);
+    padding: 10px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    border-bottom: 1px solid #ccc; /* Độ dày và màu sắc của đường gạch */
+    
+}
+.top-bar div {
+    display: flex;
+    align-items: center;
+}
+.top-bar div .dropdown {
+    position: relative;
+    margin-left: 30px;
+    cursor: pointer;
+}
+.top-bar div .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #444;
+    color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 999;
+    left: 0;
+    top: 30px;
+    border-radius: 4px;
+}
+.top-bar div .dropdown:hover .dropdown-content {
+    display: block;
+}
+.top-bar div .dropdown-content a {
+    padding: 10px 15px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+}
+.top-bar div .dropdown-content a:hover {
+    background-color: #555;
+}
+.top-bar div a {
+    margin-left: 30px;
+    color: rgb(166, 166, 166);
+    text-decoration: none;
+}
+.top-bar div a:hover {
+    text-decoration: underline;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 100px;         /* Khoảng cách mép */
+    height: 80px;             /* Chiều cao thanh điều hướng */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.search-box input {
+    border: none;
+    padding: 8px 15px;
+    width: 300px;
+    outline: none;
+}
+.search-box button {
+    background: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black;
+}
+.cart-section {
+    display: flex;              /* Căn theo chiều ngang */
+    align-items: center;        /* Căn giữa theo chiều dọc */
+    gap: 15px;                  /* Khoảng cách giữa các phần tử */
+    font-family: Arial, sans-serif;
+}
+
+.icon-heart {
+    font-size: 24px;            /* Kích thước icon trái tim */
+    cursor: pointer;
+}
+
+
+.divider {
+    height: 30px;               /* Chiều cao gạch dọc */
+    width: 1px;                 /* Độ dày */
+    background: #ccc;           /* Màu sắc */
+}
+
+.cart-info {
+    display: flex;
+    align-items: center;        /* Căn giữa giỏ hàng */
+    gap: 10px;                  /* Khoảng cách giữa icon và text */
+}
+
+.cart-icon {
+    position: relative;         /* Tạo vị trí tương đối cho badge */
+    font-size: 24px;            /* Kích thước icon giỏ hàng */
+}
+
+.cart-badge {
+    position: absolute;         /* Định vị badge */
+    top: -5px;                  /* Đẩy lên trên */
+    right: -5px;                /* Đẩy sang phải */
+    color: white;               /* Màu chữ */
+    font-size: 12px;            /* Kích thước số */
+    border-radius: 50%;         /* Hình tròn */
+    padding: 2px 6px;           /* Kích thước */
+}
+
+.cart-text {
+    display: flex;
+    flex-direction: column;     /* Hiển thị dạng cột */
+    font-size: 16px;
+}
+
+.cart-text strong {
+    font-size: 20px;            /* Kích thước giá */
+    font-weight: bold;
+}
+/* Header tổng thể */
+.navbar {
+    display: flex;
+    justify-content: space-between; /* Phân bổ hai bên */
+    align-items: center;            /* Căn giữa theo chiều dọc */
+    background-color: #333;         /* Màu nền tối */
+    padding: 10px 100px;         /* Khoảng cách mép */
+    color: #ddd;                    /* Màu chữ */
+    height: 35px;                   /* Chiều cao navbar */
+}
+
+/* Menu điều hướng */
+.nav-links {
+    display: flex;                  /* Căn theo chiều ngang */
+    gap: 30px;                      /* Khoảng cách giữa các mục */
+}
+
+.nav-links a {
+    text-decoration: none;          /* Bỏ gạch chân */
+    color: #ddd;                    /* Màu chữ */
+    font-size: 16px;                /* Cỡ chữ */
+    transition: color 0.3s;         /* Hiệu ứng màu */
+}
+
+.nav-links a:hover {
+    color:#4CAF50 ;                   /* Đổi màu khi hover */
+}
+
+/* Trang đang active */
+.nav-links .active {
+    font-weight: bold;              /* In đậm mục hiện tại */
+    color: white;
+}
+
+/* Phần liên hệ (số điện thoại) */
+.contact-info {
+    display: flex;
+    align-items: center;            /* Căn giữa icon và text */
+    gap: 8px;                       /* Khoảng cách icon và số */
+    font-size: 16px;
+}
+
+/* Icon điện thoại */
+.phone-icon {
+    font-size: 20px;                /* Cỡ icon */
+    
+}
+ /* Thanh menu */
+ .nav-links {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    position: relative;
+    margin: 0 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #ddd;
+    font-size: 14px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center; /* Căn icon với chữ */
+    padding: 8px 0;
+}
+
+.menu a:hover {
+    color: #4CAF50; /* Màu xanh khi hover */
+}
+
+/* Mũi tên */
+.menu li:has(.submenu) i {
+    margin-left: 8px;
+    font-size: 12px; /* Kích thước nhỏ gọn */
+    transition: transform 0.3s;
+}
+
+/* Xoay mũi tên khi hover */
+.menu li:hover i {
+    transform: rotate(180deg);
+}
+
+/* Menu con */
+.submenu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #444;
+    list-style: none;
+    padding: 10px 0;
+    border-radius: 12px; /* Bo góc mềm mại */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    min-width: 160px;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px); /* Hiệu ứng trượt xuống */
+    z-index: 100;
+}
+
+.submenu li {
+    padding: 8px 16px; /* Giảm padding để chữ vừa khít hơn */
+    white-space: nowrap; /* Ngăn chữ xuống dòng */
+}
+
+.submenu a {
+    color: white;
+    transition: color 0.3s;
+}
+
+.submenu a:hover {
+    color: #4CAF50;
+}
+
+/* Hiện submenu khi hover */
+.menu li:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* Hiện lên */
+}
+/* Phần chứa breadcrumb với ảnh nền */
+.breadcrumb-container {
+    background: url('image/Breadcrumbs.png') no-repeat center;
+    background-size: cover;
+    padding: 30px 60px; /* Tăng khoảng cách để nhìn cân đối hơn */
+    display: flex;
+    align-items: center;
+}
+
+/* Style breadcrumb */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    padding: 10px 70px;         /* Khoảng cách mép */
+
+}
+
+/* Link trong breadcrumb */
+.breadcrumb a {
+    text-decoration: none;
+    color: #6c757d; /* Màu xám nhạt */
+    font-size: 14px; /* Kích thước chữ lớn hơn */
+    transition: color 0.3s ease;
+}
+
+/* Biểu tượng home */
+.breadcrumb .home-icon {
+    font-size: 16px;
+}
+
+/* Dấu ngăn cách */
+.breadcrumb span {
+    margin: 0 10px;
+    color: #6c757d; /* Màu nhạt hơn để không làm nổi bật */
+}
+
+/* Link active (trang hiện tại) */
+.breadcrumb a.active {
+    color: #28a745; /* Màu xanh lá */
+    font-weight: bold; /* In đậm cho trang hiện tại */
+}
+
+/* Hover hiệu ứng */
+.breadcrumb a:hover {
+    color: #218838; /* Màu xanh đậm hơn khi hover */
+}
+.container {
+    width: 100%;
+    max-width: 360px;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    justify-self: center;
+    margin: 50px;
+}
+.signin-form h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+.signin-form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+.input-group {
+    position: relative;
+}
+.signin-form input {
+    width: 100%;
+    padding: 10px 40px 10px 10px; /* Điều chỉnh padding để tránh icon che text */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 30%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    
+}
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    align-items: center;
+    
+}
+.options label {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 5px;
+    white-space: nowrap; /* Ngăn chữ xuống dòng */
+    padding: 10px;
+}
+/* Giúp checkbox không bị lệch so với chữ */
+.options label input[type="checkbox"] {
+    margin: 0;
+    vertical-align: middle; /* Căn giữa checkbox so với chữ */
+    transform: translateY(1px); /* Tùy chỉnh để đẩy checkbox lên hoặc xuống */
+}
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.login-btn:hover {
+    background: #45a049;
+}
+.register-link {
+    color: #4CAF50;
+    text-decoration: none;
+    margin:10px;
+    top: 10px;
+}
+.forgot-password {
+  
+    color: #666;
+    text-decoration: none;
+}
+ /* Newsletter Section */
+ .newsletter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background: #d5d5d5;
+    padding: 35px 100px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+.newsletter .text {
+    max-width: 350px;
+}
+.newsletter h3 {
+    margin: 0;
+    font-size: 20px;
+}
+.newsletter p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 14px;
+}
+.newsletter .subscribe-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.newsletter input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+.newsletter button {
+    background: #00b200;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.newsletter button:hover {
+    background: #009900;
+}
+.social-icons a {
+    margin-left: 10px;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.social-icons a:active, .social-icons a:hover {
+    color: #4CAF50;
+}
+.footer {
+    background: #272727;
+    color: rgb(255, 255, 255);
+    padding: 20px 95px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 35px;
+    align-items: start;
+    font-size: 14px;
+}
+/* Căn logo và chữ Ecobazar ngang hàng */
+.logo-container {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 30px; /* Tạo khoảng cách giữa logo và chữ */
+    text-decoration: none; /* Xóa gạch chân */
+}
+
+/* Chữ Ecobazar có màu trắng */
+.logo-text {
+    color: #ffffff; /* Màu trắng */
+    font-size: 24px; /* Kích thước chữ */
+    font-weight: bold; /* In đậm */
+    padding: 10px;
+}
+/* Chỉnh kích thước logo */
+.footer-logo {
+    max-height: 40px; /* Điều chỉnh kích thước logo */
+}
+
+.footer-column p{
+    color:rgb(173, 170, 170);
+}
+.footer-column {
+    max-width: 300px;
+}
+
+.footer h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer ul li {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    color: rgb(173, 170, 170);
+    text-decoration: none;
+    transition: color 0.3s;
+    
+}
+
+.footer a:hover {
+    color: #ffffff;
+}
+
+.contact-info {
+    margin-top: 10px;
+    color: #ffffff; /* Màu trắng mặc định */
+    white-space: nowrap; /* Ngăn chữ xuống dòng */
+
+}
+
+/* Gạch chân màu xanh lá */
+.custom-underline {
+    border-bottom: 2px solid #4CAF50; /* Gạch chân xanh lá */
+    padding-bottom: 2px; /* Khoảng cách giữa chữ và gạch */
+}
+
+/* Chỉ chữ "or" có màu xám */
+.gray-text {
+    color: #a0a0a0; /* Màu xám */
+    margin: 0 8px; /* Tạo khoảng cách hai bên chữ "or" */
+}
+
+/* Phần gạch ngang màu xám */
+.footer-bottom {
+    grid-column: span 5; /* Trải dài toàn bộ chiều rộng */
+    border-top: 1px solid #666; /* Tạo gạch ngang */
+    padding-top: 10px; /* Tạo khoảng cách trên */
+    display: flex; /* Căn hai phần về hai phía */
+    justify-content: space-between; /* Căn đều hai bên */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+.footer-bottom p{
+    color:rgb(173, 170, 170);
+}
+.payment-icons {
+    display: flex;
+    gap: 20px;
+    grid-column: span 5;
+    justify-content: center;
+    font-size: 32px;
+}
