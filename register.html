@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecobazar - Sign In</title>
+    <title>Ecobazar - Create Account</title>
     <link rel="stylesheet" href="./assets/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     
@@ -115,36 +115,39 @@
             <span> &gt; </span>
             <a href="#">Account</a>
             <span> &gt; </span>
-            <a href="login.html" class="active">Login</a>
+            <a href="register.html" class="active">Create Account</a>
         </div>
     </div>
 
-    <div class="container">
-        <form action="process_login.php" method="POST" class="signin-form">
-            <h2>Sign In</h2>
+    <div class="container1">
+        <form action="process_register.php" method="POST" class="signup-form">
+            <h2>Create Account</h2>
 
             <!-- Email Input -->
             <label for="email"></label>
-            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
 
-            <!-- Password Input -->
-            <label for="password"></label>
+            <!--password-->
             <div class="input-group">
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                <span class="toggle-password" onclick="togglePassword()"><i class="fas fa-eye"></i></span>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <span class="toggle-password" onclick="togglePassword('password')"><i class="fas fa-eye"></i></span>
+            </div>
+            <!-- confirm password-->
+            <div class="input-group">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                <span class="toggle-password" onclick="togglePassword('confirm_password')"><i class="fas fa-eye"></i></span>
             </div>
 
-            <!-- Remember Me and Forgot Password -->
-            <div class="options">
-                <label><input type="checkbox" name="remember"> Remember me</label>
-                <a href="forgot_password.html" class="forgot-password">Forgot Password?</a>
+            <!-- Terms & Conditions -->
+            <div class="checkbox-container">
+                <label for="terms"><input type="checkbox" id="terms" name="terms">Accept all terms & Conditions</label>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="login-btn">Login</button>
+            <button type="submit" class="create-btn">Create Account</button>
 
-            <!-- Register Link -->
-            <center><p>Don't have an account? <a href="register.html" class="register-link">Register</a></p></center>
+            <!-- Login Link -->
+            <center><p>Already have account? <a href="login.html" class="login-link">Login</a></p></center>
         </form>
     </div>
  <!-- Newsletter Section -->
@@ -229,20 +232,6 @@
         
     </div>
     </footer>
+<script src="./assets/scrip.js"></script>
 </body>
 </html>
-<script>
-    function togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const toggleIcon = document.querySelector('.toggle-password i');
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            toggleIcon.classList.remove('fa-eye');
-            toggleIcon.classList.add('fa-eye-slash');
-        } else {
-            passwordInput.type = 'password';
-            toggleIcon.classList.remove('fa-eye-slash');
-            toggleIcon.classList.add('fa-eye');
-        }
-    }
-</script>

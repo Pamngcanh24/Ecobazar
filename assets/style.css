@@ -365,13 +365,12 @@ body {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    align-items: center;
-    
+    align-items: center; 
 }
 .options label {
     display: flex;
     align-items: center; /* Căn giữa theo chiều dọc */
-    gap: 5px;
+    gap: 10px;
     white-space: nowrap; /* Ngăn chữ xuống dòng */
     padding: 10px;
 }
@@ -563,4 +562,350 @@ body {
     grid-column: span 5;
     justify-content: center;
     font-size: 32px;
+}
+/* đăng ký */
+.alert {
+    padding: 15px;
+    margin: 20px auto;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.alert.success {
+    background-color: #4CAF50; /* Xanh lá */
+}
+
+.alert.error {
+    background-color: #f44336; /* Đỏ */
+}
+
+.alert button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+.container1{
+    width: 100%;
+    max-width: 360px;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    justify-self: center;
+    margin: 50px;
+}
+.signup-form h2 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+.signup-form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+.input-group {
+    position: relative;
+}
+.signup-form input {
+    width: 100%;
+    padding: 10px 40px 10px 10px; /* Điều chỉnh padding để tránh icon che text */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 30%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+}
+.checkbox-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    align-items: center; 
+}
+.checkbox-container label {
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 10px;
+    white-space: nowrap; /* Ngăn chữ xuống dòng */
+    padding: 10px;
+}
+/* Giúp checkbox không bị lệch so với chữ */
+.checkbox-container label input[type="checkbox"] {
+    margin: 0;
+    vertical-align: middle; /* Căn giữa checkbox so với chữ */
+    transform: translateY(1px); /* Tùy chỉnh để đẩy checkbox lên hoặc xuống */
+}
+
+.create-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+.create-btn:hover {
+    background: #45a049;
+}
+.login-link {
+    color: #4CAF50;
+    text-decoration: none;
+    margin:10px;
+    top: 10px;
+}
+
+.error-messages {
+    background-color: #ffebee;
+    border-left: 4px solid #f44336;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+.error {
+    color: #f44336;
+    margin: 5px 0;
+}
+
+.error-message {
+    background-color: #ffebee;
+    border-left: 4px solid #f44336;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    color: #f44336;
+}
+
+.success-message {
+    background-color: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    color: #2e7d32;
+}
+
+/* Container chính */
+.container-dashboard {
+    display: flex;
+    gap: 30px;
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 150px;
+    height:fit-content;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Hiệu ứng hover */
+}
+
+.sidebar:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 10px 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #555;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s, font-weight 0.3s;
+}
+
+.sidebar ul li a.active,
+.sidebar ul li a:hover {
+    font-weight: bold;
+    color: #1a8d60;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Card container */
+.card-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Card */
+.card {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    flex: 1;
+    min-width: 280px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover mềm mại */
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* Profile card */
+.profile-info {
+    text-align: center;
+}
+
+.profile-image {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 3px solid #f1f5f9;
+}
+
+.profile-info h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+.profile-info p {
+    color: #666;
+    font-size: 13px;
+}
+
+.edit-link {
+    color: #1a8d60;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+    margin-top: 8px;
+    transition: color 0.3s;
+}
+
+.edit-link:hover {
+    text-decoration: underline;
+    color: #157347;
+}
+
+/* Order History */
+.order-history {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.order-history h3 {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Bảng đơn hàng */
+.order-history table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.order-history th, .order-history td {
+    padding: 10px;
+    text-align: left;
+}
+
+.order-history th {
+    background: #f1f5f9;
+    font-weight: bold;
+    color: #444;
+}
+
+.order-history tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+/* Hover vào từng hàng trong bảng */
+.order-history tr:hover {
+    background: #edf7f6;
+    transition: background 0.3s ease;
+}
+
+/* Link xem chi tiết */
+.view-details {
+    color: #1a8d60;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.view-details:hover {
+    text-decoration: underline;
+    color: #157347;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container-dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .card-container {
+        flex-direction: column;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .profile-image {
+        width: 80px;
+        height: 80px;
+    }
 }
