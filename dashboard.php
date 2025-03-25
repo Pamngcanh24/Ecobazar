@@ -1,14 +1,34 @@
+<?php
+// Kết nối database
+$conn = new mysqli('localhost', 'root', '', 'ecobazar');
+if ($conn->connect_error) {
+    die('Kết nối thất bại: ' . $conn->connect_error);
+}
+
+// Giả sử user đã đăng nhập, lấy thông tin user từ session
+session_start();
+$user_id = $_SESSION['user_id'] ?? 1; // Test với user_id = 1
+
+// Lấy thông tin người dùng
+$user_query = $conn->query("SELECT * FROM users WHERE id = $user_id");
+$user = $user_query->fetch_assoc();
+
+// Lấy lịch sử đơn hàng
+$order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 5");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecobazar - Sign In</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="./assets/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
+</head>
 <body>
- <!-- Top Bar -->
+    <!-- Top Bar -->
  <div class="top-bar">
     <div>
         <span>📍 Store location: Lincoln - 394, Illinois, Chicago, USA</span>
@@ -98,11 +118,11 @@
             <li><a href="#">Contact Us</a></li>
         </ul>
     </div>
-     <!-- Phần thông tin liên hệ -->
-     <div class="contact-info">
-        <a href="#"><img src="./assets/image/phone.svg" alt="Phone-icon"></a>
-        <span>(219) 555-0114</span>
-    </div>
+      <!-- Phần thông tin liên hệ -->
+      <div class="contact-info">
+                 <a href="#"><img src="./assets/image/phone.svg" alt="Phone-icon"></a>
+                <span>(219) 555-0114</span>
+            </div>
     </header>
     
        <!-- Breadcrumb -->
@@ -117,7 +137,8 @@
             <a href="register.html" class="active">Create Account</a>
         </div>
     </div>
-<!--dashboard-->
+
+    <!--dashboard-->
     <div class="container-dashboard">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -131,32 +152,29 @@
             </ul>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="card-container">
-                <!-- Profile Info -->
-                <div class="card profile-info">
-                    <img src="./assets/image/Group.png" alt="Profile Picture" class="profile-image">
-                    <h2>Dianne Russell</h2>
-                    <p>Customer</p>
-                    <a href="#" class="edit-link">Edit Profile</a>
-                </div>
-                
-                <!-- Billing Address -->
-                <div class="card address-info">
-                    <h3>Billing Address</h3>
-                    <p>4040 Parker Rd. Allentown, New Mexico 31134</p>
-                    <p>dianne.russell@gmail.com</p>
-                    <p>(671) 555-0110</p>
-                    <a href="#" class="edit-link">Edit Address</a>
-                </div>
+        
+    <div class="main-content">
+        <div class="card-container">
+            <div class="card profile-info">
+                <img src="/assets/image/Group.png" alt="Profile Picture" class="profile-image">
+                <p><?= isset($user['name']) ? htmlspecialchars($user['name']) : 'Chưa cập nhật' ?></p>
+                <p><?php echo $user['email']; ?></p>
+                <a href="#" class="edit-link">Edit Profile</a>
             </div>
+       
+        <div class="card address-info">
+             <h3>Billing Address</h3>
+             <p><?= htmlspecialchars($user['address'] ?? 'Chưa cập nhật') ?></p>
+             <p><?= htmlspecialchars($user['email'] ?? 'Chưa cập nhật') ?></p>
+             <p><?= htmlspecialchars($user['phone'] ?? 'Chưa cập nhật') ?></p>
+            <a href="#" class="edit-link">Edit Address</a>
+        </div>
+        </div>
 
-            <!-- Order History -->
             <div class="card order-history">
                 <div class="order-header">
-                    <h3>Recent Order History</h3>
-                    <a href="#" class="edit-link">View All</a>
+                <h3>Recent Order History</h3>
+                <a href="#" class="edit-link">View All</a>
                 </div>
                 <table>
                     <thead>
@@ -165,31 +183,25 @@
                             <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php while ($order = $order_query->fetch_assoc()): ?>
                         <tr>
-                            <td>#738</td>
-                            <td>8 Sep, 2020</td>
-                            <td>$135.00 (5 Products)</td>
-                            <td>Processing</td>
-                            <td><a href="#" class="view-details">View Details</a></td>
+                            <td>#<?php echo $order['id']; ?></td>
+                            <td><?php echo $order['created_at']; ?></td>
+                            <td>$<?php echo $order['total']; ?></td>
+                            <td><?php echo $order['status']; ?></td>
                         </tr>
-                        <tr>
-                            <td>#703</td>
-                            <td>24 May, 2020</td>
-                            <td>$25.00 (1 Product)</td>
-                            <td>On the way</td>
-                            <td><a href="#" class="view-details">View Details</a></td>
-                        </tr>
+                        <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
- <!-- Newsletter Section -->
-    <div class="newsletter">
+
+   <!-- Newsletter Section -->
+   <div class="newsletter">
         <div class="text">
             <h3>Subscribe our Newsletter</h3>
             <p>Stay updated with our latest news and offers.</p>
@@ -269,6 +281,6 @@
         </div>
     </div>
     </footer>
-<script src="./assets/scrip.js"></script>
+    <script src="./assets/scrip.js"></script>
 </body>
 </html>
