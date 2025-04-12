@@ -17,9 +17,16 @@ $user = $user_query->fetch_assoc();
 
 // Lấy lịch sử đơn hàng
 $order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 5");
+
+// Lấy thông tin đơn hàng gần nhất của user
+$last_order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC LIMIT 1");
+$last_order = $last_order_query->fetch_assoc();
+
+$pageTitle = "Dashboard";
+include 'head.php'; 
 ?>
 
-<?php include 'head.php'; ?>
+
  
    <!-- Breadcrumb -->
    <div class="breadcrumb-container">
@@ -34,42 +41,33 @@ $order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER
         </div>
     </div>
 
-    <!--dashboard-->
-    <div class="container-dashboard">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <ul>
-                <li><a href="dashboard.php" class="active"><i class="fa-solid fa-chart-bar"></i> Dashboard</a></li>
-                <li><a href="order-history.php"><i class="fa-solid fa-box"></i> Order History</a></li>
-                <li><a href="#"><i class="fa-solid fa-heart"></i> Wishlist</a></li>
-                <li><a href="#"><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</a></li>
-                <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
-                <li><a href="#"><i class="fa-solid fa-right-from-bracket"></i> Log-out</a></li>
-            </ul>
-        </div>
+    <?php include 'dash.php'; ?>
 
+      <!-- Main Content -->
     <div class="main-content">
         <div class="card-container">
             <div class="card profile-info">
                  <img src="assets/image/Group.png" alt="Profile Picture">
-                <p><?= isset($user['name']) ? htmlspecialchars($user['name']) : 'Chưa cập nhật' ?></p>
-                <p><?php echo $user['email']; ?></p>
-                <a href="#" class="edit-link">Edit Profile</a>
+                <p><?= isset($user['first_name']) ? htmlspecialchars($user['first_name']) : 'Chưa cập nhật' ?></p>
+                <p>Customer</p>
+                <!-- <p><?php echo $user['email']; ?></p> -->
+                <a href="settings.php" class="edit-link">Edit Profile</a>
             </div>
        
         <div class="card address-info">
              <h3>Billing Address</h3>
-             <p><?= htmlspecialchars($user['address'] ?? 'Chưa cập nhật') ?></p>
-             <p><?= htmlspecialchars($user['email'] ?? 'Chưa cập nhật') ?></p>
-             <p><?= htmlspecialchars($user['phone'] ?? 'Chưa cập nhật') ?></p>
-            <a href="#" class="edit-link">Edit Address</a>
+             <p><?= htmlspecialchars($last_order['billing_address'] ?? 'Chưa cập nhật') ?></p>
+             <p><?= htmlspecialchars($last_order['billing_email'] ?? 'Chưa cập nhật') ?></p>
+             <p><?= htmlspecialchars($last_order['billing_phone'] ?? 'Chưa cập nhật') ?></p>
+
+            <a href="settings.php" class="edit-link">Edit Address</a>
         </div>
         </div>
 
             <div class="card order-history">
                 <div class="order-header">
                 <h3>Recent Order History</h3>
-                <a href="#" class="edit-link">View All</a>
+                <a href="order-history.php" class="edit-link">View All</a>
                 </div>
                 <table>
                     <thead>
@@ -78,18 +76,20 @@ $order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER
                             <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while ($order = $order_query->fetch_assoc()): ?>
-                        <tr>
-                            <td>#<?php echo $order['id']; ?></td>
-                            <td><?php echo $order['created_at']; ?></td>
-                            <td>$<?php echo $order['total']; ?></td>
-                            <td><?php echo $order['status']; ?></td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
+                <?php while ($order = $order_query->fetch_assoc()): ?>
+                    <tr>
+                        <td>#<?php echo $order['id']; ?></td>
+                        <td><?php echo date('d M, Y', strtotime($order['created_at'])); ?></td>
+                        <td>$<?php echo number_format($order['total'], 2); ?></td>
+                        <td><?php echo ucfirst($order['status']); ?></td>
+                        <td><a href="order-detail.php?id=<?php echo $order['id']; ?>" class="edit-link">View Details</a></td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
                 </table>
             </div>
         </div>

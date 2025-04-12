@@ -18,9 +18,10 @@ if (isset($_SESSION['register_success'])) {
     $success_message = $_SESSION['register_success'];
     unset($_SESSION['register_success']); // Xóa sau khi hiển thị
 }
-
+$pageTitle = "Log In";
+include 'head.php'; 
 ?>
-<?php include 'head.php'; ?>
+
 
    <!-- Breadcrumb -->
    <div class="breadcrumb-container">

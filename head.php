@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecobazar - Sign In</title>
+    <title><?php echo isset($pageTitle) ? $pageTitle : 'Tiêu đề mặc định'; ?></title>
     <link rel="stylesheet" href="./assets/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 </head>
@@ -30,7 +30,12 @@
                 <a href="#">EUR</a>
             </div>
         </div>
-        <a href="#">Sign In / Sign Up</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="logout.php" onclick="return confirmLogout()">LogOut</a>
+        <?php else: ?>
+            <a href="login.php">Sign In</a>
+            <a href="register.php">Sign Up</a>
+        <?php endif; ?>
     </div>
 </div>
     <!-- Header -->
@@ -106,3 +111,4 @@
     </header>
     
     
+    <script src="./assets/scrip.js"></script>

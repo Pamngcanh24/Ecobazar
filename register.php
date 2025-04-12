@@ -4,8 +4,9 @@ session_start(); // PHẢI là dòng đầu tiên, trước mọi HTML
 if (isset($_GET['registration']) && $_GET['registration'] === 'success') {
     echo '<div class="success-message">Đăng ký thành công! Vui lòng đăng nhập.</div>';
 }
+$pageTitle = "Create Account";
+include 'head.php';
 ?>
-<?php include 'head.php'; ?>
 
    <!-- Breadcrumb -->
    <div class="breadcrumb-container">
