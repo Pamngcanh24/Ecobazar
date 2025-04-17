@@ -1,0 +1,193 @@
+/* Newsletter Section */
+.newsletter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background: #d5d5d5;
+    padding: 35px 100px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.newsletter .text {
+    max-width: 350px;
+}
+
+.newsletter h3 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.newsletter p {
+    margin: 5px 0 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.newsletter .subscribe-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.newsletter input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 300px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.newsletter button {
+    background: #00b200;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.newsletter button:hover {
+    background: #009900;
+}
+
+.social-icons a {
+    margin-left: 10px;
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.social-icons a:active,
+.social-icons a:hover {
+    color: #4CAF50;
+}
+
+.footer {
+    background: #272727;
+    color: rgb(255, 255, 255);
+    padding: 20px 95px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 35px;
+    align-items: start;
+    font-size: 14px;
+}
+
+/* Căn logo và chữ Ecobazar ngang hàng */
+.logo-container {
+    display: flex;
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    gap: 30px;
+    /* Tạo khoảng cách giữa logo và chữ */
+    text-decoration: none;
+    /* Xóa gạch chân */
+}
+
+/* Chữ Ecobazar có màu trắng */
+.logo-text {
+    color: #ffffff;
+    /* Màu trắng */
+    font-size: 24px;
+    /* Kích thước chữ */
+    font-weight: bold;
+    /* In đậm */
+    padding: 10px;
+}
+
+/* Chỉnh kích thước logo */
+.footer-logo {
+    max-height: 40px;
+    /* Điều chỉnh kích thước logo */
+}
+
+.footer-column p {
+    color: rgb(173, 170, 170);
+}
+
+.footer-column {
+    max-width: 300px;
+}
+
+.footer h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer ul li {
+    margin-bottom: 10px;
+}
+
+.footer a {
+    color: rgb(173, 170, 170);
+    text-decoration: none;
+    transition: color 0.3s;
+
+}
+
+.footer a:hover {
+    color: #ffffff;
+}
+
+.contact-info {
+    margin-top: 10px;
+    color: #ffffff;
+    /* Màu trắng mặc định */
+    white-space: nowrap;
+    /* Ngăn chữ xuống dòng */
+
+}
+
+/* Gạch chân màu xanh lá */
+.custom-underline {
+    border-bottom: 2px solid #4CAF50;
+    /* Gạch chân xanh lá */
+    padding-bottom: 2px;
+    /* Khoảng cách giữa chữ và gạch */
+}
+
+/* Chỉ chữ "or" có màu xám */
+.gray-text {
+    color: #a0a0a0;
+    /* Màu xám */
+    margin: 0 8px;
+    /* Tạo khoảng cách hai bên chữ "or" */
+}
+
+/* Phần gạch ngang màu xám */
+.footer-bottom {
+    grid-column: span 5;
+    /* Trải dài toàn bộ chiều rộng */
+    border-top: 1px solid #666;
+    /* Tạo gạch ngang */
+    padding-top: 10px;
+    /* Tạo khoảng cách trên */
+    display: flex;
+    /* Căn hai phần về hai phía */
+    justify-content: space-between;
+    /* Căn đều hai bên */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+}
+
+.footer-bottom p {
+    color: rgb(173, 170, 170);
+}
+
+.payment-icons {
+    display: flex;
+    gap: 20px;
+    grid-column: span 5;
+    justify-content: center;
+    font-size: 32px;
+}
