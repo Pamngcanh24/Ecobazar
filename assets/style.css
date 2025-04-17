@@ -1502,3 +1502,60 @@ select.form-input {
     font-size: 20px;
     color: #555;
 }
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Căn giữa theo chiều ngang */
+    min-width: 250px;
+    max-width: 350px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: opacity 0.5s ease-in-out; /* Chuyển sang hiệu ứng opacity vì không còn slide */
+    opacity: 0;
+}
+
+.toast.show {
+    opacity: 1;
+}
+
+.toast.success {
+    background-color: #28a745; /* Màu xanh lá của Ecobazar */
+    color: white;
+}
+
+.toast.error {
+    background-color: #dc3545; /* Màu đỏ nhạt */
+    color: white;
+}
+
+.toast .toast-icon {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.toast .toast-message {
+    flex: 1;
+}
+
+.toast .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.toast .close-btn:hover {
+    opacity: 1;
+}

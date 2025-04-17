@@ -62,7 +62,7 @@ $items_stmt->execute();
 $items = $items_stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 $pageTitle = "Order Details";
-include 'head.php';
+include './includes/head.php';
 ?>
 
 <link rel="stylesheet" href="style.css">
@@ -80,7 +80,7 @@ include 'head.php';
 </div>
 
 
-<?php include 'dash.php'; ?>
+<?php include './includes/dash.php'; ?>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -175,4 +175,4 @@ include 'head.php';
     </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include './includes/footer.php'; ?>

@@ -19,7 +19,7 @@ if (isset($_SESSION['register_success'])) {
     unset($_SESSION['register_success']); // Xóa sau khi hiển thị
 }
 $pageTitle = "Log In";
-include 'head.php'; 
+include './includes/head.php'; 
 ?>
 
 
@@ -73,7 +73,7 @@ include 'head.php';
         </form>
     </div>
 
-<?php include 'footer.php'; ?>
+<?php include './includes/footer.php'; ?>
 <script src="./assets/scrip.js"></script>
 </body>
 </html>

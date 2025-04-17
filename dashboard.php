@@ -23,7 +23,7 @@ $last_order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id 
 $last_order = $last_order_query->fetch_assoc();
 
 $pageTitle = "Dashboard";
-include 'head.php'; 
+include './includes/head.php'; 
 ?>
 
 
@@ -41,7 +41,7 @@ include 'head.php';
         </div>
     </div>
 
-    <?php include 'dash.php'; ?>
+    <?php include './includes/dash.php'; ?>
 
       <!-- Main Content -->
     <div class="main-content">
@@ -95,7 +95,7 @@ include 'head.php';
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php include './includes/footer.php'; ?>
     <script src="./assets/scrip.js"></script>
 </body>
 </html>

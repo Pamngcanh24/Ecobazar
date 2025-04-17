@@ -5,7 +5,7 @@ if (isset($_GET['registration']) && $_GET['registration'] === 'success') {
     echo '<div class="success-message">Đăng ký thành công! Vui lòng đăng nhập.</div>';
 }
 $pageTitle = "Create Account";
-include 'head.php';
+include './includes/head.php';
 ?>
 
    <!-- Breadcrumb -->
@@ -67,7 +67,7 @@ include 'head.php';
         </form>
     </div>
 
-<?php include 'footer.php'; ?>
+<?php include './includes/footer.php'; ?>
 <script src="./assets/scrip.js"></script>
 </body>
 </html>

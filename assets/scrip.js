@@ -34,3 +34,22 @@ function confirmLogout() {
     return confirm("Bạn có chắc chắn muốn đăng xuất không?");
 }
 
+// JavaScript để hiển thị và ẩn toast notification
+document.addEventListener('DOMContentLoaded', function () {
+    const toast = document.querySelector('.toast');
+    if (toast) {
+        // Hiển thị toast
+        toast.classList.add('show');
+
+        // Tự động ẩn sau 4 giây
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 4000);
+
+        // Đóng toast khi click nút đóng
+        const closeBtn = toast.querySelector('.close-btn');
+        closeBtn.addEventListener('click', () => {
+            toast.classList.remove('show');
+        });
+    }
+});

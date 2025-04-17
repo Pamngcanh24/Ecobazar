@@ -11,7 +11,7 @@ $user_id = $_SESSION['user_id'] ?? 1; // Tạm thời gán user_id = 1
 $order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC");
 
 $pageTitle = "Order history";
-include 'head.php';
+include './includes/head.php';
 ?>
 
 <link rel="stylesheet" href="style.css">
@@ -27,7 +27,7 @@ include 'head.php';
     </div>
 </div>
 
-<?php include 'dash.php'; ?>
+<?php include './includes/dash.php'; ?>
     <!-- Main Content -->
     <div class="main-content">
     <div class="card order-history">
@@ -61,5 +61,5 @@ include 'head.php';
 </div>
 
 
-<?php include 'footer.php'; ?>
+<?php include './includes/footer.php'; ?>
 
