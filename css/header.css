@@ -1,0 +1,337 @@
+.top-bar {
+    background: #ffffff;
+    color: rgb(160, 157, 157);
+    padding: 10px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    border-bottom: 1px solid #ccc;
+    /* Độ dày và màu sắc của đường gạch */
+
+}
+
+.top-bar div {
+    display: flex;
+    align-items: center;
+}
+
+.top-bar div .dropdown {
+    position: relative;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.top-bar div .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #444;
+    color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    left: 0;
+    top: 30px;
+    border-radius: 4px;
+}
+
+.top-bar div .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.top-bar div .dropdown-content a {
+    padding: 10px 15px;
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.top-bar div .dropdown-content a:hover {
+    background-color: #555;
+}
+
+.top-bar div a {
+    margin-left: 30px;
+    color: rgb(166, 166, 166);
+    text-decoration: none;
+}
+
+.top-bar div a:hover {
+    text-decoration: underline;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 100px;
+    /* Khoảng cách mép */
+    height: 80px;
+    /* Chiều cao thanh điều hướng */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-box input {
+    border: none;
+    padding: 8px 15px;
+    width: 300px;
+    outline: none;
+}
+
+.search-box button {
+    background: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.cart-section {
+    display: flex;
+    /* Căn theo chiều ngang */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    gap: 15px;
+    /* Khoảng cách giữa các phần tử */
+    font-family: Arial, sans-serif;
+}
+
+.icon-heart {
+    font-size: 24px;
+    /* Kích thước icon trái tim */
+    cursor: pointer;
+}
+
+
+.divider {
+    height: 30px;
+    /* Chiều cao gạch dọc */
+    width: 1px;
+    /* Độ dày */
+    background: #ccc;
+    /* Màu sắc */
+}
+
+.cart-info {
+    display: flex;
+    align-items: center;
+    /* Căn giữa giỏ hàng */
+    gap: 10px;
+    /* Khoảng cách giữa icon và text */
+}
+
+.cart-icon {
+    position: relative;
+    /* Tạo vị trí tương đối cho badge */
+    font-size: 24px;
+    /* Kích thước icon giỏ hàng */
+}
+
+.cart-badge {
+    position: absolute;
+    /* Định vị badge */
+    top: -5px;
+    /* Đẩy lên trên */
+    right: -5px;
+    /* Đẩy sang phải */
+    color: white;
+    /* Màu chữ */
+    font-size: 12px;
+    /* Kích thước số */
+    border-radius: 50%;
+    /* Hình tròn */
+    padding: 2px 6px;
+    /* Kích thước */
+}
+
+.cart-text {
+    display: flex;
+    flex-direction: column;
+    /* Hiển thị dạng cột */
+    font-size: 16px;
+}
+
+.cart-text strong {
+    font-size: 20px;
+    /* Kích thước giá */
+    font-weight: bold;
+}
+
+/* Header tổng thể */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    /* Phân bổ hai bên */
+    align-items: center;
+    /* Căn giữa theo chiều dọc */
+    background-color: #333;
+    /* Màu nền tối */
+    padding: 10px 100px;
+    /* Khoảng cách mép */
+    color: #ddd;
+    /* Màu chữ */
+    height: 35px;
+    /* Chiều cao navbar */
+}
+
+/* Menu điều hướng */
+.nav-links {
+    display: flex;
+    /* Căn theo chiều ngang */
+    gap: 30px;
+    /* Khoảng cách giữa các mục */
+}
+
+.nav-links a {
+    text-decoration: none;
+    /* Bỏ gạch chân */
+    color: #ddd;
+    /* Màu chữ */
+    font-size: 16px;
+    /* Cỡ chữ */
+    transition: color 0.3s;
+    /* Hiệu ứng màu */
+}
+
+.nav-links a:hover {
+    color: #4CAF50;
+    /* Đổi màu khi hover */
+}
+
+/* Trang đang active */
+.nav-links .active {
+    font-weight: bold;
+    /* In đậm mục hiện tại */
+    color: white;
+}
+
+/* Phần liên hệ (số điện thoại) */
+.contact-info {
+    display: flex;
+    align-items: center;
+    /* Căn giữa icon và text */
+    gap: 8px;
+    /* Khoảng cách icon và số */
+    font-size: 16px;
+}
+
+/* Icon điện thoại */
+.phone-icon {
+    font-size: 20px;
+    /* Cỡ icon */
+
+}
+
+/* Thanh menu */
+.nav-links {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    position: relative;
+    margin: 0 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #ddd;
+    font-size: 14px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    /* Căn icon với chữ */
+    padding: 8px 0;
+}
+
+.menu a:hover {
+    color: #4CAF50;
+    /* Màu xanh khi hover */
+}
+
+/* Mũi tên */
+.menu li:has(.submenu) i {
+    margin-left: 8px;
+    font-size: 12px;
+    /* Kích thước nhỏ gọn */
+    transition: transform 0.3s;
+}
+
+/* Xoay mũi tên khi hover */
+.menu li:hover i {
+    transform: rotate(180deg);
+}
+
+/* Menu con */
+.submenu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #444;
+    list-style: none;
+    padding: 10px 0;
+    border-radius: 12px;
+    /* Bo góc mềm mại */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    min-width: 160px;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    transform: translateY(10px);
+    /* Hiệu ứng trượt xuống */
+    z-index: 100;
+}
+
+.submenu li {
+    padding: 8px 16px;
+    /* Giảm padding để chữ vừa khít hơn */
+    white-space: nowrap;
+    /* Ngăn chữ xuống dòng */
+}
+
+.submenu a {
+    color: white;
+    transition: color 0.3s;
+}
+
+.submenu a:hover {
+    color: #4CAF50;
+}
+
+/* Hiện submenu khi hover */
+.menu li:hover .submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    /* Hiện lên */
+}
+
