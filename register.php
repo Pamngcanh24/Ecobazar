@@ -11,7 +11,7 @@ include './includes/head.php';
    <!-- Breadcrumb -->
    <div class="breadcrumb-container">
         <div class="breadcrumb">
-            <a href="#" class="home-icon" title="Home">
+            <a href="homepage.php" class="home-icon" title="Home">
                 <i class="fas fa-home" aria-hidden="true"></i>
             </a>
             <span> &gt; </span>

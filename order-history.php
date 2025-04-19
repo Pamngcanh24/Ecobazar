@@ -19,7 +19,7 @@ include './includes/head.php';
 
 <div class="breadcrumb-container">
     <div class="breadcrumb">
-        <a href="dashboard.php" title="Home"><i class="fas fa-home"></i></a>
+        <a href="homepage.php" title="Home"><i class="fas fa-home"></i></a>
         <span> &gt; </span>
         <a href="dashboard.php">Account</a>
         <span> &gt; </span>

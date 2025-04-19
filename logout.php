@@ -6,5 +6,5 @@ session_destroy();
 setcookie('remember_token', '', time() - 3600, '/'); // Xóa cookie nếu có
 
 // Chuyển hướng về trang chủ
-header("Location: login.php");
+header("Location: homepage.php");
 exit;

@@ -72,7 +72,7 @@
     <div class="nav-links">
         <ul class="menu">
             <li>
-                <a href="#">Home <i class="fa-solid fa-chevron-down"></i></a>
+                <a href="homepage.php">Home <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="submenu">
                     <li><a href="#">Product 1</a></li>
                     <li><a href="#">Product 2</a></li>
@@ -99,8 +99,8 @@
                     <li><a href="#">Contact Us</a></li>
                 </ul>
             </li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
+            <li><a href="about.php">About Us</a></li>
+            <li><a href="contact.php">Contact Us</a></li>
         </ul>
     </div>
      <!-- Phần thông tin liên hệ -->

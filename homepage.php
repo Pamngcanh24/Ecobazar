@@ -15,12 +15,12 @@ $discount = 64;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="./css/homepage.css">
     <title>Ecobazar</title>
 </head>
 
 <body>
-    <?php include 'header.php'; ?>
+    <?php include './includes/head.php'; ?>
 
     <div class="wrapper">
         <div id="banner1">
@@ -186,7 +186,7 @@ $discount = 64;
         </div>
         
     </div>
-    <?php include 'footer.php'; ?>
+    <?php include './includes/footer.php'; ?>
 </body>
 
 </html>

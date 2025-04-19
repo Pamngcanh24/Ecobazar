@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/contac.css">
 </head>
 <body>
-    <?php include 'header.php';?>
+    <?php include './includes/head.php';?>
     <div class="contact">
 
         <div class="breadcrumb">
@@ -73,6 +73,6 @@
    
     </div>
 
-    <?php include 'footer.php';?> 
+    <?php include './includes/footer.php';?> 
 </body>
 </html>
