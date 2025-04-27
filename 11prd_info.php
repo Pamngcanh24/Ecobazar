@@ -1,6 +1,8 @@
+<head>
+    <title>Product info</title>
+</head>
 <?php include('components/head.php') ?>
-<?php include('components/topbar.php') ?>
-<?php include('components/header.php') ?>
+<?php include('includes/head.php') ?>
 <!-- Breadcrumb --> 
 <div class="breadcrumb-container">
         <div class="breadcrumb">
@@ -48,12 +50,21 @@
         <div class="description">
             Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla nibh diam, blandit vel consequat nec, ultrices et ipsum. Nulla magna a consequat pulvinar.
         </div>
-        <div class="quantity">
-            <button>-</button>
-            <input type="text" value="5" readonly>
-            <button>+</button>
-        </div>
-        <button class="add-to-cart">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+        <div class="product-add">
+                <div class="quantity">
+                    <button><i class="fas fa-minus"></i></button>
+                    <input type="text" value="5" readonly>
+                    <button><i class="fas fa-plus"></i></button>
+                </div>
+
+                <button class="add-to-cart">
+                    Add to Cart <i class="fas fa-shopping-bag"></i>
+                </button>
+
+                <button class="wishlist-btn">
+                    <i class="far fa-heart"></i>
+                </button>
+            </div>
         <div class="category">Category: Vegetables</div>
         <div class="tags">Tags: Healthy, Chinese Cabbage, Green Cabbage</div>
     </div>
@@ -67,7 +78,7 @@
     </div>
 
     <div class="content11">
-        <div class="11description11">
+        <div class="11description11 prd-description">
             <p><span>Weight:</span> 03</p>
             <p><span>Color:</span> Green</p>
             <p><span>Type:</span> Organic</p>

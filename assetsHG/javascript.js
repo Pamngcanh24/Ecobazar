@@ -35,3 +35,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const thumbnails = document.querySelectorAll('.thumbnail-gallery img');
+    const mainImage = document.querySelector('.main-image img');
+
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            mainImage.src = this.src;
+
+            // Xóa active ở tất cả thumbnail khác
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            
+            // Thêm active vào thumbnail đang click
+            this.classList.add('active');
+        });
+    });
+});
