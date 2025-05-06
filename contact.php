@@ -10,61 +10,63 @@
     <?php include './includes/head.php';?>
     <div class="contact">
 
-        <div class="breadcrumb">
-            <a href="index.php" class="home-icon">
-                <img src="img/home-1 1.png" alt="Home">
-            </a> 
-            <span> &gt; </span>
-            <span class="current-page">Contact</span>
+        <div class="breadcrumb-container">
+            <div class="breadcrumb">
+                <a href="homepage.php" class="home-icon" title="Home">
+                <i class="fas fa-home" aria-hidden="true"></i>
+                </a>
+                <span> &gt; </span>
+                <a style="color:  #218838;" href="#">Contact</a>
+            </div>
         </div>
-    </div>
+    </div>    
 
     <!-- lIÊN HJỆ -->
-    <section class="contact-section">
-        <div class="contact-details">
-            <h2>Contact Info</h2>
-            <p>
-                <span class="icon">
-                    <img src="imG/Map Pin.png" alt="Address Icon">
-                </span>
-                <strong>Address:</strong> 2715 Ash Dr. San Jose, South Dakota 83475
-            </p>
-            <p>
-                <span class="icon">
-                    <img src="img/Email.png" alt="Email Icon">
-                </span>
-                <strong>Email:</strong> Proxy@gmail.com, Help.proxy@gmail.com
-            </p>
-            <p>
-                <span class="icon">
-                    <img src="img/PhoneCall.png" alt="Phone Icon">
-                </span>
-                <strong>Phone:</strong> (219) 555-0114, (164) 333-0487
-            </p>
-        </div>
-        <div class="form-wrapper">
-            <h2>Just Say Hello!</h2>
-            <form action="#" method="post">
-                <div class="input-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Your Name" required>
-                </div>
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Your Email" required>
-                </div>
-                <div class="input-group">
-                    <label for="subject">Subject</label>
-                    <input type="text" id="subject" name="subject" placeholder="Subject" required>
-                </div>
-                <div class="input-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Send Message</button>
-            </form>
-        </div>
-    </section>
+    <div class="contact-container">
+  
+  <!-- Contact Info Left -->
+  <div class="contact-card">
+  <div class="contact-item">
+    <img src="./img/Map Pin.png" alt="Location Icon" class="icon">
+    <p>2715 Ash Dr. San Jose, South<br> Dakota 83475</p>
+  </div>
+  
+  <hr>
+
+  <div class="contact-item">
+    <img src="./img/Email.png" alt="Email Icon" class="icon">
+    <p>Proxy@gmail.com<br>Help.proxy@gmail.com</p>
+  </div>
+  
+  <hr>
+
+  <div class="contact-item">
+    <img src="./img/PhoneCall.png" alt="Phone Icon" class="icon">
+    <p>(219) 555-0114<br>(164) 333-0487</p>
+  </div>
+</div>
+
+
+  <!-- Contact Form Right -->
+  <div class="contact-form-container">
+    <h2>Just Say Hello!</h2>
+    <p>Do you fancy saying hi to me or you want to get started with your project and you need my help? Feel free to contact me.</p>
+
+    <form class="contact-form">
+      <div class="form-row">
+        <input type="text" placeholder="Template Cookie" required>
+        <input type="email" placeholder="zakirsoft@gmail.com" required>
+      </div>
+
+      <input type="text" placeholder="Hello!" required>
+      <input type="text" placeholder="Subjects">
+
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+</div>
+
 
     <!-- nhúng bản đồ -->
     <div class="map-container">

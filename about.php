@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
    
-    <title>Contact</title>
+    <title>About</title>
     <link rel="stylesheet" href="css/about.css">
 </head>
 <body>
 
     <?php include './includes/head.php';?>
-
+    
     <div class="about">
-
-        <div class="breadcrumb">
-            <a href="homepage.php" class="home-icon">
-            <img src="./img/home-1 1.png" alt="Home">
-            </a>
-            <span class="separator" style="color:gray;"> > </span>
-            <span class="current" style="color: green;">About</span>
+        <div class="breadcrumb-container">
+            <div class="breadcrumb">
+                <a href="homepage.php" class="home-icon" title="Home">
+                <i class="fas fa-home" aria-hidden="true"></i>
+                </a>
+                <span> &gt; </span>
+                <a style="color:  #218838;" href="#">About</a>
+            </div>
         </div>
 <!-- contten1 -->
         <div class="about-content1">
@@ -35,13 +36,13 @@
 
                 <div class="about-img1"></div> 
 
-        </div>
+        </div> 
 
 <!-- conttent2 -->
         <div class="about-content2">
-            <div class="about-img2"></div>
+            
                 
-            <div class="container">
+            <div class="container2">
                 <h1>100% Trusted <br><span>Organic Food Store</span></h1>
                 <p style="opacity: 60%;"> 
                 Pellentesque a ante vulputate leo porttitor luctus sed eget eros. Nulla et<br>
@@ -91,15 +92,15 @@
             </div>  
             
 
-        </div>
+        </div> 
 
 
 
 <!-- 3 -->
         <div class="about-content3">
-            <div class="container2"></div>
+            
             <div class="content">
-                <h1>We Delivered, You <br> Enjoy Your Order.</h1>
+                <h1> We Delivered, You <br> Enjoy Your Order.</h1>
                 <p class="desc">
                 Ut suscipit egestas suscipit. Sed posuere pellentesque nunc,<br>
                 ultrices consectetur velit dapibus eu. Mauris sollicitudin dignissim<br>
@@ -118,12 +119,44 @@
         </div>
 
 
+<!-- 4 -->
+        <section class="team-section">
+            <div class="container4">
+                 <h2>Our Awesome Team</h2>
+                <p>Pellentesque a ante vulputate leo porttitor luctus sed eget eros. Nulla et rhoncus neque. Duis non diam eget est luctus tincidunt a a mi.</p>
 
-        <div class="about-content4"></div>
+                <div class="team-grid">
+                <div class="team-member">
+                <div class="member-photo" style="background-image: url('./img/pp1.png');">
+                </div>
+                    <h3>Jenny Wilson</h3>
+                    <p>CEO & Founder</p>
+                </div>
+
+                <div class="team-member">
+                <div class="member-photo" style="background-image: url('./img/pp2.png');"></div>
+                    <h3>Jane Cooper</h3>
+                    <p>Worker</p>
+                </div>
+
+                <div class="team-member">
+                <div class="member-photo" style="background-image: url('./img/pp3.png');"></div>
+                    <h3>Cody Fisher</h3>
+                    <p>Security Guard</p>
+                </div>
+
+                <div class="team-member">
+                <div class="member-photo" style="background-image: url('./img/pp4.png');"></div>
+                    <h3>Robert Fox</h3>
+                    <p>Senior Farmer Manager</p>
+                </div>
+                </div>
+             </div>
+        </section>
 
         <div class="about-content5"></div>
 
-        <div class="about-content6"></div>   
+        
 
 
  

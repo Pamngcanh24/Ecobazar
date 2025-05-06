@@ -5,6 +5,8 @@ $end_time = strtotime("+3 hours") * 1000; // JavaScript dùng milliseconds
 $price = 79.99;
 
 $discount = 64;
+require './database/db.php'; // Kết nối đến cơ sở dữ liệu
+$stmt = $conn->query("SELECT * FROM products LIMIT 10"); // Lấy 8 sản phẩm đầu tiên từ bảng products
 
 ?>
 
@@ -24,36 +26,36 @@ $discount = 64;
 
     <div class="wrapper">
         <div id="banner1">
-                <div class="banner1-1">
-                    <div class="banner1-1-content">
-                            <p class="Fresh">Fresh & Healthy<br>Organic Food</p>
-                            <span class="saleup">Sale up to</span>
-                            <span class="discount">30% OFF</span>
-                            <p style="opacity: 80%;">Free shipping on all your order.</p>
-                            <a href="#" class="shop-btn">Shop now →</a>
-                    </div>        
+            <div class="banner1-1">
+                <div class="banner1-1-content">
+                    <p class="Fresh">Fresh & Healthy<br>Organic Food</p>
+                    <span class="saleup">Sale up to</span>
+                    <span class="discount">30% OFF</span>
+                    <p style="opacity: 80%;">Free shipping on all your order.</p>
+                    <a href="#" class="shop-btn">Shop now →</a>
                 </div>
+            </div>
 
-                <div class="banner1-2">
-                    <div class="banner1-2-content">
+            <div class="banner1-2">
+                <div class="banner1-2-content">
                     <h4>SUMMER SALE</h4>
                     <h1>75% OFF</h1>
                     <p style="opacity: 60%;">Only Fruit & Vegetable</p>
                     <a href="#" class="shop-now2">Shop Now</a>
-                    </div>
                 </div>
+            </div>
 
-                <div class="banner1-3">
-                    <div class="overlay">
-                        <h4>BEST DEAL</h4>
-                        <h1>Special Products<br>Deal of the Month</h1>
-                        <a href="#" class="shop-now3">Shop Now</a>
-                    </div>
+            <div class="banner1-3">
+                <div class="overlay">
+                    <h4>BEST DEAL</h4>
+                    <h1>Special Products<br>Deal of the Month</h1>
+                    <a href="#" class="shop-now3">Shop Now</a>
                 </div>
+            </div>
         </div>
         <div class="clear"></div>
 
-<!-- featured -->
+        <!-- featured -->
         <div class="featured">
 
             <div class="fearured-1">
@@ -63,7 +65,7 @@ $discount = 64;
                 <div class="shipping-text">
                     <strong>Free Shipping</strong><br>
                     <span>Free shipping on all your order</span>
-                </div>   
+                </div>
             </div>
 
             <div class="fearured-2">
@@ -96,7 +98,7 @@ $discount = 64;
                 </div>
             </div>
 
-            
+
         </div>
         <!-- <div class="clear2"></div> -->
 
@@ -104,87 +106,174 @@ $discount = 64;
 
             <div class="title">
                 <h2>Popular Categories</h2>
-                <a href="all-categories.php" > View All <span class="arrow">→</span></a>
+                <a href="all-categories.php"> View All <span class="arrow">→</span></a>
             </div>
-            
+            <ul class="category_list">
+                <li>
+                    <img src="./img/category1.png" alt="Fruit">
+                    <p>Fresh Fruit</p>
+                </li>
+
+                <li>
+                    <img src="./img/category2.png" alt="Fruit">
+                    <p>Fresh Vegetables</p>
+                </li>
+
+                <li>
+                    <img src="./img/category3.png" alt="Fruit">
+                    <p>Meat & Fish</p>
+                </li>
+
+                <li>
+                    <img src="./img/category4.png" alt="Fruit">
+                    <p>Snacks</p>
+                </li>
+
+                <li>
+                    <img src="./img/category5.png" alt="Fruit">
+                    <p>Beverages</p>
+                </li>
+
+                <li>
+                    <img src="./img/category6.png" alt="Fruit">
+                    <p>Beauty & Health</p>
+                </li>
+
+                <li>
+                    <img src="./img/category7.png" alt="Fruit">
+                    <p>Bread & Bakery</p>
+                </li>
+
+                <li>
+                    <img src="./img/category8.png" alt="Fruit">
+                    <p>Baking Needs</p>
+                </li>
+
+                <li>
+                    <img src="./img/category9.png" alt="Fruit">
+                    <p>Cooking</p>
+                </li>
+
+                <li>
+                    <img src="./img/category10.png" alt="Fruit">
+                    <p>Diabetic Food</p>
+                </li>
+
+                <li>
+                    <img src="./img/category11.png" alt="Fruit">
+                    <p>Dish Detergents</p>
+                </li>
+
+                <li>
+                    <img src="./img/category12.png" alt="Fruit">
+                    <p>Oil</p>
+                </li>
+            </ul>
+
+        </div>
+        <!-- Product -->
+        <div class="product">
+            <div class="title">
+                <h2>Popular Products</h2>
+                <a href="all-categories.php"> View All <span class="arrow">→</span></a>
+            </div>
+            <ul class="product_list">
+               
+                <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
+                    <li>
+                        <!-- Hiển thị hình ảnh sản phẩm (nếu có) -->
+                        <?php if (!empty($row['image'])): ?>
+                            <img src="./img/<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['name']) ?>" class="product-image">
+                        <?php endif; ?>
+
+                        <!-- Hiển thị tên sản phẩm -->
+                        <span class="product-name"><?= htmlspecialchars($row['name']) ?></span><br>
+                        <span class="price"><?= htmlspecialchars($row['price'])?></span>
+                        <span class="old-price"><?= htmlspecialchars($row['old_price'])?></span><br>
+                        <span class="rating"> ★★★★☆</span>
+                       
+                            
+                <?php endwhile; ?>
+
+            </ul>
         </div>
 
 
 
-<!-- Sale -->
+        <!-- Sale -->
         <div class="banner2">
             <!-- banner2-1 -->
             <div class="banner2-1">
-        
+
                 <h2>BEST DEALS</h2>
                 <h1>Sale of the Month</h1>
 
                 <div class="countdown">
-                <div><span id="days">00</span>DAYS</div>
-                <div class="colon">:</div>
-                <div><span id="hours">00</span>HOURS</div>
-                <div class="colon">:</div>
-                <div><span id="minutes">00</span>MINS</div>
-                <div class="colon">:</div>
-                <div><span id="seconds">00</span>SECS</div>
+                    <div><span id="days">00</span>DAYS</div>
+                    <div class="colon">:</div>
+                    <div><span id="hours">00</span>HOURS</div>
+                    <div class="colon">:</div>
+                    <div><span id="minutes">00</span>MINS</div>
+                    <div class="colon">:</div>
+                    <div><span id="seconds">00</span>SECS</div>
                 </div>
-    
 
-            <a href="#" class="shop-button">Shop Now →</a>
 
-            <script>
-                const endTime = <?php echo $end_time; ?>;
+                <a href="#" class="shop-button">Shop Now →</a>
 
-                function updateCountdown() {
-                const now = new Date().getTime();
-                const timeLeft = endTime - now;
+                <script>
+                    const endTime = <?php echo $end_time; ?>;
 
-                if (timeLeft <= 0) {
-                    document.querySelector(".countdown").innerHTML = "<strong>Sale Ended</strong>";
-                return;
-                }
+                    function updateCountdown() {
+                        const now = new Date().getTime();
+                        const timeLeft = endTime - now;
 
-                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                        if (timeLeft <= 0) {
+                            document.querySelector(".countdown").innerHTML = "<strong>Sale Ended</strong>";
+                            return;
+                        }
 
-                document.getElementById("days").textContent = String(days).padStart(2, '0');
-                document.getElementById("hours").textContent = String(hours).padStart(2, '0');
-                document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
-                document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
-                }
+                        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-                setInterval(updateCountdown, 1000);
-                updateCountdown();
-            </script>
+                        document.getElementById("days").textContent = String(days).padStart(2, '0');
+                        document.getElementById("hours").textContent = String(hours).padStart(2, '0');
+                        document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
+                        document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
+                    }
+
+                    setInterval(updateCountdown, 1000);
+                    updateCountdown();
+                </script>
 
             </div>
 
             <!-- banner2-2 -->
             <div class="banner2-2">
-            <div class="promo-box">
-                <div class="small-text">85% FAT FREE</div>
-                <div class="main-title">Low-Fat Meat</div>
-                <div class="price">Started at <span class="highlight">$<?php echo number_format($price, 2); ?></span></div>
-                <a href="#" class="btn">Shop Now <span class="arrow">→</span></a>
-            </div>
+                <div class="promo-box">
+                    <div class="small-text">85% FAT FREE</div>
+                    <div class="main-title">Low-Fat Meat</div>
+                    <div class="price">Started at <span class="highlight">$<?php echo number_format($price, 2); ?></span></div>
+                    <a href="#" class="btn">Shop Now <span class="arrow">→</span></a>
+                </div>
             </div>
 
             <!-- banner2-3 -->
             <div class="banner2-3">
-            <div class="promo-box2">
-                <div class="small-text">SUMMER SALE</div>
-                <div class="main-title">100% Fresh Fruit</div>
-                <div class="discount-row">Up to 
-                <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+                <div class="promo-box2">
+                    <div class="small-text">SUMMER SALE</div>
+                    <div class="main-title">100% Fresh Fruit</div>
+                    <div class="discount-row">Up to
+                        <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
+                    </div>
+                    <a href="#" class="btn">Shop Now <span class="arrow">→</span></a>
                 </div>
-                <a href="#" class="btn">Shop Now <span class="arrow">→</span></a>
             </div>
-            </div>
-            
+
         </div>
-        
+
     </div>
     <?php include './includes/footer.php'; ?>
 </body>
