@@ -1,4 +1,6 @@
-<?php
+<?php session_start();
+
+
 // Thiết lập thời gian kết thúc (ví dụ: 3 tiếng kể từ bây giờ)
 $end_time = strtotime("+3 hours") * 1000; // JavaScript dùng milliseconds
 
@@ -106,7 +108,7 @@ $stmt = $conn->query("SELECT * FROM products LIMIT 10"); // Lấy 8 sản phẩm
 
             <div class="title">
                 <h2>Popular Categories</h2>
-                <a href="all-categories.php"> View All <span class="arrow">→</span></a>
+                <a href="08shop.php"> View All <span class="arrow">→</span></a>
             </div>
             <ul class="category_list">
                 <li>
@@ -175,7 +177,7 @@ $stmt = $conn->query("SELECT * FROM products LIMIT 10"); // Lấy 8 sản phẩm
         <div class="product">
             <div class="title">
                 <h2>Popular Products</h2>
-                <a href="all-categories.php"> View All <span class="arrow">→</span></a>
+                <a href="08shop.php"> View All <span class="arrow">→</span></a>
             </div>
             <ul class="product_list">
                
