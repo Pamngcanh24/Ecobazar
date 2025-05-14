@@ -19,7 +19,7 @@
                 <i class="fas fa-home" aria-hidden="true"></i>
                 </a>
                 <span> &gt; </span>
-                <a style="color:  #218838;" href="#">About</a>
+                <a style="color: #218838; font-weight: bold;">About</a>
             </div>
         </div>
 <!-- contten1 -->
@@ -120,7 +120,7 @@
                  <li><span class="check"><img src="./img/Check.png" alt=""></span> Maecenas ut nunc fringilla erat varius.</li>
                 </ul>
 
-                <a href="#" class="btn">Shop Now →</a>
+                <a href="08shop.php" class="btn">Shop Now →</a>
             </div>
         </div>
 

@@ -18,7 +18,7 @@
                 <i class="fas fa-home" aria-hidden="true"></i>
                 </a>
                 <span> &gt; </span>
-                <a style="color:  #218838;" href="#">Contact</a>
+                <a style="color:  #218838;font-weight: bold;" >Contact</a>
             </div>
         </div>
     </div>    

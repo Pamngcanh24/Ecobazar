@@ -152,7 +152,7 @@ include './includes/head.php';
             <td>
                 <div class="product-info">
                     <?php if (!empty($item['image'])): ?>
-                        <img src="/Ecobazar/assets/image/<?= htmlspecialchars(basename($item['image'])) ?>" 
+                        <img src="assetsHG/images/shop/<?= htmlspecialchars(basename($item['image'])) ?>" 
                             alt="<?= htmlspecialchars($item['name']) ?>"
                         class="product-image">
                     <?php endif; ?>

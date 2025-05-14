@@ -25,7 +25,7 @@ $result = $stmt->get_result();
 $wishlist_items = $result->fetch_all(MYSQLI_ASSOC);
 
 $pageTitle = "My Wishlist";
-include './includes/head.php';
+include 'includes/head.php';
 ?>
 
 <link rel="stylesheet" href="style.css">

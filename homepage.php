@@ -37,7 +37,7 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
                     <span class="saleup">Sale up to</span>
                     <span class="discount">30% OFF</span>
                     <p style="opacity: 80%;">Free shipping on all your order.</p>
-                    <a href="#" class="shop-btn">Shop now →</a>
+                    <a href="08shop.php" class="shop-btn">Shop now →</a>
                 </div>
             </div>
 
@@ -46,7 +46,7 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
                     <h4>SUMMER SALE</h4>
                     <h1>75% OFF</h1>
                     <p style="opacity: 60%;">Only Fruit & Vegetable</p>
-                    <a href="#" class="shop-now2">Shop Now</a>
+                    <a href="08shop.php" class="shop-now2">Shop Now</a>
                 </div>
             </div>
 
@@ -54,7 +54,7 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
                 <div class="overlay">
                     <h4>BEST DEAL</h4>
                     <h1>Special Products<br>Deal of the Month</h1>
-                    <a href="#" class="shop-now3">Shop Now</a>
+                    <a href="08shop.php" class="shop-now3">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -172,7 +172,7 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
                 </div>
 
 
-                <a href="#" class="shop-button">Shop Now →</a>
+                <a href="08shop.php" class="shop-button">Shop Now →</a>
 
                 <script>
                     const endTime = <?php echo $end_time; ?>;
@@ -209,7 +209,7 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
                     <div class="small-text">85% FAT FREE</div>
                     <div class="main-title">Low-Fat Meat</div>
                     <div class="price">Started at <span class="highlight">$<?php echo number_format($price, 2); ?></span></div>
-                    <a href="#" class="btn">Shop Now <span class="arrow">→</span></a>
+                    <a href="08shop.php" class="btn">Shop Now <span class="arrow">→</span></a>
                 </div>
             </div>
 
@@ -221,7 +221,7 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
                     <div class="discount-row">Up to
                         <span class="discount-badge"><?php echo $discount; ?>% OFF</span>
                     </div>
-                    <a href="#" class="btn">Shop Now <span class="arrow">→</span></a>
+                    <a href="08shop.php" class="btn">Shop Now <span class="arrow">→</span></a>
                 </div>
             </div>
 
