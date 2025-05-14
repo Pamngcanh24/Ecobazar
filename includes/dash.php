@@ -5,7 +5,7 @@
         "dashboard.php" => ["Dashboard", "fa-chart-bar"],
         "order-history.php" => ["Order History", "fa-box"],
         "wishlist.php" => ["Wishlist", "fa-heart"],
-        "cart.php" => ["Shopping Cart", "fa-cart-shopping"],
+        "15shopping.php" => ["Shopping Cart", "fa-cart-shopping"],
         "settings.php" => ["Settings", "fa-gear"],
         "logout.php" => ["Log-out", "fa-right-from-bracket"]
     ];

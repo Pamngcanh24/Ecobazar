@@ -19,7 +19,7 @@
                 <i class="fas fa-home" aria-hidden="true"></i>
                 </a>
                 <span> &gt; </span>
-                <a style="color: #218838; font-weight: bold;">About</a>
+                <a style="color:  #218838;font-weight: bold;">About</a>
             </div>
         </div>
 <!-- contten1 -->
@@ -41,66 +41,61 @@
         </div> 
 
 <!-- conttent2 -->
-        <div class="about-content2">
-            
-                
-            <div class="container2">
-                <h1>100% Trusted <br><span>Organic Food Store</span></h1>
-                <p style="opacity: 60%;"> 
-                Pellentesque a ante vulputate leo porttitor luctus sed eget eros. Nulla et<br>
-                rhoncus neque. Duis non diam eget est luctus tincidunt a a mi. Nulla eu<br>
-                eros consequat tortor tincidunt feugiat. 
-                </p>
-
-                <div class="features">
-
-                  <div class="feature-box">
-                    <img class="img" src="./img/box1.png" alt="box">
-                    <h3>100% Organic food</h3>
-                    <p>100% healthy & fresh food</p>
-                </div>
-
-                <div class="feature-box">
-                    <img class="img" src="./img/box2.png" alt="box">
-                    <h3>Great Support 24/7</h3>
-                    <p>Instant access to Contact</p>
-                </div>
-
-                <div class="feature-box">
-                    <img class="img" src="./img/box3.png" alt="box">
-                    <h3>Customer Feedback</h3>
-                    <p>Our happy customers</p>
-                </div>   
-
-                <div class="feature-box">
-                    <img class="img" src="./img/box4.png" alt="box">
-                    <h3>100% Secure Payment</h3>
-                    <p>We ensure your money is safe</p>
-                </div>
-
-                <div class="feature-box">
-                    <img class="img" src="./img/box5.png" alt="box">
-                    <h3>Free Shipping</h3>
-                    <p>Free shipping with discount</p>
-                </div>
-
-                <div class="feature-box">
-                    <img class="img" src="./img/box6.png" alt="box">
-                    <h3>100% Organic Food</h3>
-                    <p>100% healthy & fresh food</p>
-                </div>
-            </div>
-               
-            
-
-              
-
-            </div>  
-            
-
-        </div> 
-
-
+        <section class="hero">
+    <div class="hero-left">
+      <img src="./img/about2.png" alt="Farmer with basket">
+    </div>
+    <div class="hero-right">
+      <h1>100% Trusted <br>Organic Food Store</h1>
+      <p>
+        Pellentesque ante vulputate leo porttitor luctus sed eget eros. Nulla et rhoncus neque. Duis non diam eget est luctus tincidunt.
+      </p>
+      <div class="features">
+        <div class="feature">
+          <img src="./img/box1.png" alt="Organic">
+          <div>
+            <h4>100% Organic Food</h4>
+            <p>100% healthy & Fresh food.</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="./img/box2.png" alt="Support">
+          <div>
+            <h4>Great Support 24/7</h4>
+            <p>Instant access to Contact</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="./img/box3.png" alt="Feedback">
+          <div>
+            <h4>Customer Feedback</h4>
+            <p>Our happy customer</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="./img/box4.png" alt="Payment">
+          <div>
+            <h4>100% Secure Payment</h4>
+            <p>We ensure your money is safe</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="./img/box5.png" alt="Shipping">
+          <div>
+            <h4>Free Shipping</h4>
+            <p>Free shipping with discount</p>
+          </div>
+        </div>
+        <div class="feature">
+          <img src="./img/box6.png" alt="Organic">
+          <div>
+            <h4>100% Organic Food</h4>
+            <p>100% healthy & Fresh food.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 <!-- 3 -->
         <div class="about-content3">
