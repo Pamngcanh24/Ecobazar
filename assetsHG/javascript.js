@@ -3,35 +3,79 @@ document.addEventListener("DOMContentLoaded", function() {
     const products = document.querySelectorAll(".product");
 
     products.forEach(product => {
-        product.addEventListener("click", function() {
-            // Xóa class 'selected' khỏi tất cả sản phẩm
-            products.forEach(p => p.classList.remove("selected"));
-
-            // Thêm class 'selected' vào sản phẩm được click
-            this.classList.add("selected");
+        // Xử lý click vào sản phẩm
+        product.addEventListener("click", function(e) {
+            if (!e.target.closest('.heart-icon') && !e.target.closest('.eye-icon') && !e.target.closest('.product-cart-icon')) {
+                products.forEach(p => p.classList.remove("selected"));
+                this.classList.add("selected");
+            }
         });
-    });
-});
 
+        // Xử lý click vào icon trái tim
+        const heartIcon = product.querySelector('.heart-icon');
+        if (heartIcon) {
+            heartIcon.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the current page URL
-    const currentPage = window.location.pathname.split('/').pop();
+                const productId = product.querySelector('a').href.split('id=')[1];
+                const icon = this.querySelector('i');
 
-    // Map pages to tab names
-    const pageToTabMap = {
-        'description.html': 'description',
-        'additional-info.html': 'additional-info',
-        'customer-feedback.html': 'customer-feedback'
-    };
+                // Thêm hiệu ứng animation
+                icon.style.animation = 'none';
+                icon.offsetHeight; // Trigger reflow
+                icon.style.animation = 'heartBeat 0.5s';
 
-    // Find the corresponding tab for the current page
-    const activeTab = pageToTabMap[currentPage] || 'description'; // Default to 'description' if no match
+                // Gửi request AJAX
+                fetch('add_to_wishlist.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'product_id=' + productId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Hiển thị thông báo
+                    const notification = document.createElement('div');
+                    notification.className = 'notification';
+                    notification.textContent = data.message;
+                    document.body.appendChild(notification);
 
-    // Add 'active' class to the corresponding tab
-    document.querySelectorAll('.tab').forEach(tab => {
-        if (tab.getAttribute('data-tab') === activeTab) {
-            tab.classList.add('active');
+                    // Hiệu ứng hiển thị và ẩn thông báo
+                    notification.style.display = 'block';
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 500);
+                    }, 2000);
+
+                    // Cập nhật trạng thái icon
+                    if (data.success) {
+                        if (data.action === 'added') {
+                            icon.style.color = '#FF8A00';
+                        } else {
+                            icon.style.color = '';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Hiển thị thông báo lỗi
+                    const notification = document.createElement('div');
+                    notification.className = 'notification error';
+                    notification.textContent = 'Có lỗi xảy ra, vui lòng thử lại sau';
+                    document.body.appendChild(notification);
+
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 500);
+                    }, 2000);
+                });
+            });
         }
     });
 });

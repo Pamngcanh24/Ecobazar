@@ -84,3 +84,58 @@
         
     </div>
     </footer>
+<!-- Thông báo -->
+<div id="notification" class="notification"></div>
+
+<!-- Thêm JavaScript để xử lý thêm vào giỏ hàng -->
+<script>
+function addToCart(productId) {
+    fetch('add_to_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'product_id=' + productId
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Hiển thị thông báo
+            const notification = document.getElementById('notification');
+            notification.textContent = data.message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+
+            // Cập nhật số lượng trong giỏ hàng
+            const cartBadge = document.querySelector('.cart-badge');
+            if (cartBadge) {
+                cartBadge.textContent = data.total_items;
+                cartBadge.style.display = data.total_items > 0 ? 'block' : 'none';
+            }
+
+            // Cập nhật tổng tiền giỏ hàng
+            const cartTotal = document.querySelector('.cart-text strong');
+            if (cartTotal) {
+                cartTotal.textContent = '$' + parseFloat(data.cart_total).toFixed(2);
+            }
+
+            // Thêm hiệu ứng animation cho icon giỏ hàng
+            const cartIcon = document.querySelector('.cart-icon');
+            cartIcon.classList.add('cart-animation');
+            setTimeout(() => {
+                cartIcon.classList.remove('cart-animation');
+            }, 500);
+        }
+    })
+    .catch(error => {
+        console.error('Lỗi:', error);
+    });
+}
+</script>
+<?php 
+$conn->close();
+?>
+</body>
+</html>

@@ -1,3 +1,6 @@
+<?php
+require_once 'connect.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,22 +48,35 @@
         </div>
 
         <div class="search-box">
-            <input type="text" placeholder="Search">
-            <button>Search</button>
+            <form action="08shop.php" method="GET">
+                <input type="text" name="search" placeholder="Search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                <button type="submit">Search</button>
+            </form>
         </div>
-
+        
         <div class="cart-section">
-            <a href="#"><img src="./assets/image/Vector.png" alt="Favourite"></a>
+            <a href="wishlist.php"><img src="./assets/image/Vector.png" alt="Favourite"></a>
             <span class="divider"></span>
         
             <div class="cart-info">
                 <div class="cart-icon">
-                    <a href="#"><img src="./assets/image/Rectangle.png" alt="Shopping cart"></a>
-                    <span class="cart-badge"></span>
+                    <a href="15shopping.php"><img src="./assets/image/Rectangle.png" alt="Shopping cart"></a>
+                    <?php
+                    $cartCount = 0;
+                    $cartTotal = 0;
+                    if (isset($_SESSION['cart'])) {
+                        $cartCount = array_sum($_SESSION['cart']);
+                        // Tính tổng giá trị giỏ hàng nếu có thông tin giá sản phẩm
+                        if (isset($_SESSION['cart_total'])) {
+                            $cartTotal = $_SESSION['cart_total'];
+                        }
+                    }
+                    ?>
+                    <span class="cart-badge"><?php echo $cartCount > 0 ? $cartCount : ''; ?></span>
                 </div>
                 <div class="cart-text">
                     <span>Shopping cart:</span>
-                    <strong>$57.00</strong>
+                    <strong>$<?php echo number_format($cartTotal, 2); ?></strong>
                 </div>
             </div>
         </div>        
@@ -74,29 +90,15 @@
             <li>
                 <a href="homepage.php">Home <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="submenu">
-                    <li><a href="#">Product 1</a></li>
-                    <li><a href="#">Product 2</a></li>
+                    <li><a href="settings.php">Account</a></li>
+                    <!-- <li><a href="#">Category</a></li> -->
                 </ul>
             </li>
             <li>
-                <a href="#">Shop <i class="fa-solid fa-chevron-down"></i></a>
+                <a href="08shop.php">Shop <i class="fa-solid fa-chevron-down"></i></a>
                 <ul class="submenu">
-                    <li><a href="#">Product 1</a></li>
-                    <li><a href="#">Product 2</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Pages <i class="fa-solid fa-chevron-down"></i></a>
-                <ul class="submenu">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Blog <i class="fa-solid fa-chevron-down"></i></a>
-                <ul class="submenu">
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="08shop.php?category_id=1">Vegetables</a></li>
+                    <li><a href="08shop.php?category_id=2">Fruits</a></li>
                 </ul>
             </li>
             <li><a href="about.php">About Us</a></li>

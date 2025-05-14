@@ -2,6 +2,22 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
 }
+.text-center{
+    text-align: center !important;
+}
+.text-right{
+    text-align: right !important;
+}
+.full-width{
+    width: 100%;
+}
+.btn{
+    box-sizing: border-box;
+}
+a{
+    color: #333;
+    text-decoration: none !important;
+}
 
 .container{
     width: 100%;
@@ -474,7 +490,7 @@ select {
 }
 
 /* Style cho icon giỏ hàng */
-.cart-icon {
+.product-cart-icon {
     display: none;
     width: 40px;
     height: 40px;
@@ -488,27 +504,26 @@ select {
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.product:hover .cart-icon {
+.product:hover .product-cart-icon {
     display: flex; /* Hiện icon khi hover */
 }
 
-.cart-icon i {
+.product-cart-icon i {
     color: white;
     font-size: 18px;
 }
 
 /* Hiệu ứng khi hover */
-.cart-icon:hover {
+.product-cart-icon:hover {
     background: darkgreen;
     transform: scale(1.1);
 }
-/* Icon giỏ hàng
-.cart-icon {
-    bottom: 10px;
-    right: 10px;
-    background: white;
-    color: white;
-} */
+.cart-icon .cart-badge{
+    background-color: darkgreen;
+    border-radius: 50%;
+    font-size: 12px;
+    padding: 5px;
+}
 /* Sản phẩm hết hàng */
 .out-of-stock {
     opacity: 0.6;
@@ -1086,10 +1101,10 @@ select {
     color: #28a745; /* Chuyển màu chữ thành xanh lá cây khi hover */
     border-bottom: 2px solid #28a745; /* Thêm đường viền dưới màu xanh lá cây khi hover */
 }
-.tabs a.active { /* Định kiểu cho tab đang được chọn */
-    color: #28a745; /* Màu xanh lá cây cho tab đang hoạt động */
-    border-bottom: 2px solid #28a745; /* Thêm đường viền dưới màu xanh lá cây */
-}
+/* .tabs a.active {
+    color: #28a745; 
+    border-bottom: 2px solid #28a745; 
+} */
 
 .prd-description { /* Định kiểu cho phần mô tả sản phẩm */
     flex: 60%; /* Chiếm 2 phần không gian trong Flexbox (cột lớn hơn) */
@@ -1169,7 +1184,7 @@ select {
     justify-content: space-between;
 }
 .description11 {
-    width: 40%;
+    width: 80%;
 }
 .description11 p {
     margin: 10px 0;
