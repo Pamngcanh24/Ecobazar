@@ -9,6 +9,9 @@ $price = 79.99;
 $discount = 64;
 require './database/db.php'; // Kết nối đến cơ sở dữ liệu
 $stmt = $conn->query("SELECT * FROM products LIMIT 10"); // Lấy 8 sản phẩm đầu tiên từ bảng products
+$sql = "SELECT * FROM categories";
+$stmt2 = $conn->query($sql); // Lấy tất cả các danh mục từ bảng categories
+$category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh mục
 
 ?>
 
@@ -111,65 +114,13 @@ $stmt = $conn->query("SELECT * FROM products LIMIT 10"); // Lấy 8 sản phẩm
                 <a href="08shop.php"> View All <span class="arrow">→</span></a>
             </div>
             <ul class="category_list">
-                <li>
-                    <img src="./img/category1.png" alt="Fruit">
-                    <p>Fresh Fruit</p>
-                </li>
+                <?php foreach ($category as $cat): ?>
+                    <li>
+                        <img src="./img/<?= htmlspecialchars($cat['image']) ?>" alt="<?= htmlspecialchars($cat['name']) ?>">
+                        <p><?= htmlspecialchars($cat['name']) ?></p>
+                    </li>
+                <?php endforeach; ?>
 
-                <li>
-                    <img src="./img/category2.png" alt="Fruit">
-                    <p>Fresh Vegetables</p>
-                </li>
-
-                <li>
-                    <img src="./img/category3.png" alt="Fruit">
-                    <p>Meat & Fish</p>
-                </li>
-
-                <li>
-                    <img src="./img/category4.png" alt="Fruit">
-                    <p>Snacks</p>
-                </li>
-
-                <li>
-                    <img src="./img/category5.png" alt="Fruit">
-                    <p>Beverages</p>
-                </li>
-
-                <li>
-                    <img src="./img/category6.png" alt="Fruit">
-                    <p>Beauty & Health</p>
-                </li>
-
-                <li>
-                    <img src="./img/category7.png" alt="Fruit">
-                    <p>Bread & Bakery</p>
-                </li>
-
-                <li>
-                    <img src="./img/category8.png" alt="Fruit">
-                    <p>Baking Needs</p>
-                </li>
-
-                <li>
-                    <img src="./img/category9.png" alt="Fruit">
-                    <p>Cooking</p>
-                </li>
-
-                <li>
-                    <img src="./img/category10.png" alt="Fruit">
-                    <p>Diabetic Food</p>
-                </li>
-
-                <li>
-                    <img src="./img/category11.png" alt="Fruit">
-                    <p>Dish Detergents</p>
-                </li>
-
-                <li>
-                    <img src="./img/category12.png" alt="Fruit">
-                    <p>Oil</p>
-                </li>
             </ul>
 
         </div>

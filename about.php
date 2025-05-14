@@ -51,11 +51,10 @@
                 rhoncus neque. Duis non diam eget est luctus tincidunt a a mi. Nulla eu<br>
                 eros consequat tortor tincidunt feugiat. 
                 </p>
-            </div>
-               
-            <div class="features">
 
-                <div class="feature-box">
+                <div class="features">
+
+                  <div class="feature-box">
                     <img class="img" src="./img/box1.png" alt="box">
                     <h3>100% Organic food</h3>
                     <p>100% healthy & fresh food</p>
@@ -90,6 +89,11 @@
                     <h3>100% Organic Food</h3>
                     <p>100% healthy & fresh food</p>
                 </div>
+            </div>
+               
+            
+
+              
 
             </div>  
             
