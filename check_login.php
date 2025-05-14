@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '/database/db.php';
+require './database/db.php';
 
 if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_token'])) {
     $token = $_COOKIE['remember_token'];

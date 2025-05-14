@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
-
 // Kết nối database
 $conn = new mysqli('localhost', 'root', '', 'ecobazar');
 if ($conn->connect_error) {
@@ -62,7 +61,7 @@ include './includes/head.php';
                 <tr>
                     <td>
                         <div class="product-info">
-                            <img src="/Ecobazar/assets/image/<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
+                            <img src="assetsHG/images/shop/<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                             <span><?= htmlspecialchars($item['name']) ?></span>
                         </div>
                     </td>
@@ -83,7 +82,7 @@ include './includes/head.php';
                     </td>
                     <td>
                         <?php if ($item['stock'] > 0): ?>
-                            <button class="btn btn-add-cart">Add to Cart</button>
+                            <button class="btn btn-add-cart" onclick="addToCart(<?php echo $item['id']; ?>)">Add to Cart</button>
                         <?php else: ?>
                             <button class="btn btn-disabled" disabled>Add to Cart</button>
                         <?php endif; ?>
@@ -98,3 +97,29 @@ include './includes/head.php';
 </div>
 
 <?php include './includes/footer.php'; ?>
+
+<script>
+function addToCart(productId) {
+    fetch('add_to_cart.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'product_id=' + productId
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Sản phẩm đã được thêm vào giỏ hàng');
+            // Reload trang để cập nhật số lượng giỏ hàng
+            window.location.reload();
+        } else {
+            alert(data.message || 'Có lỗi xảy ra khi thêm vào giỏ hàng');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Có lỗi xảy ra khi thêm vào giỏ hàng');
+    });
+}
+</script>
