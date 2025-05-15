@@ -39,7 +39,6 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 5px;
-  float: left; /* ✅ Thêm float cho khớp layout */
 }
 
 /* PHẦN HERO */
@@ -48,8 +47,7 @@ body {
   padding: 50px;
   justify-content: center;
   align-items: stretch;
-  clear: both; /* ✅ Thêm clear để ngăn lỗi layout do float trước */
-  margin-top: 0; /* ✅ Xóa khoảng trắng thừa */
+  
 }
 
 /* Các phần khác giữ nguyên */

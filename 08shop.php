@@ -77,16 +77,16 @@ include('includes/head.php');
         <?php endif; ?>
     </div>
 </div>
- <!-- Banner1 -->
- <div class="banner">
+<!-- Banner1 -->
+<div class="banner">
     <div class="banner-content">
         <span>BEST DEALS</span>
         <h2>Sale of the Month</h2>
-        <p>00 : 02 : 18 : 46</p>
+        <p id="countdown">00 : 00 : 00 : 00</p>
         <button>Shop Now <i class="fa-solid fa-arrow-right"></i></button>
     </div>
     <div class="discount-badge">56% OFF</div>
-    </div>
+</div>
 
 <!-- bộ lọc sản phẩm -->
 <div class="filter-container">
@@ -367,7 +367,41 @@ window.onload = function() {
     
 }
 </script>
+<script>
+    // Function to update the countdown timer
+    function updateCountdown() {
+        // Set the end date for the countdown (e.g., end of the current month)
+        const now = new Date();
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+        // Alternatively, set a specific end date:
+        // const endOfMonth = new Date('2025-05-31 23:59:59');
 
+        // Calculate the time difference
+        const timeDiff = endOfMonth - now;
+
+        if (timeDiff <= 0) {
+            document.getElementById('countdown').textContent = '00 : 00 : 00 : 00';
+            clearInterval(countdownInterval);
+            return;
+        }
+
+        // Calculate days, hours, minutes, seconds
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+        // Format the time with leading zeros
+        const formattedTime = `${days.toString().padStart(2, '0')} : ${hours.toString().padStart(2, '0')} : ${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
+
+        // Update the countdown display
+        document.getElementById('countdown').textContent = formattedTime;
+    }
+
+    // Update the countdown immediately and then every second
+    updateCountdown();
+    const countdownInterval = setInterval(updateCountdown, 1000);
+</script>
 <!--danh sách trang sản phẩm-->
 <!-- <div class="pagination">
     <span class="page-item disabled"><i class="fa-solid fa-angle-left"></i></span>
