@@ -8,7 +8,7 @@ $price = 79.99;
 
 $discount = 64;
 require './database/db.php'; // Kết nối đến cơ sở dữ liệu
-$stmt = $conn->query("SELECT * FROM products LIMIT 10"); // Lấy 8 sản phẩm đầu tiên từ bảng products
+$stmt = $conn->query("SELECT * FROM products LIMIT 8"); // Lấy 8 sản phẩm đầu tiên từ bảng products
 $sql = "SELECT * FROM categories";
 $stmt2 = $conn->query($sql); // Lấy tất cả các danh mục từ bảng categories
 $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh mục
@@ -22,12 +22,12 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="./css/homepage.css">
+    <link rel="stylesheet" href="css/homepage.css">
     <title>Ecobazar</title>
 </head>
 
 <body>
-    <?php include './includes/head.php'; ?>
+    <?php include 'includes/head.php'; ?>
 
     <div class="wrapper">
         <div id="banner1">

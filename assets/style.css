@@ -134,6 +134,12 @@ body {
     border-radius: 50%;         /* Hình tròn */
     padding: 2px 6px;           /* Kích thước */
 }
+.cart-icon .cart-badge{
+    background-color: darkgreen;
+    border-radius: 50%;
+    font-size: 12px;
+    padding: 5px;
+}
 
 .cart-text {
     display: flex;
