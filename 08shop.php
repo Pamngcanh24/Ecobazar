@@ -383,7 +383,7 @@ window.onload = function() {
 </div> -->
 
 <?php
-include('components/footer.php');
+include('components/footer.php'); // Nó ở đây
 ?>
 
 <style>
