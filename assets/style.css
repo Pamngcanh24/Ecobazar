@@ -192,11 +192,15 @@ body {
     gap: 8px;                       /* Khoảng cách icon và số */
     font-size: 16px;
 }
+.comtact-info:hover {
+    color: #4CAF50;                 /* Đổi màu khi hover */
+    transform: translateX(5px);
 
+
+}
 /* Icon điện thoại */
 .phone-icon {
     font-size: 20px;                /* Cỡ icon */
-    
 }
  /* Thanh menu */
  .nav-links {
@@ -966,7 +970,7 @@ body {
 }
 .order-header h2 {
     font-size: 24px;
-    color: #333;
+    color: #2f7d07;
     margin-bottom: 30px;
     padding-bottom: 15px;
     border-bottom: 1px solid #eee;

@@ -100,7 +100,7 @@ if (!empty($_SESSION['cart'])) {
                             <tfoot>
                                 <tr>
                                     <td>
-                                        <a href="" class="btn btn-dark">Return to shop</a>
+                                        <a href="08shop.php" class="btn btn-dark">Return to shop</a>
                                     </td>
                                     <td colspan="4" class="text-right">
                                         <button type="submit" class="btn btn-dark">Update Cart</button>
@@ -131,21 +131,19 @@ if (!empty($_SESSION['cart'])) {
 
 <style>
 .cart-container {
-    padding: 20px;
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .cart-title {
-    font-size: 24px;
+    font-size: 30px;
     margin-bottom: 20px;
-    color: #333;
+    color:#16631ec4;
 }
 
 .cart-table {
     width: 100%;
-    border-collapse: collapse;
 }
 
 .cart-table th,
@@ -224,12 +222,12 @@ if (!empty($_SESSION['cart'])) {
 }
 .cart-box {
     display: flex;
-    margin-left: -15px;
-    margin-right: -15px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .cart-left {
-    padding: 0 15px;
-    flex-basis: 70%;
+    padding: 0 20px;
+    flex-basis: 65%;
 }
 .cart-right {
     padding: 0 15px;

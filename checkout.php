@@ -1,5 +1,11 @@
 <?php
 session_start();
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
 $pageTitle = "Checkout";
 include './includes/head.php';
 ?>
@@ -61,7 +67,7 @@ include './includes/head.php';
                 <div class="form-group">
                     <label>Phương thức thanh toán</label>
                     <div class="payment-methods">
-                        <label class="payment-method">
+                        <label class="payment-method" with="50%">
                             <input type="radio" name="payment_method" value="cod" checked>
                             <span>Thanh toán khi nhận hàng (COD)</span>
                         </label>

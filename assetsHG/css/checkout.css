@@ -11,18 +11,24 @@
     background: #fff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .checkout-form h2 {
     margin-bottom: 20px;
-    color: #333;
+    color: #1b740c;
     font-size: 24px;
 }
 
 .form-group {
     margin-bottom: 20px;
 }
+.form-group:focus {
+    border-color:#4caf50;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1); /* Hiệu ứng focus rõ hơn */
+    background-color: #ffffff;
+}
+
 
 .form-group label {
     display: block;
@@ -87,11 +93,12 @@
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-height: fit-content
 }
 
 .order-summary h2 {
     margin-bottom: 20px;
-    color: #333;
+    color: #1b740c;
     font-size: 24px;
 }
 
@@ -101,9 +108,8 @@
 
 .order-item {
     display: flex;
-    gap: 15px;
+    gap: 35px;
     padding: 15px 0;
-    border-bottom: 1px solid #eee;
 }
 
 .order-item img {
@@ -131,7 +137,6 @@
 }
 
 .order-total {
-    margin-top: 20px;
     padding-top: 20px;
     border-top: 2px solid #eee;
 }
@@ -147,7 +152,7 @@
 .grand-total {
     font-size: 20px;
     font-weight: 600;
-    color: #333;
+    color: #ff4444;
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #eee;

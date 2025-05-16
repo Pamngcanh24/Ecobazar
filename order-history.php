@@ -1,5 +1,11 @@
 <?php
 session_start();
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
 $conn = new mysqli('localhost', 'root', '', 'ecobazar');
 if ($conn->connect_error) {
     die('Kết nối thất bại: ' . $conn->connect_error);

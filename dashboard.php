@@ -1,6 +1,10 @@
 <?php
 
-
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
 // Kết nối database
 $conn = new mysqli('localhost', 'root', '', 'ecobazar');
 if ($conn->connect_error) {
@@ -9,6 +13,7 @@ if ($conn->connect_error) {
 
 // Giả sử user đã đăng nhập, lấy thông tin user từ session
 session_start();
+
 $user_id = $_SESSION['user_id'] ?? 1; // Test với user_id = 1
 
 // Lấy thông tin người dùng
@@ -31,7 +36,7 @@ include './includes/head.php';
    <!-- Breadcrumb -->
    <div class="breadcrumb-container">
         <div class="breadcrumb">
-            <a href="#" class="home-icon" title="Home">
+            <a href="homepage.php" class="home-icon" title="Home">
                 <i class="fas fa-home" aria-hidden="true"></i>
             </a>
             <span> &gt; </span>

@@ -102,11 +102,9 @@ foreach ($thumbnails as $thumbnail) {
             <i class="fas fa-home" aria-hidden="true"></i>
         </a>
         <span> &gt; </span>
-        <a href="#">Category</a>
+        <a href="08shop.php">Vegetables</a>
         <span> &gt; </span>
-        <a href="#">Vegetables</a>
-        <span> &gt; </span>
-        <a href="#" class="active">Chinese Cabbage</a>
+        <a href="11prd_info.php" class="active">Chinese Cabbage</a>
     </div>
 </div>
 <div class="container">

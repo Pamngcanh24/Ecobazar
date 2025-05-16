@@ -77,13 +77,15 @@ include('includes/head.php');
         <?php endif; ?>
     </div>
 </div>
-<!-- Banner1 -->
-<div class="banner">
+ <!-- Banner1 -->
+ <div class="banner">
     <div class="banner-content">
         <span>BEST DEALS</span>
         <h2>Sale of the Month</h2>
         <p id="countdown">00 : 00 : 00 : 00</p>
-        <button>Shop Now <i class="fa-solid fa-arrow-right"></i></button>
+    <a href="15shopping.php">
+    <button>Shop Now <i class="fa-solid fa-arrow-right"></i></button>
+    </a>
     </div>
     <div class="discount-badge">56% OFF</div>
 </div>
@@ -111,12 +113,6 @@ include('includes/head.php');
         </select>
     </div> -->
 </div>
-<!-- Bộ lọc đang áp dụng -->
-<div class="active-filters">
-        <span>Active Filters: <strong>Wing Chair</strong> × Min $300 – Max $500 ×</span>
-        <span class="result-count"><strong>10</strong> Results found.</span>
-    </div>
-
 <!-- Danh sách sản phẩm -->
 <div class="product-grid" id="products">
     <?php

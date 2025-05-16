@@ -36,42 +36,42 @@
         <div class="footer-column">
             <h3>My Account</h3>
             <ul>
-                <li><a href="#">My Account</a></li>
-                <li><a href="#">Order History</a></li>
-                <li><a href="#">Shopping Cart</a></li>
-                <li><a href="#">Wishlist</a></li>
+                <li><a href="settings.php">My Account</a></li>
+                <li><a href="order-history.php">Order History</a></li>
+                <li><a href="15shopping.php">Shopping Cart</a></li>
+                <li><a href="wishlist.php">Wishlist</a></li>
             </ul>
         </div>
 
         <div class="footer-column">
             <h3>Helps</h3>
             <ul>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">FAQs</a></li>
-                <li><a href="#">Terms & Conditions</a></li>
-                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="contact.php">Contact</a></li>
+                <li><a href="contact.php">FAQs</a></li>
+                <li><a href="contact.php">Terms & Conditions</a></li>
+                <li><a href="contact.php">Privacy Policy</a></li>
             </ul>
         </div>
 
         <div class="footer-column">
             <h3>Proxy</h3>
             <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">Product</a></li>
-                <li><a href="#">Track Order</a></li>
+                <li><a href="about.php">About</a></li>
+                <li><a href="08shop.php">Shop</a></li>
+                <li><a href="11prd_info.php">Product</a></li>
+                <li><a href="order-history.php">Track Order</a></li>
             </ul>
         </div>
 
         <div class="footer-column">
             <h3>Categories</h3>
             <ul>
-                <li><a href="#">Fruit & Vegetables</a></li>
-                <li><a href="#">Meat & Fish</a></li>
-                <li><a href="#">Bread & Bakery</a></li>
-                <li><a href="#">Beauty & Health</a></li>
+                <li><a href="08shop.php">Fruit & Vegetables</a></li>
+                <li><a href="08shop.php">Meat & Fish</a></li>
+                <li><a href="08shop.php">Bread & Bakery</a></li>
+                <li><a href="08shop.php">Beauty & Health</a></li>
             </ul>
-        </div>
+        </div> 
     <div class="footer-bottom">
         <p>Ecobazar eCommerce © 2021. All Rights Reserved</p>
         <div class="payment-icons">

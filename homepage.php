@@ -25,7 +25,65 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
     <link rel="stylesheet" href="css/homepage.css">
     <title>Ecobazar</title>
 </head>
+<style>
+    
+/* Additional styles for product icons */
+    .product_list li {
+        position: relative;
+        list-style: none;
+    }
 
+    .product-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .product-icon-item {
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .product-cart-icon {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .out-of-stock .product-cart-icon {
+        display: none !important;
+    }
+
+    .out-of-stock img {
+        opacity: 0.6;
+    }
+
+    .out-of-stock .stock-label {
+        background-color: #ff0000;
+        color: white;
+        padding: 5px 10px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        border-radius: 4px;
+        z-index: 1;
+    }
+
+    .sale .sale-label {
+        background-color: #00ff00;
+        color: white;
+        padding: 5px 10px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        border-radius: 4px;
+        z-index: 1;
+    }
+    </style>
 <body>
     <?php include 'includes/head.php'; ?>
 
