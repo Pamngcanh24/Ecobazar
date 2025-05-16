@@ -1,4 +1,6 @@
 <?php
+// Giả sử user đã đăng nhập, lấy thông tin user từ session
+session_start();
 
 // Kiểm tra đăng nhập
 if (!isset($_SESSION['user_id'])) {
@@ -11,8 +13,6 @@ if ($conn->connect_error) {
     die('Kết nối thất bại: ' . $conn->connect_error);
 }
 
-// Giả sử user đã đăng nhập, lấy thông tin user từ session
-session_start();
 
 $user_id = $_SESSION['user_id'] ?? 1; // Test với user_id = 1
 
