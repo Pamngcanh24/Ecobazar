@@ -1,4 +1,10 @@
 <?php
+session_start();
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 // Kết nối database
 $conn = new mysqli("localhost", "root", "", "ecobazar");
 
@@ -50,14 +56,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       margin-top: 15px;
       font-weight: bold;
     }
-    input[type="text"], input[type="file"] {
-      width: 300px;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    
+   input[type="text"],input[type="file"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: 0.3s ease;
+    outline: none;
+    font-size: 16px;
+  }
+
+/* Khi input được focus */
+input[type="text"]:focus,input[type="file"]:focus {
+  border-color: #ff6600; /* màu viền khi focus */
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.6); /* bóng sáng */
+  background-color: #fff;
+}
   </style>  
 </head>
   <body>
@@ -72,8 +86,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </aside>
 
   <main class="main-content-add">
-    <div class="breadcrumb">Categories &gt; Create</div>
-    <h1>Create Category</h1>
+    <nav class="breadcrumb">
+      <a href="/categories">Categories</a>
+      <span class="separator">›</span>
+      <span class="current">Create</span>
+    </nav>
+
+<h1>Create Category</h1>
     <form method="POST" enctype="multipart/form-data">
       <label for="name">Name <span style="color: red">*</span></label>
       <input type="text" id="name" name="name" required>

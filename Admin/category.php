@@ -1,4 +1,10 @@
 <?php
+session_start();
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 // Kết nối DB
 $conn = new mysqli('localhost', 'root', '', 'ecobazar');
 if ($conn->connect_error) {
@@ -121,14 +127,6 @@ $totalPages = ceil($totalRows / $limit);
 
       <div class="table-footer">
         <div>Showing <?php echo min($start + 1, $totalRows); ?> to <?php echo min($start + $limit, $totalRows); ?> of <?php echo $totalRows; ?> results</div>
-        <div>
-          Per page
-          <select disabled>
-            <option selected>8</option>
-            <option>20</option>
-            <option>50</option>
-          </select>
-        </div>
       </div>
     </main>
   </div>

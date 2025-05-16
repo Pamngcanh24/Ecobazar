@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 $mysqli = new mysqli("localhost", "root", "", "ecobazar");
 
 // Lấy ID sản phẩm từ URL
@@ -87,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       </ul>
     </aside>
 <main class="main-content-add">
-<div class="breadcrumb">Categories &gt; Create</div>
+ <div class="breadcrumb">Categories &gt; Create</div>
   <h1>Edit Product</h1>
   <form action="" method="POST" enctype="multipart/form-data">
 

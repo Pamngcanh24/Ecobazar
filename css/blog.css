@@ -1,0 +1,348 @@
+.body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} 
+/* Phần chứa breadcrumb với ảnh nền */
+.breadcrumb-container {
+  background: url('image/Breadcrumbs.png') no-repeat center;
+  background-size: cover;
+
+  
+}
+.blog-main-container {
+   display: flex;
+    gap: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 16px;         /* Thêm padding để không sát mép khi thu nhỏ */
+}
+.blog-content {
+    margin-top: 20px;
+     flex: 2;   /* nhỏ hơn mặc định (thường là 1.2 hoặc 2) */
+    min-width: 0;
+}
+.blog-image img {
+    width: 100%;
+  
+    border-radius: 12px;
+    background: #fff;
+    display: block;
+}
+.blog-meta {
+    margin-top: 18px;
+    display: flex;
+    gap: 24px;
+    color: #4caf50;
+    font-size: 16px;
+    align-items: center;
+}
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.blog-sidebar {
+    flex: 1;
+    min-width: 270px;
+    max-width: 350px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    height: fit-content;
+}
+.sidebar-search input {
+    width: 100%;
+    padding: 10px 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    margin-bottom: 18px;
+}
+.sidebar-section {
+    margin-bottom: 24px;
+}
+.sidebar-section h3 {
+    font-size: 20px;
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+.sidebar-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar-categories li {
+    display: flex;
+    justify-content: space-between;
+    color: #222;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.sidebar-categories li span {
+    color: #aaa;
+    font-size: 15px;
+}
+.sidebar-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.tag {
+    background: #f3f3f3;
+    color: #444;
+    border-radius: 20px;
+    padding: 7px 18px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.tag.active,
+.tag:hover {
+    background: #19c463;
+    color: #fff;
+}
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 18px 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .blog-main-container {
+        flex-direction: column;
+        gap: 24px;
+    }
+    .blog-sidebar {
+        max-width: 100%;
+        padding: 18px 10px;
+    }
+}
+.blog-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 32px 0 12px 0;
+    line-height: 1.2;
+}
+.blog-author-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+.author-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.author-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.author-meta {
+    color: #888;
+    font-size: 0.95rem;
+}
+.blog-social {
+    margin-left: auto;
+    display: flex;
+    gap: 12px;
+}
+.blog-social a {
+    color: #444;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+.blog-social a:hover {
+    color: #19c463;
+}
+.blog-desc-bold {
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+.blog-gallery-row {
+    display: flex;
+    gap: 18px;
+    margin-top: 24px;
+}
+.blog-gallery-row img {
+    width: 48%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+@media (max-width: 900px) {
+    .blog-gallery-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .blog-gallery-row img {
+        width: 100%;
+    }
+}
+
+/* Gallery */
+.sidebar-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+    margin-bottom: 8px;
+}
+.sidebar-gallery img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #f3f3f3;
+    border: 1px solid #eee;
+    transition: box-shadow 0.2s;
+}
+.sidebar-gallery img:hover {
+    box-shadow: 0 2px 8px rgba(25,196,99,0.15);
+}
+
+/* Recently Added */
+.sidebar-recent {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.sidebar-recent li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+.sidebar-recent img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    margin-top: 2px;
+}
+.sidebar-recent a {
+    font-weight: bold;
+    color: #222;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: block;
+    margin-bottom: 7px;
+}
+.sidebar-recent a:hover {
+    color: #19c463;
+}
+.recent-meta {
+    color: #7b7b7b;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.recent-meta i {
+    color: #19c463;
+    font-size: 13px;
+}
+
+.blog-banner-sale {
+    margin: 24px 0 32px 0;
+    background: url('https://shopery.netlify.app/main/src/images/banner/banner-lg-10.png') no-repeat center;
+    background-size: cover;
+   
+    border-radius: 12px;
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+}
+.banner-sale-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 36px 0 36px 48px;
+    z-index: 2;
+    flex: 1;
+}
+.banner-sale-sub {
+    color: #bfc7d1;
+    font-size: 15px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+}
+.banner-sale-title {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 22px;
+}
+.banner-sale-btn {
+    display: inline-block;
+    background: #19c463;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 24px;
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+.banner-sale-btn:hover {
+    background: #16a956;
+}
+.banner-sale-discount {
+    background: #23272a;
+    color: #ffb347;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 36px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    gap: 0;
+}
+.discount-label {
+    font-size: 13px;
+    color: #bfc7d1;
+    line-height: 1;
+}
+.discount-percent {
+    font-size: 1.4rem;
+    color: #ffb347;
+    font-weight: 700;
+    line-height: 1;
+}
+.discount-percent span {
+    font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+    .blog-banner-sale {
+        flex-direction: column;
+        min-height: unset;
+    }
+    .banner-sale-content {
+        flex-direction: row;
+        padding: 24px 16px;
+    }
+    .banner-sale-img {
+        width: 100%;
+        max-height: 140px;
+        border-radius: 0 0 12px 12px;
+        margin-left: 0;
+    }
+}

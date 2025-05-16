@@ -67,6 +67,8 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <title>Admin Login</title>
     <link rel="stylesheet" href="assets/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
     <style>
         body {
             background: #f5f7fa;
@@ -89,7 +91,7 @@ if (isset($_POST['login'])) {
             
             <div class="password-wrapper">
                 <input type="password" name="password" placeholder="Mật khẩu" id="password" required>
-                <span class="toggle-password" onclick="togglePassword()">👁️</span>
+                <span class="toggle-password" onclick="togglePassword()"><i class="fas fa-eye"></i></span>
             </div>
             
             <div class="options">
@@ -101,10 +103,19 @@ if (isset($_POST['login'])) {
     </div>
 
     <script>
-        function togglePassword() {
-            const pwd = document.getElementById("password");
-            pwd.type = pwd.type === "password" ? "text" : "password";
-        }
+      function togglePassword(id = 'password') {
+    const input = document.getElementById(id);
+    const icon = input.nextElementSibling.querySelector("i");
+    
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+}
+
     </script>
 </body>
 </html>

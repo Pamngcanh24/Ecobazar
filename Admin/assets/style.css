@@ -97,8 +97,11 @@
 .sidebar {
   width: 220px;
   background-color: #fff;
-  border-right: 1px solid #ddd;
-  padding: 20px 0;
+  padding: 82px 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  margin-left: 30px;
 }
 
 .sidebar ul {
@@ -124,7 +127,6 @@
 
 .sidebar li:hover,
 .sidebar li.active {
-  background-color: #ffe9d5;
   color: #f97316;
   font-weight: bold;
 }
@@ -158,9 +160,34 @@
   flex: 1;
 }
 .breadcrumb {
-  color: #888;
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 0;
+  color: #555;
 }
+
+.breadcrumb a {
+  text-decoration: none;
+  color: #adadae;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: #f97316;
+}
+
+.breadcrumb .separator {
+  margin: 0 8px;
+  color: #999;
+}
+
+.breadcrumb .current {
+  color: #333;
+}
+
 
 /* Cards */
 .card-container {
@@ -395,7 +422,7 @@
 }
 
 .table-footer {
-  margin-top: 15px;
+  margin-top: -10px;
   display: flex;
   justify-content: space-between;
   color: #555;
@@ -408,7 +435,7 @@
   font-size: 14px;
 }
 .pagination {
-  margin-top: 16px;
+  margin-top: 30px;
   text-align: right;
 }
 

@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 $host = 'localhost';
 $db = 'ecobazar';
 $user = 'root';

@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Kiểm tra nếu chưa đăng nhập thì chuyển về trang login
 if (!isset($_SESSION['admin_id'])) {
     header("Location: login.php");

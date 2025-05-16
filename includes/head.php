@@ -44,7 +44,7 @@ require_once 'connect.php';
     <!-- Header -->
     <div class="header">
         <div class="logo">
-            <a href="#"><img src="./assets/image/Logo.png" alt="Ecobazar Logo"></a>
+            <a href="homepage.php"><img src="./assets/image/Logo.png" alt="Ecobazar Logo"></a>
         </div>
 
         <div class="search-box">
@@ -101,6 +101,7 @@ require_once 'connect.php';
                     <li><a href="08shop.php?category_id=2">Fruits</a></li>
                 </ul>
             </li>
+            <li><a href="blog.php">Blog</a></li>
             <li><a href="about.php">About Us</a></li>
             <li><a href="contact.php">Contact Us</a></li>
         </ul>

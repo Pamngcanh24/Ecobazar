@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 // Kết nối database
 $conn = new mysqli("localhost", "root", "", "ecobazar");
 
