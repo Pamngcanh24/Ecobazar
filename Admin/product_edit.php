@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     .btn-submit, .btn-cancel {
       padding: 10px 20px; border: none; border-radius: 5px; margin-top: 20px; cursor: pointer;
     }
-    .btn-submit { background-color: #e67817; color: white; }
+    .btn-submit { background-color: #00b207; color: white; }
     .main-content-add { padding: 40px; flex: 1;}
     .btn-cancel { background-color: #ddd; text-decoration: none; color: black; margin-left: 10px; }
   </style>

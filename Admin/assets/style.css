@@ -127,7 +127,7 @@
 
 .sidebar li:hover,
 .sidebar li.active {
-  color: #f97316;
+  color: #00b207;
   font-weight: bold;
 }
 .sidebar ul li a {
@@ -176,7 +176,7 @@
 }
 
 .breadcrumb a:hover {
-  color: #f97316;
+  color: #00b207;
 }
 
 .breadcrumb .separator {
@@ -209,7 +209,7 @@
 }
 
 .avatar {
-  background-color: #000;
+  background-color: #00b207;
   color: white;
   border-radius: 50%;
   width: 48px;
@@ -361,7 +361,7 @@
   font-size: 24px;
 }
 .btn-new-category {
-  background-color: #d96a00;
+  background-color: #00b207;
   color: white;
   text-decoration: none;
   padding: 8px 18px;
@@ -370,7 +370,7 @@
   transition: background-color 0.3s ease;
 }
 .btn-new-category:hover {
-  background-color: #b95a00;
+  background-color: #00b207;
 }
 
 /* Bảng danh mục */
@@ -455,15 +455,15 @@
 }
 
 .page-item:hover {
-  background-color: #FF8A00;
+  background-color: #00b207;
   color: white;
-  border-color: #FF8A00;
+  border-color: #00b207;
 }
 
 .page-item.active {
-  background-color: #FF8A00;
+  background-color: #00b207;
   color: white;
-  border-color: #FF8A00;
+  border-color: #00b207;
 }
 
 .page-item.disabled {
@@ -488,7 +488,7 @@
   cursor: pointer;
 }
 .btn-create {
-  background-color: #e78b27;
+  background-color: #00b207;
   color: white;
 }
 .btn-another, .btn-cancel {

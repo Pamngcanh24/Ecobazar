@@ -84,7 +84,11 @@ if (isset($_POST['login'])) {
 <body>
     <div class="login-wrapper">
         <form method="post" class="login-form">
-            <h2>Admin Sign In</h2>
+
+            <h2>
+            <img src="assets/Group.png" alt="Dashboard Icon" style="vertical-align: middle; margin-right: 10px; height: 1em;">
+            Admin Sign In
+            </h2>
             <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
             
             <input type="text" name="username" placeholder="Tên đăng nhập" required>
