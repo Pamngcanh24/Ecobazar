@@ -29,12 +29,21 @@ if (isset($_GET['delete_id'])) {
     
     // Xóa record trong database
     if ($conn->query("DELETE FROM products WHERE id = $id")) {
-        echo "<script>alert('Xóa sản phẩm thành công!'); window.location.href='product.php';</script>";
+        $_SESSION['success_message'] = "Xóa sản phẩm thành công!";
+        header("Location: product.php");
     } else {
-        echo "<script>alert('Có lỗi xảy ra khi xóa sản phẩm!'); window.location.href='product.php';</script>";
+        $_SESSION['error_message'] = "Có lỗi xảy ra khi xóa sản phẩm!";
+        header("Location: product.php");
     }
     exit;
 }
+
+// Hiển thị thông báo nếu có
+$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
+$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+unset($_SESSION['success_message']);
+unset($_SESSION['error_message']);
+
 // Phân trang
 $limit = 6;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
@@ -58,9 +67,72 @@ $totalPages = ceil($totalRows / $limit);
   <title>Products</title>
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+      .alert {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 15px 30px;
+          border-radius: 8px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 15px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          animation: slideIn 0.5s ease-out forwards, fadeOut 0.5s ease-out 2.5s forwards;
+          z-index: 1000;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+  
+      .alert-success {
+          background-color: #00b207;
+          color: white;
+      }
+  
+      .alert-error {
+          background-color: #dc3545;
+          color: white;
+      }
+  
+      @keyframes slideIn {
+          from {
+              transform: translateX(100%);
+              opacity: 0;
+          }
+          to {
+              transform: translateX(0);
+              opacity: 1;
+          }
+      }
+  
+      @keyframes fadeOut {
+          from {
+              transform: translateX(0);
+              opacity: 1;
+          }
+          to {
+              transform: translateX(100%);
+              opacity: 0;
+          }
+      }
+  </style>
 </head>
 <body>
-  <div class="dashboard-container">
+    <?php if ($success_message): ?>
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i>
+        <?php echo $success_message; ?>
+    </div>
+    <?php endif; ?>
+
+    <?php if ($error_message): ?>
+    <div class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <?php echo $error_message; ?>
+    </div>
+    <?php endif; ?>
+
+    <div class="dashboard-container">
     <aside class="sidebar">
       <ul>
         <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
@@ -104,8 +176,8 @@ $totalPages = ceil($totalRows / $limit);
                 <td><?php echo number_format($row['price'], 0, ',', '.'); ?>.000đ</td>
                 <td><?php echo htmlspecialchars($row['category_name']); ?></td>
                 <td>
-                  <a href="product.php?delete_id=<?php echo $row['id']; ?>" 
-                     onclick="return confirm('Bạn có chắc muốn xóa?')"
+                  <a href="#" 
+                     onclick="showConfirmModal('product.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
                      class="delete-link">
                     <i class="fas fa-trash-alt"></i> Delete
                   </a>
@@ -151,6 +223,114 @@ $totalPages = ceil($totalRows / $limit);
       </div>
     </main>
   </div>
+
+  <!-- Thêm modal xác nhận xóa -->
+  <div id="confirmModal" class="confirm-modal">
+    <div class="confirm-content">
+      <h3>Xác nhận xóa</h3>
+      <p>Bạn có chắc chắn muốn xóa sản phẩm này?</p>
+      <div class="confirm-buttons">
+        <button id="confirmDelete" class="btn-confirm">Xóa</button>
+        <button onclick="closeModal()" class="btn-cancel">Hủy</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .confirm-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .confirm-content {
+      background: white;
+      padding: 35px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .confirm-content h3 {
+      margin: 0 0 20px;
+      color: #333;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .confirm-content p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .confirm-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .confirm-buttons button {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-confirm {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-confirm:hover {
+      background: #c82333;
+    }
+
+    .btn-cancel {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background: #5a6268;
+    }
+  </style>
+
+  <script>
+  function showConfirmModal(deleteUrl) {
+    document.getElementById('confirmModal').style.display = 'flex';
+    document.getElementById('confirmDelete').onclick = function() {
+      window.location.href = deleteUrl;
+    };
+  }
+
+  function closeModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+  }
+
+  // Đóng modal khi click ra ngoài
+  window.onclick = function(event) {
+    let modal = document.getElementById('confirmModal');
+    if (event.target == modal) {
+      closeModal();
+    }
+  }
+  </script>
 </body>
 </html>
 <?php

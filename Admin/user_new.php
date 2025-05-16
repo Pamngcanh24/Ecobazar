@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $stmt = $conn->prepare("INSERT INTO users (email, password, phone, created_at, remember_token, token_expiry) VALUES (?, ?, ?, ?, ?, ?)");
   $stmt->bind_param("ssssss", $email, $password, $phone, $created_at, $remember_token, $token_expiry);
   if ($stmt->execute()) {
-    $message = "Thêm người dùng thành công!";
+    echo "<script>alert('Thêm người dùng thành công!'); window.location.href='user.php';</script>";
   } else {
     $message = "Lỗi: " . $stmt->error;
   }
