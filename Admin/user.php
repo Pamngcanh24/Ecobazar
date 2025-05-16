@@ -8,8 +8,28 @@ if ($conn->connect_error) {
 // Xử lý xóa user
 if (isset($_GET['delete_id'])) {
     $id = intval($_GET['delete_id']);
-    $conn->query("DELETE FROM users WHERE id = $id");
-    header("Location: user.php");
+    
+    // Kiểm tra user có tồn tại không
+    $check_stmt = $conn->prepare("SELECT id FROM users WHERE id = ?");
+    $check_stmt->bind_param("i", $id);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+    
+    if ($check_result->num_rows > 0) {
+        // Xóa user bằng prepared statement
+        $delete_stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+        $delete_stmt->bind_param("i", $id);
+        
+        if ($delete_stmt->execute()) {
+            echo "<script>alert('Xóa người dùng thành công!'); window.location.href='user.php';</script>";
+        } else {
+            echo "<script>alert('Có lỗi xảy ra khi xóa người dùng!'); window.location.href='user.php';</script>";
+        }
+        $delete_stmt->close();
+    } else {
+        echo "<script>alert('Không tìm thấy người dùng!'); window.location.href='user.php';</script>";
+    }
+    $check_stmt->close();
     exit;
 }
 
@@ -40,9 +60,9 @@ $totalPages = ceil($totalRows / $limit);
   <div class="dashboard-container">
     <aside class="sidebar">
       <ul>
-        <li><i class="fas fa-home"></i> Dashboard</li>
-        <li><i class="fas fa-th-large"></i> Categories</li>
-        <li><i class="fas fa-box-open"></i> Products</li>
+        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
+        <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
         <li class="active"><i class="fas fa-users"></i> Users</li>
       </ul>
     </aside>

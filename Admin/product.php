@@ -8,8 +8,24 @@ if ($conn->connect_error) {
 // Xử lý xóa sản phẩm (nếu có request delete)
 if (isset($_GET['delete_id'])) {
     $id = intval($_GET['delete_id']);
-    $conn->query("DELETE FROM products WHERE id = $id");
-    header("Location: product.php");
+    
+    // Lấy thông tin ảnh trước khi xóa
+    $sql = "SELECT image FROM products WHERE id = $id";
+    $result = $conn->query($sql);
+    if ($result && $row = $result->fetch_assoc()) {
+        $image = $row['image'];
+        // Xóa file ảnh nếu tồn tại
+        if ($image && file_exists("uploads/" . $image)) {
+            unlink("uploads/" . $image);
+        }
+    }
+    
+    // Xóa record trong database
+    if ($conn->query("DELETE FROM products WHERE id = $id")) {
+        echo "<script>alert('Xóa sản phẩm thành công!'); window.location.href='product.php';</script>";
+    } else {
+        echo "<script>alert('Có lỗi xảy ra khi xóa sản phẩm!'); window.location.href='product.php';</script>";
+    }
     exit;
 }
 // Phân trang
@@ -40,10 +56,10 @@ $totalPages = ceil($totalRows / $limit);
   <div class="dashboard-container">
     <aside class="sidebar">
       <ul>
-        <li><i class="fas fa-home"></i> Dashboard</li>
-        <li><i class="fas fa-th-large"></i> Categories</li>
+        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
         <li class="active"><i class="fas fa-box-open"></i> Products</li>
-        <li><i class="fas fa-users"></i> Users</li>
+        <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
       </ul>
     </aside>
 
@@ -71,13 +87,13 @@ $totalPages = ceil($totalRows / $limit);
                 <td><input type="checkbox" /></td>
                 <td>
                   <?php if ($row['image']): ?>
-                    <img src="assets/images/shop/<?php echo htmlspecialchars($row['image']); ?>" alt="Product image" style="width: 50px; height: 50px; object-fit: cover;" />
+                    <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="Product image" style="width: 60px; height: 60px; object-fit: cover;" />
                   <?php else: ?>
                     <div style="width: 50px; height: 50px; background: #eee;"></div>
                   <?php endif; ?>
                 </td>
                 <td><?php echo htmlspecialchars($row['name']); ?></td>
-                <td><?php echo number_format($row['price'], 0, ',', '.'); ?> đ</td>
+                <td><?php echo number_format($row['price'], 0, ',', '.'); ?>.000đ</td>
                 <td><?php echo htmlspecialchars($row['category_name']); ?></td>
                 <td>
                   <a href="product.php?delete_id=<?php echo $row['id']; ?>" 

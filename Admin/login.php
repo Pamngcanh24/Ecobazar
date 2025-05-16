@@ -1,11 +1,25 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "ecobazar");
 
+// Kiểm tra nếu đã đăng nhập thì chuyển hướng đến dashboard
+if (isset($_SESSION['admin_id'])) {
+    header("Location: dashboard.php");
+    exit;
+}
+
+// Kết nối database
+$conn = new mysqli("localhost", "root", "", "ecobazar");
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Xử lý đăng nhập
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $remember = isset($_POST['remember']) ? true : false;
 
+    // Sử dụng Prepared Statement để tránh SQL Injection
     $sql = "SELECT * FROM admin WHERE username = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $username);
@@ -13,10 +27,29 @@ if (isset($_POST['login'])) {
     $result = $stmt->get_result();
 
     if ($result->num_rows === 1) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['admin'] = $username;
-            header("Location: admin_dashboard.php");
+        $admin = $result->fetch_assoc();
+        // Kiểm tra mật khẩu
+        if (password_verify($password, $admin['password'])) {
+            // Lưu thông tin admin vào session
+            $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['admin_username'] = $admin['username'];
+            
+            // Xử lý Remember me
+            if ($remember) {
+                $token = bin2hex(random_bytes(32));
+                $expiry = date('Y-m-d H:i:s', time() + 60 * 60 * 24 * 30); // 30 ngày
+                
+                // Cập nhật token trong database
+                $updateStmt = $conn->prepare("UPDATE admin SET remember_token = ?, token_expiry = ? WHERE id = ?");
+                $updateStmt->bind_param("ssi", $token, $expiry, $admin['id']);
+                $updateStmt->execute();
+                
+                // Lưu cookie
+                setcookie('admin_remember_token', $token, time() + 60 * 60 * 24 * 30, '/');
+            }
+            
+            // Chuyển hướng đến trang dashboard
+            header("Location: dashboard.php");
             exit;
         } else {
             $error = "Sai mật khẩu!";
@@ -24,6 +57,7 @@ if (isset($_POST['login'])) {
     } else {
         $error = "Tài khoản không tồn tại!";
     }
+    $stmt->close();
 }
 ?>
 
@@ -33,12 +67,24 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <title>Admin Login</title>
     <link rel="stylesheet" href="assets/style.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+    </style>
 </head>
 <body>
     <div class="login-wrapper">
         <form method="post" class="login-form">
-            <h2>Sign In</h2>
+            <h2>Admin Sign In</h2>
             <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+            
             <input type="text" name="username" placeholder="Tên đăng nhập" required>
             
             <div class="password-wrapper">
@@ -47,12 +93,10 @@ if (isset($_POST['login'])) {
             </div>
             
             <div class="options">
-                <label><input type="checkbox"> Remember me</label>
-                <a href="#">Forgot Password?</a>
+                <label><input type="checkbox" name="remember"> Remember me</label>
             </div>
 
             <button type="submit" name="login">Login</button>
-            <p class="register-text">Don't have an account? <a href="#">Register</a></p>
         </form>
     </div>
 
@@ -64,3 +108,4 @@ if (isset($_POST['login'])) {
     </script>
 </body>
 </html>
+<?php $conn->close(); ?>
