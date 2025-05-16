@@ -66,13 +66,14 @@ $totalPages = ceil($totalRows / $limit);
         <li class="active"><i class="fas fa-th-large"></i> Categories</li>
         <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
         <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
+        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
         
       </ul>
     </aside>
 
     <main class="main-content">
       <div class="header-row">
-        <h2>Categories</h2>
+        <h2>Categories Management</h2>
         <a href="category_new.php" class="btn-new-category">New category</a>
       </div>
 
@@ -116,13 +117,30 @@ $totalPages = ceil($totalRows / $limit);
         </tbody>
       </table>
 
-      <!-- Phân trang -->
-      <div class="pagination">
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-          <a href="?page=<?php echo $i; ?>" class="<?php echo ($i == $page) ? 'active' : ''; ?>">
-            <?php echo $i; ?>
-          </a>
-        <?php endfor; ?>
+     <!-- Phân trang -->
+     <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?php echo $page - 1; ?>" class="page-item"><i class="fa-solid fa-angle-left"></i></a>
+        <?php else: ?>
+            <span class="page-item disabled"><i class="fa-solid fa-angle-left"></i></span>
+        <?php endif; ?>
+
+        <?php
+        // Hiển thị các số trang
+        for ($i = 1; $i <= ceil($totalRows / $limit); $i++) {
+            if ($i == $page) {
+                echo "<span class=\"page-item active\">$i</span>";
+            } else {
+                echo "<a href=\"?page=$i\" class=\"page-item\">$i</a>";
+            }
+        }
+        ?>
+
+        <?php if ($page < ceil($totalRows / $limit)): ?>
+            <a href="?page=<?php echo $page + 1; ?>" class="page-item"><i class="fa-solid fa-angle-right"></i></a>
+        <?php else: ?>
+            <span class="page-item disabled"><i class="fa-solid fa-angle-right"></i></span>
+        <?php endif; ?>
       </div>
 
       <div class="table-footer">

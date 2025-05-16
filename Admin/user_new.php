@@ -63,6 +63,7 @@ $conn->close();
         <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
         <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
         <li class="active"><i class="fas fa-users"></i> Users</li>
+        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
       </ul>
     </aside>
 <main class="main-content-add">

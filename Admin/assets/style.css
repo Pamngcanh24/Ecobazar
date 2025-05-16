@@ -435,23 +435,46 @@
   font-size: 14px;
 }
 .pagination {
-  margin-top: 30px;
-  text-align: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 5px;
 }
-
-.pagination a {
-  padding: 6px 12px;
-  margin: 0 4px;
+.page-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #E6E6E6;
+  color: #1A1A1A;
   text-decoration: none;
-  border-radius: 5px;
-  background-color: #f0f0f0;
-  color: #333;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
-.pagination a.active {
-  background-color: #ff6600;
+.page-item:hover {
+  background-color: #FF8A00;
   color: white;
-  font-weight: bold;
+  border-color: #FF8A00;
+}
+
+.page-item.active {
+  background-color: #FF8A00;
+  color: white;
+  border-color: #FF8A00;
+}
+
+.page-item.disabled {
+  color: #999;
+  cursor: not-allowed;
+}
+
+.page-item.disabled:hover {
+  background-color: transparent;
+  color: #999;
+  border-color: #E6E6E6;
 }
 
 .form-actions {
@@ -470,4 +493,85 @@
 }
 .btn-another, .btn-cancel {
   background-color: #f1f1f1;
+}
+
+/* Thêm vào cuối file */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.order-table th,
+.order-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.order-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.customer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.customer-name {
+  font-weight: 500;
+}
+
+.customer-email {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.customer-address {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 4px;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.processing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.view-link {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.view-link:hover {
+  text-decoration: underline;
 }
