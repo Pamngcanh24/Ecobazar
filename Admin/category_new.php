@@ -82,6 +82,7 @@ input[type="text"]:focus,input[type="file"]:focus {
         <li class="active"><i class="fas fa-th-large"></i> Categories</li>
         <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
         <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
+        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
       </ul>
     </aside>
 

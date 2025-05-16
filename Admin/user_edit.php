@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
         <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
         <li class="active"><i class="fas fa-users"></i> Users</li>
+        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
       </ul>
     </aside>
 <main class="main-content-add">
@@ -102,9 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label for="phone">Số điện thoại *</label>
       <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($user_data['phone']); ?>" required>
 
-      <div class="actions">
-        <button type="submit">Update</button>
-        <a href="user.php" class="btn-cancel">Cancel</a>
+      <div class="form-actions">
+        <button type="submit" class="btn-create">Update</button>
+        <button type="button" class="btn-cancel" onclick="window.location.href='user.php'">Cancel</button>
       </div>
     </form>
   </main>

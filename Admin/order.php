@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Kiểm tra đăng nhập
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -12,45 +11,38 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Xử lý xóa user
+// Xử lý xóa đơn hàng
 if (isset($_GET['delete_id'])) {
-    $id = intval($_GET['delete_id']);
+    $delete_id = intval($_GET['delete_id']);
     
-    // Kiểm tra user có tồn tại không
-    $check_stmt = $conn->prepare("SELECT id FROM users WHERE id = ?");
-    $check_stmt->bind_param("i", $id);
-    $check_stmt->execute();
-    $check_result = $check_stmt->get_result();
+    // Xóa đơn hàng
+    $delete_sql = "DELETE FROM orders WHERE id = ?";
+    $stmt = $conn->prepare($delete_sql);
+    $stmt->bind_param("i", $delete_id);
     
-    if ($check_result->num_rows > 0) {
-        // Xóa user bằng prepared statement
-        $delete_stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
-        $delete_stmt->bind_param("i", $id);
-        
-        if ($delete_stmt->execute()) {
-            echo "<script>alert('Xóa người dùng thành công!'); window.location.href='user.php';</script>";
-        } else {
-            echo "<script>alert('Có lỗi xảy ra khi xóa người dùng!'); window.location.href='user.php';</script>";
-        }
-        $delete_stmt->close();
+    if ($stmt->execute()) {
+        echo "<script>alert('Xóa đơn hàng thành công!'); window.location.href='order.php';</script>";
     } else {
-        echo "<script>alert('Không tìm thấy người dùng!'); window.location.href='user.php';</script>";
+        echo "<script>alert('Có lỗi xảy ra khi xóa đơn hàng!'); window.location.href='order.php';</script>";
     }
-    $check_stmt->close();
-    exit;
+    $stmt->close();
 }
 
 // Phân trang
-$limit = 8;
+$limit = 6;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
 
-// Lấy dữ liệu user
-$sql = "SELECT * FROM users ORDER BY id ASC LIMIT $start, $limit";
+// Lấy dữ liệu đơn hàng có phân trang
+$sql = "SELECT o.*, u.email as user_email 
+        FROM orders o 
+        LEFT JOIN users u ON o.user_id = u.id 
+        ORDER BY o.order_date DESC 
+        LIMIT $start, $limit";
 $result = $conn->query($sql);
 
-// Tổng số user
-$countSql = "SELECT COUNT(*) AS total FROM users";
+// Đếm tổng số dòng để phân trang
+$countSql = "SELECT COUNT(*) AS total FROM orders";
 $countResult = $conn->query($countSql);
 $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
@@ -59,7 +51,7 @@ $totalPages = ceil($totalRows / $limit);
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Users</title>
+  <title>Orders Management</title>
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
@@ -70,24 +62,26 @@ $totalPages = ceil($totalRows / $limit);
         <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
         <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
         <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
-        <li class="active"><i class="fas fa-users"></i> Users</li>
-        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+        <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
+        <li class="active"><i class="fas fa-shopping-cart"></i> Orders</li>
       </ul>
     </aside>
 
     <main class="main-content">
       <div class="header-row">
-        <h2>Users Management</h2>
-        <a href="user_new.php" class="btn-new-category">New user</a>
+        <h2>Orders Management</h2>
       </div>
 
       <table class="category-table">
         <thead>
           <tr>
             <th><input type="checkbox" /></th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Payment Method</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -96,29 +90,42 @@ $totalPages = ceil($totalRows / $limit);
             <?php while($row = $result->fetch_assoc()): ?>
               <tr>
                 <td><input type="checkbox" /></td>
-                <td><?php echo htmlspecialchars($row['id']); ?></td>
-                <td><?php echo htmlspecialchars($row['first_name']); ?></td>
-                <td><?php echo htmlspecialchars($row['email']); ?></td>
+                <td>#<?php echo $row['id']; ?></td>
                 <td>
-                  <a href="user.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>" 
+                  <div class="customer-info">
+                    <div class="customer-name"><?php echo htmlspecialchars($row['billing_name']); ?></div>
+                    <div class="customer-email"><?php echo htmlspecialchars($row['billing_email']); ?></div>
+                    <div class="customer-address"><?php echo htmlspecialchars($row['shipping_address']); ?></div>
+                  </div>
+                </td>
+                <td><?php echo date('d M Y', strtotime($row['order_date'])); ?></td>
+                <td>$<?php echo number_format($row['total'], 2); ?></td>
+                <td>
+                  <span class="status-badge <?php echo strtolower($row['status']); ?>">
+                    <?php echo ucfirst($row['status']); ?>
+                  </span>
+                </td>
+                <td><?php echo ucfirst($row['payment_method']); ?></td>
+                <td>
+                  <a href="order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>" 
                      onclick="return confirm('Bạn có chắc muốn xóa?')"
                      class="delete-link">
                     <i class="fas fa-trash-alt"></i> Delete
                   </a>
-                  <a href="user_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
+                  <a href="order_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
                     <i class="fas fa-edit"></i> Edit
                   </a>
                 </td>
               </tr>
             <?php endwhile; ?>
           <?php else: ?>
-            <tr><td colspan="4">Không có người dùng nào.</td></tr>
+            <tr><td colspan="7">Không có đơn hàng nào</td></tr>
           <?php endif; ?>
         </tbody>
       </table>
 
-     <!-- Phân trang -->
-     <div class="pagination">
+      <!-- Phân trang -->
+      <div class="pagination">
         <?php if ($page > 1): ?>
             <a href="?page=<?php echo $page - 1; ?>" class="page-item"><i class="fa-solid fa-angle-left"></i></a>
         <?php else: ?>
@@ -144,7 +151,7 @@ $totalPages = ceil($totalRows / $limit);
       </div>
 
       <div class="table-footer">
-        <div>Showing <?php echo min($start + 1, $totalRows); ?> to <?php echo min($start + $limit, $totalRows); ?> of <?php echo $totalRows; ?> users</div>
+        <div>Showing <?php echo min($start + 1, $totalRows); ?> to <?php echo min($start + $limit, $totalRows); ?> of <?php echo $totalRows; ?> results</div>
       </div>
     </main>
   </div>
