@@ -56,22 +56,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       margin-top: 15px;
       font-weight: bold;
     }
-   input[type="text"],input[type="file"] {
-    width: 100%;
-    padding: 10px 14px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    transition: 0.3s ease;
-    outline: none;
-    font-size: 16px;
-  }
+    input[type="text"],input[type="file"] {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      transition: 0.3s ease;
+      outline: none;
+      font-size: 16px;
+    }
 
-/* Khi input được focus */
-input[type="text"]:focus,input[type="file"]:focus {
-  border-color: #ff6600; /* màu viền khi focus */
-  box-shadow: 0 0 5px rgba(255, 102, 0, 0.6); /* bóng sáng */
-  background-color: #fff;
-}
+    input[type="text"]:focus,input[type="file"]:focus {
+      border-color: #00b207;
+      box-shadow: 0 0 5px rgba(20, 144, 86, 0.6);
+      background-color: #fff;
+    }
+
+    .current {
+      color: #00b207;
+      font-weight: bold;
+    }
   </style>  
 </head>
   <body>

@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .actions {margin-top: 20px; }
     form { max-width: 600px; }
     button, .btn-cancel { padding: 10px 16px; margin-right: 10px;border: none; cursor: pointer;border-radius: 4px;}
-    button {background-color: #ea7b16; color: white; }
+    button {background-color: #00b207; color: white; }
     .btn-cancel { background-color: #f1f1f1;color: #444;text-decoration: none;border: 1px solid #ccc;}
     .message {margin-top: 20px;color: green;}
     .password-wrapper {position: relative;}

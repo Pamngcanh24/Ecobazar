@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       cursor: pointer;
     }
     .btn-create {
-      background-color: #e78b27;
+      background-color: #00b207;
       color: white;
     }
     .btn-another, .btn-cancel {
