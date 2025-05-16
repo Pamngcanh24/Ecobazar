@@ -37,6 +37,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
   <div class="dashboard-container">
     <aside class="sidebar">
       <ul>
+        
         <li class="active"><i class="fas fa-home"></i> Dashboard</li>
         <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
         <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
@@ -50,7 +51,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         <img src="assets/Group.png" alt="Dashboard Icon" style="vertical-align: middle; margin-right: 10px; height: 1em;">
         Dashboard
       </h1>
-      <p class="welcome-message">Chào mừng bạn đến với trang quản lý</p>
+      <p class="welcome-message">Chào mừng bạn đến với trang quản lý Ecobazar</p>
 
       <div class="card-container">
         <div class="card">

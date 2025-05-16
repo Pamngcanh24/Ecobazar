@@ -49,21 +49,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     h1 {
-      margin: 10px 0 30px;
+      margin: -40px 0 20px;
+      color:rgb(42, 140, 45);
     }
+    form { max-width: 600px; }
     form label {
       display: block;
       margin-top: 15px;
+      margin-bottom: 12px;
       font-weight: bold;
     }
     input[type="text"],input[type="file"] {
-      width: 100%;
-      padding: 10px 14px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      transition: 0.3s ease;
-      outline: none;
-      font-size: 16px;
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 5px; 
+      border-radius: 5px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; /* Thêm dòng này */
     }
 
     input[type="text"]:focus,input[type="file"]:focus {
@@ -92,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <main class="main-content-add">
     <nav class="breadcrumb">
-      <a href="/categories">Categories</a>
+      <a href="category.php">Categories</a>
       <span class="separator">›</span>
       <span class="current">Create</span>
     </nav>

@@ -67,10 +67,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    h1 { margin: 10px 0 30px; }
-    label { display: block; margin-top: 12px; font-weight: bold; }
+    h1 { 
+      margin: -40px 0 20px;
+      color:rgb(42, 140, 45);    
+    }
+    label { 
+      display: block;   
+      margin-top: 15px;
+      margin-bottom: 12px;
+      font-weight: bold; 
+    }
     form { max-width: 600px; } /* Giảm max-width xuống */
-    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    input, select, textarea { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 10px; 
+      margin-bottom: 10px;
+      border-radius: 10px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; /* Thêm dòng này */
+    }
     .form-group { margin-bottom: 20px; }
     .form-actions { margin-top: 20px; }
     .form-actions button {
@@ -95,8 +111,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </aside>
 
     <main class="main-content-add">
-      <div class="breadcrumb">Orders &gt; Edit</div>
-      <h1>Edit Order #<?php echo $order_id; ?></h1>
+    <nav class="breadcrumb">
+      <a href="order.php">Orders</a>
+      <span class="separator">›</span>
+      <span class="current">Edit</span>
+    </nav>      
+    <h1>Edit Order #<?php echo $order_id; ?></h1>
       
       <form method="POST">
         <h2>Shipping Information</h2>

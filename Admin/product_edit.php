@@ -71,10 +71,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    h1 { font-size: 24px; margin-bottom: 20px; }
+    h1 { 
+      margin: -40px 0 20px;
+      color:rgb(42, 140, 45);
+    }
     form { max-width: 600px; }
-    label { display: block; margin-top: 12px;font-weight: bold; }
-    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    label {
+      display: block;   
+      margin-top: 15px;
+      margin-bottom: 12px;
+      font-weight: bold; 
+      }
+    input, select, textarea { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 10px; 
+      margin-bottom: 10px;
+      border-radius: 10px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; /* Thêm dòng này */ 
+    }
     .btn-submit, .btn-cancel {
       padding: 10px 20px; border: none; border-radius: 5px; margin-top: 20px; cursor: pointer;
     }
@@ -95,8 +111,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       </ul>
     </aside>
 <main class="main-content-add">
- <div class="breadcrumb">Categories &gt; Create</div>
-  <h1>Edit Product</h1>
+    <nav class="breadcrumb">
+      <a href="product.php">Product</a>
+      <span class="separator">›</span>
+      <span class="current">Edit</span>
+    </nav>  
+    <h1>Edit Product</h1>
   <form action="" method="POST" enctype="multipart/form-data">
 
     <label>Category</label>

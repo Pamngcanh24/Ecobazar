@@ -164,19 +164,20 @@
   align-items: center;
   font-size: 16px;
   font-weight: 500;
-  padding: 10px 0;
+  padding: 62px 0;
   color: #555;
 }
 
 .breadcrumb a {
   text-decoration: none;
   color: #adadae;
-  font-weight: bold;
   transition: color 0.2s;
 }
 
 .breadcrumb a:hover {
-  color: #00b207;
+  color: #17911b;
+  font-weight: bold;
+
 }
 
 .breadcrumb .separator {
@@ -185,7 +186,8 @@
 }
 
 .breadcrumb .current {
-  color: #333;
+color: #0a7d14;  
+font-weight: bold;
 }
 
 
@@ -335,7 +337,7 @@
 }
 
 .confirm-actions button:first-child {
-  background-color: #f97316;
+  background-color:rgb(42, 140, 45);
   color: white;
 }
 
@@ -387,10 +389,10 @@
   background-color: #f8f8f8;
 }
 .category-table th, .category-table td {
-  padding: 12px 20px;
+  padding: 10px 15px;
   text-align: left;
   border-bottom: 1px solid #e3e3e3;
-  font-size: 15px;
+  font-size: 12px;
   color: #333;
 }
 .category-table th:first-child,
@@ -481,11 +483,14 @@
   margin-top: 20px;
 }
 .form-actions button {
-  padding: 8px 15px;
+  padding: 10px 25px;
   margin-right: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+.form-actions button:hover {
+  transform: translateY(-4px);
 }
 .btn-create {
   background-color: #00b207;

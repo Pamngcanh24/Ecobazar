@@ -58,14 +58,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    h2 {margin-bottom: 20px; }
-    label { display: block; margin-top: 12px;font-weight: bold; }
-    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    h1 {
+      margin: -40px 0 20px;
+      color:rgb(42, 140, 45);
+    }    
+    label { 
+      display: block;   
+      margin-top: 15px;
+      margin-bottom: 12px;
+      font-weight: bold; 
+    }    
+    input, select, textarea { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 10px; 
+      margin-bottom: 10px;
+      border-radius: 10px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; /* Thêm dòng này */
+    }    
     .actions {margin-top: 20px; }
     form { max-width: 600px; }
-    button, .btn-cancel { padding: 10px 16px; margin-right: 10px;border: none; cursor: pointer;border-radius: 4px;}
-    button {background-color: #00b207; color: white; }
-    .btn-cancel { background-color: #f1f1f1;color: #444;text-decoration: none;border: 1px solid #ccc;}
+    button, .btn-cancel { 
+     padding: 8px 15px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button {
+      background-color: #00b207; 
+      color: white; }
+    .btn-cancel { 
+      background-color: #f1f1f1;
+      color: #444;
+      text-decoration: none;
+      border: 1px solid #ccc;}
     .message {margin-top: 20px;color: green;}
     .password-wrapper {position: relative;}
     .password-wrapper input { width: 100%;padding-right: 30px;}  
@@ -84,8 +112,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </ul>
     </aside>
 <main class="main-content-add">
-<div class="breadcrumb">Users &gt; Edit</div>
-    <h2>Edit User</h2>
+    <nav class="breadcrumb">
+      <a href="user.php">Users</a>
+      <span class="separator">›</span>
+      <span class="current">Edit</span>
+    </nav>    
+    <h1>Edit User</h1>
 
     <?php if (isset($message)) echo "<p class='message'>$message</p>"; ?>
 

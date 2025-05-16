@@ -45,9 +45,27 @@ $conn->close();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     .form-container { max-width: 600px; margin: auto; }
-    h2 {margin-bottom: 20px; }
-    label { display: block; margin-top: 12px;font-weight: bold; }
-    input { padding: 8px;width: 100%; margin-top: 5px;border: 1px solid #ccc;border-radius: 4px; }
+    h2  {
+      margin: -40px 0 20px;
+      color:rgb(42, 140, 45);
+    }
+    label { 
+      display: block;   
+      margin-top: 15px;
+      margin-bottom: 12px;
+      font-weight: bold; 
+    }
+    form { max-width: 600px; }
+    input { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 10px; 
+      margin-bottom: 10px;
+      border-radius: 10px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; /* Thêm dòng này */
+    }
+
     .message {margin-top: 20px;color: green;}
     .main-content-add { padding: 40px; flex: 1;}
     .password-wrapper {position: relative;}
@@ -67,7 +85,11 @@ $conn->close();
       </ul>
     </aside>
 <main class="main-content-add">
-<div class="breadcrumb">Categories &gt; Create</div>
+    <nav class="breadcrumb">
+      <a href="user.php">Users</a>
+      <span class="separator">›</span>
+      <span class="current">Edit</span>
+    </nav>    
     <h2>Create New User</h2>
 
     <?php if (isset($message)) echo "<p class='message'>$message</p>"; ?>
