@@ -24,12 +24,64 @@ $stmt->execute();
 $result = $stmt->get_result();
 $wishlist_items = $result->fetch_all(MYSQLI_ASSOC);
 
+// Số lượng sản phẩm mỗi trang
+$limit = 3;
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
+$offset = ($page - 1) * $limit;
+
+// Đếm tổng số sản phẩm yêu thích
+$count_stmt = $conn->prepare("SELECT COUNT(*) FROM wishlist WHERE user_id = ?");
+$count_stmt->bind_param("i", $_SESSION['user_id']);
+$count_stmt->execute();
+$count_stmt->bind_result($total_items);
+$count_stmt->fetch();
+$count_stmt->close();
+
+// Tính tổng số trang
+$total_pages = ceil($total_items / $limit);
+
+// Lấy sản phẩm yêu thích cho trang hiện tại
+$stmt = $conn->prepare("
+    SELECT w.id AS wishlist_id, p.* 
+    FROM wishlist w 
+    JOIN products p ON w.product_id = p.id 
+    WHERE w.user_id = ?
+    LIMIT ?, ?
+");
+$stmt->bind_param("iii", $_SESSION['user_id'], $offset, $limit);
+$stmt->execute();
+$result = $stmt->get_result();
+$wishlist_items = $result->fetch_all(MYSQLI_ASSOC);
+
 $pageTitle = "My Wishlist";
 include './includes/head.php';
 ?>
 
 <link rel="stylesheet" href="style.css">
-
+<style>
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+}
+.pagination a.active {
+    background-color: #00a859;
+    color: white;
+    font-weight: bold;
+}
+.pagination a:hover {
+    background-color: #00a859;
+    color: white;
+}
+</style>
 
 <div class="breadcrumb-container">
     <div class="breadcrumb">
@@ -42,7 +94,6 @@ include './includes/head.php';
 </div>
 
 <?php include './includes/dash.php'; ?>
-
  <!-- Main Content -->
 <div class="main-content">
 <div class="wishlist-container">
@@ -92,6 +143,24 @@ include './includes/head.php';
             <?php endforeach; ?>
         </tbody>
     </table>
+        <?php if ($total_pages > 1): ?>
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page - 1; ?>"><i class="fas fa-chevron-left"></i></a>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                <a href="?page=<?= $i ?>" class="page-link <?= ($i == $page ? 'active' : '') ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($page < $total_pages): ?>
+            <a href="?page=<?php echo $page + 1; ?>"><i class="fas fa-chevron-right"></i></a>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+
 </div>
 </div>
 </div>

@@ -9,6 +9,7 @@ require_once 'connect.php';
     <title><?php echo isset($pageTitle) ? $pageTitle : 'Tiêu đề mặc định'; ?></title>
     <link rel="stylesheet" href="./assets/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="./assets/image/plantlogo.png" type="image/png">
 </head>
 <body>
    <!-- Top Bar -->

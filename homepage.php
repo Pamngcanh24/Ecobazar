@@ -21,8 +21,9 @@ $category = $stmt2->fetchAll(PDO::FETCH_ASSOC); // Lấy tất cả các danh m�
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="css/homepage.css">
+    <link rel="icon" href="./assets/image/plantlogo.png" type="image/png">
+
     <title>Ecobazar</title>
 </head>
 <style>

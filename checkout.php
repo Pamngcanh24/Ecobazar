@@ -1,7 +1,11 @@
 <?php
 session_start();
 
-
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
 $pageTitle = "Checkout";
 include './includes/head.php';
 ?>
@@ -61,18 +65,18 @@ include './includes/head.php';
                     <textarea id="address" name="address" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Phương thức thanh toán</label>
-                    <div class="payment-methods">
-                        <label class="payment-method">
-                            <span>Thanh toán khi nhận hàng (COD)</span>
-                            <input type="radio" name="payment_method" value="cod" checked>
-                        </label>
-                        <label class="payment-method">
-                            <span>Chuyển khoản ngân hàng</span>
-                            <input type="radio" name="payment_method" value="bank">
-                        </label>
-                    </div>
+                    <label for="note">Chọn phương thức thanh toán</label>
                 </div>
+                 <div class="payment-methods">
+                    <label class="payment-method">
+                        <input type="radio" name="payment_method" value="cod" checked>
+                        <span>Thanh toán khi nhận hàng (COD)</span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="payment_method" value="bank">
+                        <span>Chuyển khoản ngân hàng</span>
+                    </label>
+            </div>
         <div id="bank-info" style="display: none; margin: 15px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
             <p>Vui lòng chuyển khoản với số tiền: <strong id="amount-text"></strong></p>
             <img id="bank-qr" src="" alt="QR chuyển khoản" style="width: 300px; height: auto;">
