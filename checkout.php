@@ -1,10 +1,6 @@
 <?php
 session_start();
-// Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit();
-}
+
 
 $pageTitle = "Checkout";
 include './includes/head.php';
@@ -67,33 +63,53 @@ include './includes/head.php';
                 <div class="form-group">
                     <label>Phương thức thanh toán</label>
                     <div class="payment-methods">
-                        <label class="payment-method" with="50%">
-                            <input type="radio" name="payment_method" value="cod" checked>
+                        <label class="payment-method">
                             <span>Thanh toán khi nhận hàng (COD)</span>
+                            <input type="radio" name="payment_method" value="cod" checked>
                         </label>
                         <label class="payment-method">
-                            <input type="radio" name="payment_method" value="bank">
                             <span>Chuyển khoản ngân hàng</span>
+                            <input type="radio" name="payment_method" value="bank">
                         </label>
                     </div>
                 </div>
-                <div id="bank-info" style="display: none; margin: 15px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
-                    <h4 style="margin-bottom: 10px; color: #333;">Thông tin chuyển khoản</h4>
-                    <table style="width: 100%;">
-                        <tr>
-                            <td style="padding: 5px 0;">Ngân hàng:</td>
-                            <td style="font-weight: bold;">BIDV</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px 0;">Số tài khoản:</td>
-                            <td style="font-weight: bold;">1123112311</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px 0;">Tên chủ tài khoản:</td>
-                            <td style="font-weight: bold;">ECOBAZAR SHOP</td>
-                        </tr>
-                    </table>
-                </div>
+        <div id="bank-info" style="display: none; margin: 15px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+            <p>Vui lòng chuyển khoản với số tiền: <strong id="amount-text"></strong></p>
+            <img id="bank-qr" src="" alt="QR chuyển khoản" style="width: 300px; height: auto;">
+        </div>
+            <?php
+        $usdToVndRate = 25000;
+        $vndSubtotal = $subtotal * $usdToVndRate;
+        ?>
+            <script>
+                const usdToVndRate = 25000;
+                const subtotalAmount = <?= $subtotal ?> * usdToVndRate;
+                const accountName = 'Pham Thi Ngoc Anh';
+                const encodedAccountName = encodeURIComponent(accountName);
+
+                document.addEventListener('DOMContentLoaded', function() {
+                    const bankInfo = document.getElementById('bank-info');
+                    const paymentMethods = document.getElementsByName('payment_method');
+                    const amountText = document.getElementById('amount-text');
+                    const bankQr = document.getElementById('bank-qr');
+
+                    function formatVND(amount) {
+                        return amount.toLocaleString('vi-VN') + ' VND';
+                    }
+
+                    paymentMethods.forEach(method => {
+                        method.addEventListener('change', function() {
+                            if (this.value === 'bank') {
+                                bankInfo.style.display = 'block';
+                                amountText.textContent = formatVND(subtotalAmount);
+                                bankQr.src = `https://img.vietqr.io/image/BIDV-2153434446-compact2.png?amount=${Math.round(subtotalAmount)}&accountName=${encodedAccountName}`;
+                            } else {
+                                bankInfo.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            </script>
                 <button type="submit" class="btn checkout-btn">Đặt hàng</button>
                 <script>
                 document.addEventListener('DOMContentLoaded', function() {

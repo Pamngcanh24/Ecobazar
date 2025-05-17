@@ -16,12 +16,48 @@ $user_id = $_SESSION['user_id'] ?? 1; // Tạm thời gán user_id = 1
 // Lấy lịch sử đơn hàng của người dùng
 $order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC");
 
+// Phân trang
+$limit = 5; // Số đơn hàng mỗi trang
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$offset = ($page - 1) * $limit;
+
+// Đếm tổng số đơn hàng
+$count_result = $conn->query("SELECT COUNT(*) AS total FROM orders WHERE user_id = $user_id");
+$total_orders = $count_result->fetch_assoc()['total'];
+$total_pages = ceil($total_orders / $limit);
+
+// Lấy danh sách đơn hàng có phân trang
+$order_query = $conn->query("SELECT * FROM orders WHERE user_id = $user_id ORDER BY created_at DESC LIMIT $limit OFFSET $offset");
+
 $pageTitle = "Order history";
 include './includes/head.php';
 ?>
 
 <link rel="stylesheet" href="style.css">
-
+<style>
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 4px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+}
+.pagination a.active {
+    background-color: #00a859;
+    color: white;
+    font-weight: bold;
+}
+.pagination a:hover {
+    background-color: #00a859;
+    color: white;
+}
+</style>
 
 <div class="breadcrumb-container">
     <div class="breadcrumb">
@@ -62,6 +98,21 @@ include './includes/head.php';
                 <?php endwhile; ?>
             </tbody>
         </table>
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?php echo $page - 1; ?>"><i class="fas fa-chevron-left"></i></a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <a href="?page=<?php echo $i; ?>" class="<?php echo ($i === $page) ? 'active' : ''; ?>">
+                <?php echo $i; ?>
+            </a>
+        <?php endfor; ?>
+
+        <?php if ($page < $total_pages): ?>
+            <a href="?page=<?php echo $page + 1; ?>"><i class="fas fa-chevron-right"></i></a>
+        <?php endif; ?>
+    </div>
     </div>
 </div>
 </div>

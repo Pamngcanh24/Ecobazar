@@ -82,6 +82,8 @@ try {
         <meta charset="UTF-8">
         <title>Đặt hàng thành công</title>
         <link rel="stylesheet" href="assetsHG/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
         <style>
             .success-container {
                 max-width: 600px;

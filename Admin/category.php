@@ -152,6 +152,7 @@ $totalPages = ceil($totalRows / $limit);
         <thead>
           <tr>
             <th><input type="checkbox" /></th>
+            <th>ID</th>
             <th>Image</th>
             <th>Name</th>
             <th>Actions</th>
@@ -162,6 +163,7 @@ $totalPages = ceil($totalRows / $limit);
             <?php while($row = $result->fetch_assoc()): ?>
               <tr>
                 <td><input type="checkbox" /></td>
+                <td><?php echo htmlspecialchars($row['id']); ?></td>
                 <td>
                   <?php if ($row['image']): ?>
                     <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="Category image" style="width: 80px; height: 80px; object-fit: cover;" />

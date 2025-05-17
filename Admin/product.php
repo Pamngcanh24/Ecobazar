@@ -153,10 +153,12 @@ $totalPages = ceil($totalRows / $limit);
         <thead>
           <tr>
             <th><input type="checkbox" /></th>
+            <th>ID</th>
             <th>Image</th>
             <th>Name</th>
             <th>Price</th>
             <th>Category</th>
+            <th>Stock</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -165,6 +167,7 @@ $totalPages = ceil($totalRows / $limit);
             <?php while($row = $result->fetch_assoc()): ?>
               <tr>
                 <td><input type="checkbox" /></td>
+                <td><?php echo htmlspecialchars($row['id']); ?></td>
                 <td>
                   <?php if ($row['image']): ?>
                     <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="Product image" style="width: 60px; height: 60px; object-fit: cover;" />
@@ -173,8 +176,9 @@ $totalPages = ceil($totalRows / $limit);
                   <?php endif; ?>
                 </td>
                 <td><?php echo htmlspecialchars($row['name']); ?></td>
-                <td><?php echo number_format($row['price'], 0, ',', '.'); ?>.000đ</td>
+                <td><?php echo number_format($row['price'], 0, ',', ','); ?> $</td>
                 <td><?php echo htmlspecialchars($row['category_name']); ?></td>
+                <td><?php echo htmlspecialchars($row['stock']); ?></td>
                 <td>
                   <a href="#" 
                      onclick="showConfirmModal('product.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
