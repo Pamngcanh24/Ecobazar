@@ -67,7 +67,7 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <title>Admin Login</title>
     <link rel="stylesheet" href="assets/style.css">
-    <link rel="icon" href="./assets/image/plantlogo.png" type="image/png">
+    <link rel="icon" href="assets/plantlogo.png" type="image/png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
     <style>
