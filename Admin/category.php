@@ -64,7 +64,7 @@ $totalPages = ceil($totalRows / $limit);
   <meta charset="UTF-8" />
   <title>Categories</title>
   <link rel="stylesheet" href="assets/style.css" />
-  <link rel="icon" href="./assets/image/plantlogo.png" type="image/png">
+  <link rel="icon" href="assets/plantlogo.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
       .alert {
