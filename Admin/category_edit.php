@@ -1,19 +1,5 @@
 <?php
-session_start();
-
-// Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-
-// Kết nối database
-$conn = new mysqli("localhost", "root", "", "ecobazar");
-
-// Kiểm tra kết nối
-if ($conn->connect_error) {
-  die("Kết nối thất bại: " . $conn->connect_error);
-}
+include 'includes/header.php';
 
 // Lấy ID danh mục từ URL
 $category_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -69,14 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Create Category</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="icon" href="assets/plantlogo.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     h1 {
       margin: -40px 0 20px;
@@ -114,18 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       background-color: #f1f1f1;
     }
   </style>  
-</head>
-  <body>
-  <div class="dashboard-container">
-  <aside class="sidebar">
-      <ul>
-        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li class="active"><i class="fas fa-th-large"></i> Categories</li>
-        <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
-        <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
-        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-      </ul>
-    </aside>
 
   <main class="main-content-add">
     <nav class="breadcrumb">
@@ -154,6 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </form>
   </main>
-  </div>
-</body>
-</html>
+
+  <?php
+  include 'includes/footer.php';
+  ?>

@@ -1,15 +1,8 @@
 <?php
-session_start();
-
-// Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-$mysqli = new mysqli("localhost", "root", "", "ecobazar");
+include 'includes/header.php';
 
 // Lấy danh sách category
-$categoryResult = $mysqli->query("SELECT id, name FROM categories");
+$categoryResult = $conn->query("SELECT id, name FROM categories");
 
 // Tạo thư mục uploads nếu chưa có
 $uploadDir = 'uploads/';
@@ -30,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $targetPath = $uploadDir . basename($image);
 
     if (move_uploaded_file($tmpName, $targetPath)) {
-        $stmt = $mysqli->prepare("INSERT INTO products (category_id, name, price, old_price, stock, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO products (category_id, name, price, old_price, stock, description, image) VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("isddiss", $category_id, $name, $price, $old_price, $stock, $description, $image);
 
         if ($stmt->execute()) {
@@ -43,15 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Create Product</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="icon" href="assets/plantlogo.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     h1 { 
      margin: -40px 0 20px;
@@ -63,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       margin-top: 15px;
       margin-bottom: 12px;
       font-weight: bold; 
-  }
+      }
     input, select, textarea { 
       width: 100%; 
       padding: 8px; 
@@ -71,21 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       border-radius: 5px; 
       border: 1px solid #ccc; 
       box-sizing: border-box; /* Thêm dòng này */
-}
+    }
 
   </style>
-</head>
-<body>
-<div class="dashboard-container">
-  <aside class="sidebar">
-      <ul>
-        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
-        <li class="active"><i class="fas fa-box-open"></i> Products</li>
-        <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
-        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-      </ul>
-    </aside>
 <main class="main-content-add">
  <nav class="breadcrumb">
       <a href="product.php">Product</a>
@@ -130,6 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
   </form>
 </main>
-</div>
-</body>
-</html>
+<?php 
+include 'includes/footer.php';
+?>

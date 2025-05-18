@@ -1,19 +1,5 @@
 <?php
-session_start();
-
-// Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-$host = 'localhost';
-$db = 'ecobazar';
-$user = 'root';
-$pass = '';
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-  die("Kết nối thất bại: " . $conn->connect_error);
-}
+include 'includes/header.php';
 
 // Lấy ID người dùng từ URL
 $user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -50,14 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Edit User</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="icon" href="assets/plantlogo.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     h1 {
       margin: -40px 0 20px;
@@ -100,18 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .password-wrapper input { width: 100%;padding-right: 30px;}  
     .toggle-password { position: absolute;top: 50%;right: 10px;transform: translateY(-50%);cursor: pointer;color: #aaa;}
   </style>
-</head>
-<body>
-<div class="dashboard-container">
-  <aside class="sidebar">
-      <ul>
-        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
-        <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
-        <li class="active"><i class="fas fa-users"></i> Users</li>
-        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-      </ul>
-    </aside>
 <main class="main-content-add">
     <nav class="breadcrumb">
       <a href="user.php">Users</a>
@@ -142,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </form>
   </main>
-</div>
+
   <script>
   function togglePassword() {
     const passwordInput = document.getElementById('password');
@@ -159,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 </script>
 
-</body>
-</html>
+<?php 
+include 'includes/footer.php';
+?>
 

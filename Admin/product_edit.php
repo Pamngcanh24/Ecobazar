@@ -1,24 +1,17 @@
 <?php
-session_start();
-
-// Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-$mysqli = new mysqli("localhost", "root", "", "ecobazar");
+include 'includes/header.php';
 
 // Lấy ID sản phẩm từ URL
 $product_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 // Lấy thông tin sản phẩm cần sửa
-$productStmt = $mysqli->prepare("SELECT * FROM products WHERE id = ?");
+$productStmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
 $productStmt->bind_param("i", $product_id);
 $productStmt->execute();
 $product = $productStmt->get_result()->fetch_assoc();
 
 // Lấy danh sách category
-$categoryResult = $mysqli->query("SELECT id, name FROM categories");
+$categoryResult = $conn->query("SELECT id, name FROM categories");
 
 // Tạo thư mục uploads nếu chưa có
 $uploadDir = 'uploads/';
@@ -52,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Cập nhật thông tin sản phẩm
-    $stmt = $mysqli->prepare("UPDATE products SET category_id=?, name=?, price=?, old_price=?, stock=?, description=?, image=? WHERE id=?");
+    $stmt = $conn->prepare("UPDATE products SET category_id=?, name=?, price=?, old_price=?, stock=?, description=?, image=? WHERE id=?");
     $stmt->bind_param("isddissi", $category_id, $name, $price, $old_price, $stock, $description, $image, $product_id);
 
     if ($stmt->execute()) {
@@ -62,15 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Create Product</title>
-  <link rel="stylesheet" href="assets/style.css">
-  <link rel="icon" href="assets/plantlogo.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     h1 { 
       margin: -40px 0 20px;
@@ -99,18 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     .main-content-add { padding: 40px; flex: 1;}
     .btn-cancel { background-color: #ddd; text-decoration: none; color: black; margin-left: 10px; }
   </style>
-</head>
-<body>
-<div class="dashboard-container">
-    <aside class="sidebar">
-      <ul>
-        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
-        <li class="active"><i class="fas fa-box-open"></i> Products</li>
-        <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
-        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-      </ul>
-    </aside>
 <main class="main-content-add">
     <nav class="breadcrumb">
       <a href="product.php">Product</a>
@@ -161,6 +133,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       </div>
   </form>
 </main>
-</div>
-</body>
-</html>
+<?php
+include 'includes/footer.php';
+?>
