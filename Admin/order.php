@@ -1,15 +1,5 @@
 <?php
-session_start();
-// Kiểm tra đăng nhập
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit();
-}
-// Kết nối DB
-$conn = new mysqli('localhost', 'root', '', 'ecobazar');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'includes/header.php';
 
 // Xử lý xóa đơn hàng
 if (isset($_GET['delete_id'])) {
@@ -31,15 +21,6 @@ if (isset($_GET['delete_id'])) {
     exit;
 }
 
-// Hiển thị thông báo nếu có
-$success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
-$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
-unset($_SESSION['success_message']);
-unset($_SESSION['error_message']);
-
-
-
-
 // Phân trang
 $limit = 6;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
@@ -59,64 +40,8 @@ $countResult = $conn->query($countSql);
 $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Orders Management</title>
-  <link rel="stylesheet" href="assets/style.css" />
-  <link rel="icon" href="assets/plantlogo.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-      .alert {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          padding: 15px 30px;
-          border-radius: 8px;
-          font-family: 'Poppins', sans-serif;
-          font-size: 15px;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          animation: slideIn 0.5s ease-out forwards, fadeOut 0.5s ease-out 2.5s forwards;
-          z-index: 1000;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      }
-  
-      .alert-success {
-          background-color: #00b207;
-          color: white;
-      }
-  
-      .alert-error {
-          background-color: #dc3545;
-          color: white;
-      }
-  
-      @keyframes slideIn {
-          from {
-              transform: translateX(100%);
-              opacity: 0;
-          }
-          to {
-              transform: translateX(0);
-              opacity: 1;
-          }
-      }
-  
-      @keyframes fadeOut {
-          from {
-              transform: translateX(0);
-              opacity: 1;
-          }
-          to {
-              transform: translateX(100%);
-              opacity: 0;
-          }
-      }
-
-      .confirm-modal {
+<style>
+  .confirm-modal {
           display: none;
           position: fixed;
           top: 0;
@@ -188,33 +113,7 @@ $totalPages = ceil($totalRows / $limit);
       .btn-cancel:hover {
           background: #5a6268;
       }
-  </style>
-</head>
-<body>
-    <?php if ($success_message): ?>
-    <div class="alert alert-success">
-        <i class="fas fa-check-circle"></i>
-        <?php echo $success_message; ?>
-    </div>
-    <?php endif; ?>
-
-    <?php if ($error_message): ?>
-    <div class="alert alert-error">
-        <i class="fas fa-exclamation-circle"></i>
-        <?php echo $error_message; ?>
-    </div>
-    <?php endif; ?>
-
-    <div class="dashboard-container">
-    <aside class="sidebar">
-      <ul>
-        <li><a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
-        <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
-        <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
-        <li class="active"><i class="fas fa-shopping-cart"></i> Orders</li>
-      </ul>
-    </aside>
+</style>
 
     <main class="main-content">
       <div class="header-row">
@@ -303,7 +202,7 @@ $totalPages = ceil($totalRows / $limit);
         <div>Showing <?php echo min($start + 1, $totalRows); ?> to <?php echo min($start + $limit, $totalRows); ?> of <?php echo $totalRows; ?> results</div>
       </div>
     </main>
-  </div>
+  
 
     <!-- Modal xác nhận xóa -->
     <div id="confirmModal" class="confirm-modal">
@@ -337,8 +236,6 @@ $totalPages = ceil($totalRows / $limit);
         }
     }
     </script>
-</body>
-</html>
 <?php
-$conn->close();
+include 'includes/footer.php';
 ?>

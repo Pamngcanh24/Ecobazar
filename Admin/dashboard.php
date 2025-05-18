@@ -1,10 +1,5 @@
 <?php
-session_start();
-// Kiểm tra nếu chưa đăng nhập thì chuyển về trang login
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.php");
-    exit;
-}
+include 'includes/header.php';
 
 // Lấy thông tin admin từ session
 $admin_username = $_SESSION['admin_username'];
@@ -25,27 +20,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     exit;
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="assets/style.css">   
-  <link rel="icon" href="assets/plantlogo.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-  <div class="dashboard-container">
-    <aside class="sidebar">
-      <ul>
-        
-        <li class="active"><i class="fas fa-home"></i> Dashboard</li>
-        <li><a href="category.php"><i class="fas fa-th-large"></i> Categories</a></li>
-        <li><a href="product.php"><i class="fas fa-box-open"></i> Products</a></li>
-        <li><a href="user.php"><i class="fas fa-users"></i> Users</a></li>
-        <li><a href="order.php"><i class="fas fa-shopping-cart"></i> Orders</a></li>
-      </ul>
-    </aside>
+
 
     <main class="main-content">
       <h1>
@@ -64,7 +39,6 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
           <button class="sign-out-btn" onclick="confirmSignOut()"> <i class="fas fa-sign-out-alt"></i> Sign out</button>
         </div>
       </div>
-  </div>
 </main>
 <script>
   function confirmSignOut() {
@@ -83,5 +57,4 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
   }
 </script>
 
-</body>
-</html>
+<?php include 'includes/footer.php'; ?>
