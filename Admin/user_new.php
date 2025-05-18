@@ -42,6 +42,7 @@ $conn->close();
   <meta charset="UTF-8">
   <title>Create New User</title>
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="icon" href="./assets/image/plantlogo.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     .form-container { max-width: 600px; margin: auto; }
