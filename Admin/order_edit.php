@@ -42,23 +42,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     echo "Lỗi: " . $stmt->error;
   }
-}
-?>
+// lấy ngày hiện tại dạng YYYYMMDD
+$today = date('Ymd');
 
+// đếm số đơn trong ngày
+$sqlCount = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE()";
+$resCount = mysqli_query($conn, $sqlCount);
+$rowCount = mysqli_fetch_assoc($resCount);
+
+$orderNumber = $rowCount['total'] + 1; // +1 cho đơn mới
+$orderCode = $today . '-' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
+
+}
+
+?>
+ <style>
+    h1 { 
+      margin: -40px 0 20px;
+      color:rgb(42, 140, 45);
+    }
+    form { max-width: 600px; }
+    label {
+      display: block;   
+      margin-top: 15px;
+      margin-bottom: 12px;
+      font-weight: bold; 
+      }
+    input, select, textarea { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 10px; 
+      margin-bottom: 10px;
+      border-radius: 10px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; /* Thêm dòng này */ 
+    }
+    .btn-submit, .btn-cancel {
+      padding: 10px 20px; border: none; border-radius: 5px; margin-top: 20px; cursor: pointer;
+    }
+    .btn-submit { background-color: #00b207; color: white; }
+    .main-content-add { padding: 40px; flex: 1;}
+    .btn-cancel { background-color: #ddd; text-decoration: none; color: black; margin-left: 10px; }
+  </style>
     <main class="main-content-add">
     <nav class="breadcrumb">
       <a href="order.php">Orders</a>
       <span class="separator">›</span>
       <span class="current">Edit</span>
     </nav>      
-    <h1>Edit Order #<?php echo $order_id; ?></h1>
-      
+    <h1>Edit Order <?php echo $order_id; ?></h1>
+    
       <form method="POST">
         <h2>Shipping Information</h2>
         <div class="form-group">
           <label for="shipping_name">Name <span style="color: red">*</span></label>
           <input type="text" id="shipping_name" name="shipping_name" value="<?php echo htmlspecialchars($order['shipping_name']); ?>" required>
         </div>
+      <div class="form-group">
+          <label for="order_code">Order Code</label>
+          <input type="text" id="order_code" value="<?php echo htmlspecialchars($order['order_code']); ?>" disabled>
+      </div>
 
         <div class="form-group">
           <label for="shipping_phone">Phone <span style="color: red">*</span></label>

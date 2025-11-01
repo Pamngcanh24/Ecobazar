@@ -21,7 +21,6 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
 }
 ?>
 
-
     <main class="main-content">
       <h1>
         <img src="assets/Group.png" alt="Dashboard Icon" style="vertical-align: middle; margin-right: 10px; height: 1em;">

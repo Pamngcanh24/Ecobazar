@@ -113,6 +113,10 @@ $menu_name = explode('.', $menu_item)[0];
             'order' => [
                 'icon' => 'fas fa-shopping-cart',
                 'name' => 'Orders'
+            ],
+            'driver' => [
+                'icon' => 'fas fa-truck',
+                'name' => 'Drivers'
             ]
         ];
         foreach ($menus as $key => $menu) {

@@ -1,6 +1,17 @@
 <?php
 include 'includes/header.php';
 
+// lấy ngày hiện tại dạng YYYYMMDD
+$today = date('Ymd');
+
+// đếm số đơn trong ngày
+$sqlCount = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE()";
+$resCount = mysqli_query($conn, $sqlCount);
+$rowCount = mysqli_fetch_assoc($resCount);
+
+$orderNumber = $rowCount['total'] + 1; // +1 cho đơn mới
+$orderCode = $today . '-' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
+
 // Xử lý xóa đơn hàng
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
@@ -41,6 +52,7 @@ $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
 ?>
 <style>
+  
   .confirm-modal {
           display: none;
           position: fixed;
@@ -54,7 +66,10 @@ $totalPages = ceil($totalRows / $limit);
           align-items: center;
           font-family: 'Poppins', sans-serif;
       }
-
+  .customer-phone {
+          font-size: 0.9em;
+          color: #666;
+      }
       .confirm-content {
           background: white;
           padding: 35px;
@@ -124,6 +139,7 @@ $totalPages = ceil($totalRows / $limit);
         <thead>
           <tr>
             <th>Order ID</th>
+            <th>Order Code</th>
             <th>Customer</th>
             <th>Date</th>
             <th>Total</th>
@@ -137,9 +153,11 @@ $totalPages = ceil($totalRows / $limit);
             <?php while($row = $result->fetch_assoc()): ?>
               <tr>
                 <td><?php echo $row['id']; ?></td>
+                <td><?php echo htmlspecialchars($row['order_code']); ?></td>
                 <td>
                   <div class="customer-info">
                     <div class="customer-name"><?php echo htmlspecialchars($row['billing_name']); ?></div>
+                    <div class="customer-phone"><?php echo htmlspecialchars($row['billing_phone']); ?></div>
                     <div class="customer-email"><?php echo htmlspecialchars($row['billing_email']); ?></div>
                     <div class="customer-address"><?php echo htmlspecialchars($row['shipping_address']); ?></div>
                   </div>
