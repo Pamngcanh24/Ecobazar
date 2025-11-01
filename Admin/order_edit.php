@@ -44,6 +44,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 ?>
+  <style>
+    h1 {
+      margin: -40px 0 20px;
+      color:rgb(42, 140, 45);
+    }    
+    label { 
+      display: block;   
+      margin-top: 15px;
+      margin-bottom: 12px;
+      font-weight: bold; 
+    }    
+    input, select, textarea { 
+      width: 100%; 
+      padding: 8px; 
+      margin-top: 10px; 
+      margin-bottom: 10px;
+      border-radius: 10px; 
+      border: 1px solid #ccc; 
+      box-sizing: border-box; /* Thêm dòng này */
+    }    
+    .actions {margin-top: 20px; }
+    form { max-width: 600px; }
+    button, .btn-cancel { 
+     padding: 8px 15px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button {
+      background-color: #00b207; 
+      color: white; }
+    .btn-cancel { 
+      background-color: #f1f1f1;
+      color: #444;
+      text-decoration: none;
+      border: 1px solid #ccc;}
+    .message {margin-top: 20px;color: green;}
+    .password-wrapper {position: relative;}
+    .password-wrapper input { width: 100%;padding-right: 30px;}  
+    .toggle-password { position: absolute;top: 50%;right: 10px;transform: translateY(-50%);cursor: pointer;color: #aaa;}
+  </style>
 
     <main class="main-content-add">
     <nav class="breadcrumb">
