@@ -53,7 +53,6 @@ $totalPages = ceil($totalRows / $limit);
   <table class="category-table">
     <thead>
       <tr>
-        <th><input type="checkbox" /></th>
         <th>ID</th>
         <th>Image</th>
         <th>Name</th>
@@ -64,7 +63,6 @@ $totalPages = ceil($totalRows / $limit);
       <?php if ($result->num_rows > 0): ?>
         <?php while($row = $result->fetch_assoc()): ?>
           <tr>
-            <td><input type="checkbox" /></td>
             <td><?php echo htmlspecialchars($row['id']); ?></td>
             <td>
               <?php if ($row['image']): ?>
