@@ -152,16 +152,16 @@ $status_class = strtolower($order['status']);
 
 switch($status_class){
     case "completed":
-        $status_badge = '<span class="status-badge completed">Completed</span>';
+        $status_badge = '<span class="status-badge Completed">Completed</span>';
         break;
     case "processing":
-        $status_badge = '<span class="status-badge processing">Processing</span>';
+        $status_badge = '<span class="status-badge Processing">Processing</span>';
         break;
     case "pending":
-        $status_badge = '<span class="status-badge pending">Pending</span>';
+        $status_badge = '<span class="status-badge Pending">Pending</span>';
         break;
     case "cancelled":
-        $status_badge = '<span class="status-badge cancelled">Cancelled</span>';
+        $status_badge = '<span class="status-badge Cancelled">Cancelled</span>';
         break;
 }
 
