@@ -6,27 +6,27 @@ if (isset($_GET['delete_id'])) {
     $id = intval($_GET['delete_id']);
     
     // Kiểm tra user có tồn tại không
-    $check_stmt = $conn->prepare("SELECT id FROM users WHERE id = ?");
+    $check_stmt = $conn->prepare("SELECT id FROM drivers WHERE id = ?");
     $check_stmt->bind_param("i", $id);
     $check_stmt->execute();
     $check_result = $check_stmt->get_result();
     
     if ($check_result->num_rows > 0) {
         // Xóa user bằng prepared statement
-        $delete_stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
+        $delete_stmt = $conn->prepare("DELETE FROM drivers WHERE id = ?");
         $delete_stmt->bind_param("i", $id);
         
         if ($delete_stmt->execute()) {
             $_SESSION['success_message'] = "Xóa người dùng thành công!";
-            header("Location: user.php");
+            header("Location: driver.php");
         } else {
             $_SESSION['error_message'] = "Có lỗi xảy ra khi xóa người dùng!";
-            header("Location: user.php");
+            header("Location: driver.php");
         }
         $delete_stmt->close();
     } else {
         $_SESSION['error_message'] = "Không tìm thấy người dùng!";
-        header("Location: user.php");
+        header("Location: driver.php");
     }
     $check_stmt->close();
     exit;
@@ -38,11 +38,11 @@ $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
 
 // Lấy dữ liệu user
-$sql = "SELECT * FROM users ORDER BY id ASC LIMIT $start, $limit";
+$sql = "SELECT * FROM drivers ORDER BY id ASC LIMIT $start, $limit";
 $result = $conn->query($sql);
 
 // Tổng số user
-$countSql = "SELECT COUNT(*) AS total FROM users";
+$countSql = "SELECT COUNT(*) AS total FROM drivers";
 $countResult = $conn->query($countSql);
 $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
@@ -51,8 +51,8 @@ $totalPages = ceil($totalRows / $limit);
 
     <main class="main-content">
       <div class="header-row">
-        <h2>Users Management</h2>
-        <a href="user_new.php" class="btn-new-category">New user</a>
+        <h2>Drivers Management</h2>
+        <a href="driver_new.php" class="btn-new-category">New driver</a>
       </div>
 
       <table class="category-table">
@@ -61,6 +61,8 @@ $totalPages = ceil($totalRows / $limit);
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Phone</th>
+            <th>Bank Account (MBBANK)</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -69,15 +71,17 @@ $totalPages = ceil($totalRows / $limit);
             <?php while($row = $result->fetch_assoc()): ?>
               <tr>
                 <td><?php echo htmlspecialchars($row['id']); ?></td>
-                <td><?php echo htmlspecialchars($row['first_name']); ?></td>
+                <td><?php echo htmlspecialchars($row['name']); ?></td>
                 <td><?php echo htmlspecialchars($row['email']); ?></td>
+                <td><?php echo htmlspecialchars($row['phone']); ?></td>
+                <td><?php echo htmlspecialchars($row['bank_account']); ?></td>
                 <td>
                   <a href="#" 
-                     onclick="showConfirmModal('user.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
+                     onclick="showConfirmModal('driver.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
                      class="delete-link">
                     <i class="fas fa-trash-alt"></i> Delete
                   </a>
-                  <a href="user_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
+                  <a href="driver_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
                     <i class="fas fa-edit"></i> Edit
                   </a>
                 </td>
@@ -116,7 +120,7 @@ $totalPages = ceil($totalRows / $limit);
       </div>
 
       <div class="table-footer">
-        <div>Showing <?php echo min($start + 1, $totalRows); ?> to <?php echo min($start + $limit, $totalRows); ?> of <?php echo $totalRows; ?> users</div>
+        <div>Showing <?php echo min($start + 1, $totalRows); ?> to <?php echo min($start + $limit, $totalRows); ?> of <?php echo $totalRows; ?> drivers</div>
       </div>
     </main>
 

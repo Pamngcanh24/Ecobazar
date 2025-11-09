@@ -15,29 +15,36 @@
     color: #333;
 }
 
+.login-form input[type="tel"],
 .login-form input[type="text"],
 .login-form input[type="password"] {
     width: 100%;
     padding: 12px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 6px;
     background: #eef4ff;
     box-sizing: border-box;
     font-size: 14px;
+    display: block;
 }
 
+/* Căn chỉnh khung bao mật khẩu cho đúng chiều rộng */
 .password-wrapper {
     position: relative;
+    width: 100%; /* Đảm bảo bằng với input tel */
 }
 
-.toggle-password {
+/* Icon con mắt 👁 */
+.password-wrapper .toggle-password {
     position: absolute;
-    right: 10px;
-    top: 12px;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
-    font-size: 16px;
+    color: #555;
 }
+
 
 .options {
     display: flex;
@@ -533,6 +540,7 @@ font-weight: bold;
   font-size: 0.9em;
   color: #666;
 }
+
 .customer-address {
   font-size: 0.9em;
   color: #666;
@@ -550,22 +558,22 @@ font-weight: bold;
   font-weight: 500;
 }
 
-.status-badge.Pending {
+.status-badge.pending {
   background-color: #fff3cd;
   color: #856404;
 }
 
-.status-badge.Processing {
+.status-badge.processing {
   background-color: #cce5ff;
   color: #004085;
 }
 
-.status-badge.Completed {
+.status-badge.completed {
   background-color: #d4edda;
   color: #155724;
 }
 
-.status-badge.Cancelled {
+.status-badge.cancelled {
   background-color: #f8d7da;
   color: #721c24;
 }

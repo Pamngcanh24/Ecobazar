@@ -42,19 +42,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   } else {
     echo "Lỗi: " . $stmt->error;
   }
+// lấy ngày hiện tại dạng YYYYMMDD
+$today = date('Ymd');
+
+// đếm số đơn trong ngày
+$sqlCount = "SELECT COUNT(*) AS total FROM orders WHERE DATE(order_date) = CURDATE()";
+$resCount = mysqli_query($conn, $sqlCount);
+$rowCount = mysqli_fetch_assoc($resCount);
+
+$orderNumber = $rowCount['total'] + 1; // +1 cho đơn mới
+$orderCode = $today . '-' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
+
 }
+
 ?>
-  <style>
-    h1 {
+ <style>
+    h1 { 
       margin: -40px 0 20px;
       color:rgb(42, 140, 45);
-    }    
-    label { 
+    }
+    form { max-width: 600px; }
+    label {
       display: block;   
       margin-top: 15px;
       margin-bottom: 12px;
       font-weight: bold; 
-    }    
+      }
     input, select, textarea { 
       width: 100%; 
       padding: 8px; 
@@ -62,45 +75,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       margin-bottom: 10px;
       border-radius: 10px; 
       border: 1px solid #ccc; 
-      box-sizing: border-box; /* Thêm dòng này */
-    }    
-    .actions {margin-top: 20px; }
-    form { max-width: 600px; }
-    button, .btn-cancel { 
-     padding: 8px 15px;
-      margin-right: 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      box-sizing: border-box; /* Thêm dòng này */ 
     }
-    button {
-      background-color: #00b207; 
-      color: white; }
-    .btn-cancel { 
-      background-color: #f1f1f1;
-      color: #444;
-      text-decoration: none;
-      border: 1px solid #ccc;}
-    .message {margin-top: 20px;color: green;}
-    .password-wrapper {position: relative;}
-    .password-wrapper input { width: 100%;padding-right: 30px;}  
-    .toggle-password { position: absolute;top: 50%;right: 10px;transform: translateY(-50%);cursor: pointer;color: #aaa;}
+    .btn-submit, .btn-cancel {
+      padding: 10px 20px; border: none; border-radius: 5px; margin-top: 20px; cursor: pointer;
+    }
+    .btn-submit { background-color: #00b207; color: white; }
+    .main-content-add { padding: 40px; flex: 1;}
+    .btn-cancel { background-color: #ddd; text-decoration: none; color: black; margin-left: 10px; }
   </style>
-
     <main class="main-content-add">
     <nav class="breadcrumb">
       <a href="order.php">Orders</a>
       <span class="separator">›</span>
       <span class="current">Edit</span>
     </nav>      
-    <h1>Edit Order #<?php echo $order_id; ?></h1>
-      
+    <h1>Edit Order <?php echo $order_id; ?></h1>
+    
       <form method="POST">
         <h2>Shipping Information</h2>
         <div class="form-group">
           <label for="shipping_name">Name <span style="color: red">*</span></label>
           <input type="text" id="shipping_name" name="shipping_name" value="<?php echo htmlspecialchars($order['shipping_name']); ?>" required>
         </div>
+      <div class="form-group">
+          <label for="order_code">Order Code</label>
+          <input type="text" id="order_code" value="<?php echo htmlspecialchars($order['order_code']); ?>" disabled>
+      </div>
 
         <div class="form-group">
           <label for="shipping_phone">Phone <span style="color: red">*</span></label>
@@ -115,10 +116,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="form-group">
           <label for="status">Status <span style="color: red">*</span></label>
           <select id="status" name="status" required>
-            <option value="pending" <?php echo $order['status'] == 'pending' ? 'selected' : ''; ?>>Pending</option>
-            <option value="processing" <?php echo $order['status'] == 'processing' ? 'selected' : ''; ?>>Processing</option>
-            <option value="completed" <?php echo $order['status'] == 'completed' ? 'selected' : ''; ?>>Completed</option>
-            <option value="cancelled" <?php echo $order['status'] == 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+            <option value="Pending" <?php echo $order['status'] == 'Pending' ? 'selected' : ''; ?>>Pending</option>
+            <option value="Processing" <?php echo $order['status'] == 'Processing' ? 'selected' : ''; ?>>Processing</option>
+            <option value="Completed" <?php echo $order['status'] == 'Completed' ? 'selected' : ''; ?>>Completed</option>
+            <option value="Cancelled" <?php echo $order['status'] == 'Cancelled' ? 'selected' : ''; ?>>Cancelled</option>
           </select>
         </div>
 

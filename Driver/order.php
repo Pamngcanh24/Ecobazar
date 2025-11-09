@@ -155,7 +155,7 @@ $totalPages = ceil($totalRows / $limit);
         <tbody>
           <?php if ($result->num_rows > 0): ?>
             <?php while($row = $result->fetch_assoc()): ?>
-                <tr onclick="window.location='order_detail.php?id=<?php echo $row['id']; ?>';" style="cursor:pointer;">
+              <tr>
                 <td><?php echo $row['id']; ?></td>
                 <td><?php echo htmlspecialchars($row['order_code']); ?></td>
                 <td>

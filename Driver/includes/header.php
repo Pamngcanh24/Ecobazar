@@ -6,7 +6,6 @@ $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] 
 unset($_SESSION['success_message']);
 unset($_SESSION['error_message']);
 
-
 $uri = $_SERVER['REQUEST_URI'];
 $uri_parts = explode('?', $uri);
 $uri_path = $uri_parts[0];
@@ -16,10 +15,10 @@ $menu_name = explode('.', $menu_item)[0];
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <title>Categories</title>
+  <title>Driver Panel</title>
   <link rel="stylesheet" href="assets/style.css" />
   <link rel="icon" href="assets/plantlogo.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -92,41 +91,26 @@ $menu_name = explode('.', $menu_item)[0];
     <aside class="sidebar">
       <ul>
         <?php 
-        // $menu_name
         $menus = [
             'dashboard' => [
                 'icon' => 'fas fa-home',
                 'name' => 'Dashboard'
             ],
-            'category' => [
-                'icon' => 'fas fa-th-large',
-                'name' => 'Categories'
-            ],
-            'product' => [
-                'icon' => 'fas fa-box-open',
-                'name' => 'Products'
-            ],
-            'user' => [
-                'icon' => 'fas fa-users',
-                'name' => 'Users'
-            ],
             'order' => [
                 'icon' => 'fas fa-shopping-cart',
                 'name' => 'Orders'
-            ],
-            'driver' => [
-                'icon' => 'fas fa-truck',
-                'name' => 'Drivers'
             ]
         ];
+        
         foreach ($menus as $key => $menu) {
-            if (str_contains($menu_name, $key)) {
-                echo "<li class=\"active\"><i class=\"{$menu['icon']}\"></i> {$menu['name']}</li>";
-            } else {
-                echo "<li><a href=\"{$key}.php\"><i class=\"{$menu['icon']}\"></i> {$menu['name']}</a></li>";
-            }
+            $active = $menu_name === $key ? 'active' : '';
+            echo "<li class='$active'>";
+            echo "<a href='$key.php'>";
+            echo "<i class='{$menu['icon']}'></i>";
+            echo "<span>{$menu['name']}</span>";
+            echo "</a>";
+            echo "</li>";
         }
         ?>
-        
       </ul>
     </aside>

@@ -7,6 +7,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['cart']) || empty(
     exit();
 }
 
+// Hàm tạo order code
+function generateOrderCode() {
+    global $conn;
+    $today = date('Ymd'); // Format: YYYYMMDD
+    
+    // Đếm số đơn trong ngày
+    $sql = "SELECT COUNT(*) as count FROM orders WHERE DATE(created_at) = CURDATE()";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $orderNumber = $row['count'] + 1;
+    
+    // Format: ODyyyymmdd-XX (XX là số thứ tự đơn trong ngày)
+    return 'OD' . $today . '-' . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
+}
+
 // Lấy thông tin từ form
 $fullname = filter_input(INPUT_POST, 'fullname', FILTER_SANITIZE_STRING);
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -30,16 +45,20 @@ foreach ($_SESSION['cart'] as $product_id => $quantity) {
 $conn->begin_transaction();
 
 try {
-    // Thêm đơn hàng vào bảng orders
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, billing_name, billing_email, billing_phone, billing_address, shipping_name, shipping_email, shipping_phone, shipping_address, payment_method, subtotal, shipping_cost, total, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'pending', NOW())");
+    // Tạo order code
+    $order_code = generateOrderCode();
     
-    $user_id = $_SESSION['user_id'] ?? 1; // Nếu chưa đăng nhập thì gán user_id = 1
-    $total = $subtotal; // Tổng tiền = subtotal vì shipping_cost = 0
+    // Thêm đơn hàng vào bảng orders (thêm trường order_code)
+    $stmt = $conn->prepare("INSERT INTO orders (order_code, user_id, billing_name, billing_email, billing_phone, billing_address, shipping_name, shipping_email, shipping_phone, shipping_address, payment_method, subtotal, shipping_cost, total, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'pending', NOW())");
     
-    $stmt->bind_param("isssssssssdd", 
+    $user_id = $_SESSION['user_id'] ?? 1;
+    $total = $subtotal;
+    
+    $stmt->bind_param("sisssssssssdd", 
+        $order_code,
         $user_id, 
         $fullname, $email, $phone, $address,
-        $fullname, $email, $phone, $address, // Thông tin shipping giống billing
+        $fullname, $email, $phone, $address,
         $payment_method,
         $subtotal,
         $total
