@@ -18,15 +18,15 @@ if (isset($_GET['delete_id'])) {
         
         if ($delete_stmt->execute()) {
             $_SESSION['success_message'] = "Xóa người dùng thành công!";
-            header("Location: drive.php");
+            header("Location: driver.php");
         } else {
             $_SESSION['error_message'] = "Có lỗi xảy ra khi xóa người dùng!";
-            header("Location: drive.php");
+            header("Location: driver.php");
         }
         $delete_stmt->close();
     } else {
         $_SESSION['error_message'] = "Không tìm thấy người dùng!";
-        header("Location: drive.php");
+        header("Location: driver.php");
     }
     $check_stmt->close();
     exit;
@@ -62,7 +62,7 @@ $totalPages = ceil($totalRows / $limit);
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Bank Account</th>
+            <th>Bank Account (MBBANK)</th>
             <th>Actions</th>
           </tr>
         </thead>

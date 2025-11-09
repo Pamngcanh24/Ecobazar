@@ -99,9 +99,8 @@ if (isset($_POST['login'])) {
                 <span class="toggle-password" onclick="togglePassword()"><i class="fas fa-eye"></i></span>
             </div>
             
-            <div class="remember-me">
-                <input type="checkbox" name="remember" id="remember">
-                <label for="remember">Ghi nhớ đăng nhập</label>
+            <div class="options">
+                <label><input type="checkbox" name="remember"> Remember me</label>
             </div>
             
             <button type="submit" name="login">Đăng nhập</button>

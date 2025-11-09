@@ -1,34 +1,38 @@
 <?php
 include 'includes/header.php';
 
-// Lấy ID người dùng từ URL
+// Lấy ID tài xế từ URL
 $driver_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Lấy thông tin người dùng cần sửa
+// Lấy thông tin tài xế cần sửa
 $stmt = $conn->prepare("SELECT * FROM drivers WHERE id = ?");
 $stmt->bind_param("i", $driver_id);
 $stmt->execute();
 $driver_data = $stmt->get_result()->fetch_assoc();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $email = $_POST['email'];
   $phone = $_POST['phone'];
+  $name = $_POST['name'];
+  $email = $_POST['email'];
+  $address = $_POST['address'];
+  $citizen_id = $_POST['citizen_id'];
+  $bank_account = $_POST['bank_account'];
   
   // Kiểm tra xem có nhập mật khẩu mới không
   if (!empty($_POST['password'])) {
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    $sql = "UPDATE drivers SET email = ?, password = ?, phone = ? WHERE id = ?";
+    $sql = "UPDATE drivers SET phone = ?, password = ?, name = ?, email = ?, address = ?, citizen_id = ?, bank_account = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssi", $email, $password, $phone, $driver_id);
+    $stmt->bind_param("sssssssi", $phone, $password, $name, $email, $address, $citizen_id, $bank_account, $driver_id);
   } else {
     // Không cập nhật mật khẩu
-    $sql = "UPDATE drivers SET email = ?, phone = ? WHERE id = ?";
+    $sql = "UPDATE drivers SET phone = ?, name = ?, email = ?, address = ?, citizen_id = ?, bank_account = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssi", $email, $phone, $driver_id);
+    $stmt->bind_param("ssssssi", $phone, $name, $email, $address, $citizen_id, $bank_account, $driver_id);
   }
 
   if ($stmt->execute()) {
-    echo "<script>alert('Cập nhật người dùng thành công!'); window.location.href='driver.php';</script>";
+    echo "<script>alert('Cập nhật tài xế thành công!'); window.location.href='driver.php';</script>";
   } else {
     $message = "Lỗi: " . $stmt->error;
   }
@@ -36,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-  <style>
+<style>
     h1 {
       margin: -40px 0 20px;
       color:rgb(42, 140, 45);
@@ -54,12 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-bottom: 10px;
       border-radius: 10px; 
       border: 1px solid #ccc; 
-      box-sizing: border-box; /* Thêm dòng này */
+      box-sizing: border-box;
     }    
     .actions {margin-top: 20px; }
     form { max-width: 600px; }
     button, .btn-cancel { 
-     padding: 8px 15px;
+      padding: 8px 15px;
       margin-right: 10px;
       border: none;
       border-radius: 4px;
@@ -77,10 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .password-wrapper {position: relative;}
     .password-wrapper input { width: 100%;padding-right: 30px;}  
     .toggle-password { position: absolute;top: 50%;right: 10px;transform: translateY(-50%);cursor: pointer;color: #aaa;}
-  </style>
+</style>
+
 <main class="main-content-add">
     <nav class="breadcrumb">
-      <a href="driver.php">Driver</a>
+      <a href="driver.php">Drivers</a>
       <span class="separator">›</span>
       <span class="current">Edit</span>
     </nav>    
@@ -89,46 +94,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (isset($message)) echo "<p class='message'>$message</p>"; ?>
 
     <form action="" method="POST">
-      <label for="email">Email *</label>
-      <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($driver_data['email']); ?>" disabled>
+      <label for="phone">Phone Number *</label>
+      <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($driver_data['phone']); ?>" required>
 
-      <label for="password">Mật khẩu</label>
+      <label for="password">Password</label>
       <div class="password-wrapper">
           <input type="password" id="password" name="password">
           <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
       </div>
-      <small>(Để trống nếu không muốn thay đổi mật khẩu)</small>
 
-      <label for="phone">Số điện thoại *</label>
-      <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($driver_data['phone']); ?>" required>
-    
-      <label for="bank_account">Bank Account *</label>
-      <input type="text" id="bank_account" name="bank_account" value="<?php echo htmlspecialchars($driver_data['bank_account']); ?>" required>
+      <label for="name">Full Name *</label>
+      <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($driver_data['name']); ?>" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($driver_data['email']); ?>">
+
+      <label for="address">Address</label>
+      <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($driver_data['address']); ?>">
+
+      <label for="citizen_id">Citizen ID</label>
+      <input type="text" id="citizen_id" name="citizen_id" value="<?php echo htmlspecialchars($driver_data['citizen_id']); ?>">
+
+      <label for="bank_account">Bank Account</label>
+      <input type="text" id="bank_account" name="bank_account" value="<?php echo htmlspecialchars($driver_data['bank_account']); ?>">
 
       <div class="form-actions">
-        <button type="submit" class="btn-create">Update</button>
-        <button type="button" class="btn-cancel" onclick="window.location.href='driver.php'">Cancel</button>
+        <button type="submit">Update</button>
+        <a href="driver.php" class="btn-cancel">Cancel</a>
       </div>
     </form>
-  </main>
+</main>
 
-  <script>
-  function togglePassword() {
-    const passwordInput = document.getElementById('password');
-    const icon = document.querySelector('.toggle-password');
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      icon.classList.remove("fa-eye");
-      icon.classList.add("fa-eye-slash");
-    } else {
-      passwordInput.type = "password";
-      icon.classList.remove("fa-eye-slash");
-      icon.classList.add("fa-eye");
-    }
+<script>
+function togglePassword() {
+  const passwordInput = document.getElementById('password');
+  const icon = document.querySelector('.toggle-password');
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  } else {
+    passwordInput.type = "password";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
   }
+}
 </script>
-
-<?php 
-include 'includes/footer.php';
-?>
+<?php include 'includes/footer.php'; ?>
 

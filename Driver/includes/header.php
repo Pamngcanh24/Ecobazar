@@ -98,7 +98,7 @@ $menu_name = explode('.', $menu_item)[0];
             ],
             'order' => [
                 'icon' => 'fas fa-shopping-cart',
-                'name' => 'Đơn hàng'
+                'name' => 'Orders'
             ]
         ];
         
