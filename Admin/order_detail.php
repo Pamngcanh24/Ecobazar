@@ -170,7 +170,7 @@ switch($status_class){
 <main class="main-content">
 
 <div class="order-box">
-    <div class="order-title">Chi tiết đơn hàng<?php echo $order['order_code']; ?></div>
+    <div class="order-title">Chi tiết đơn hàng <?php echo $order['order_code']; ?></div>
 
     <div class="order-row">
         <div class="order-col">
