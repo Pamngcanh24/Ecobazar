@@ -42,9 +42,13 @@ $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
 
 // Lấy dữ liệu đơn hàng có phân trang
-$sql = "SELECT o.*, u.email as user_email 
+$sql = "SELECT o.*, 
+               u.email as user_email,
+               d.name AS driver_name,
+               d.phone AS driver_phone
         FROM orders o 
-        LEFT JOIN users u ON o.user_id = u.id 
+        LEFT JOIN users u ON o.user_id = u.id
+        LEFT JOIN drivers d ON o.driver_id = d.id
         ORDER BY o.order_date DESC 
         LIMIT $start, $limit";
 $result = $conn->query($sql);
@@ -148,7 +152,7 @@ $totalPages = ceil($totalRows / $limit);
             <th>Date</th>
             <th>Total</th>
             <th>Status</th>
-            <th>Payment Method</th>
+            <th>Driver</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -173,7 +177,15 @@ $totalPages = ceil($totalRows / $limit);
                     <?php echo ucfirst($row['status']); ?>
                   </span>
                 </td>
-                <td><?php echo ucfirst($row['payment_method']); ?></td>
+                <td>
+                  <?php if (!empty($row['driver_name'])): ?>
+                    <?php echo htmlspecialchars($row['driver_name']); ?><br>
+                    <span style="color:#666;"><?php echo htmlspecialchars($row['driver_phone']); ?></span>
+                  <?php else: ?>
+                    <span style="color:#999;">No driver</span>
+                  <?php endif; ?>
+                </td>
+
                 <td>
                   <a href="#" 
                      onclick="showConfirmModal('order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"

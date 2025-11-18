@@ -22,6 +22,92 @@ function generateOrderCode() {
     return 'OD' . $today . '-' . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
 }
 
+// Hàm tách quận từ địa chỉ
+function extractDistrictFromAddress($address) {
+    // Danh sách các quận trong Hà Nội
+    $hanoiDistricts = [
+        'Ba Đình', 'Hoàn Kiếm', 'Tây Hồ', 'Long Biên', 'Cầu Giấy',
+        'Đống Đa', 'Hai Bà Trưng', 'Hoàng Mai', 'Thanh Xuân', 'Nam Từ Liêm',
+        'Bắc Từ Liêm', 'Hà Đông', 'Thanh Trì', 'Gia Lâm', 'Đông Anh',
+        'Sóc Sơn', 'Mê Linh', 'Đan Phượng', 'Hoài Đức', 'Quốc Oai',
+        'Thạch Thất', 'Chương Mỹ', 'Thanh Oai', 'Thường Tín', 'Phú Xuyên',
+        'Ứng Hòa', 'Mỹ Đức', 'Ba Vì', 'Sơn Tây', 'Phúc Thọ',
+        'Thạch Thất', 'Mê Linh', 'Đông Anh', 'Gia Lâm'
+    ];
+    
+    // Chuẩn hóa địa chỉ
+    $address = mb_strtolower($address, 'UTF-8');
+    
+    foreach ($hanoiDistricts as $district) {
+        $districtLower = mb_strtolower($district, 'UTF-8');
+        if (strpos($address, $districtLower) !== false) {
+            return $district;
+        }
+    }
+    
+    // Nếu không tìm thấy quận cụ thể, thử tìm theo pattern "quận + tên"
+    if (preg_match('/quận\s+([\p{L}\s]+)/u', $address, $matches)) {
+        return ucwords(trim($matches[1]));
+    }
+    
+    // Nếu vẫn không tìm thấy, trả về null
+    return null;
+}
+
+// Hàm tự động phân công tài xế theo quận
+function assignDriverByDistrict($district) {
+    global $conn;
+    
+    if (!$district) {
+        return null; // Không thể phân công nếu không xác định được quận
+    }
+    
+    // Tìm tài xế trong cùng quận với số đơn hàng hiện tại ít nhất
+    $stmt = $conn->prepare("
+        SELECT id, name, phone, current_orders 
+        FROM drivers 
+        WHERE LOWER(address) LIKE LOWER(CONCAT('%', ?, '%')) 
+        AND current_orders < 10  -- Giới hạn số đơn tối đa mỗi tài xế
+        ORDER BY current_orders ASC, RAND()  -- Ưu tiên tài xế có ít đơn, random nếu bằng nhau
+        LIMIT 1
+    ");
+    
+    $stmt->bind_param("s", $district);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($driver = $result->fetch_assoc()) {
+        // Tăng số đơn của tài xế này
+        $updateStmt = $conn->prepare("UPDATE drivers SET current_orders = current_orders + 1 WHERE id = ?");
+        $updateStmt->bind_param("s", $driver['id']);
+        $updateStmt->execute();
+        
+        return $driver['id'];
+    }
+    
+    // Nếu không tìm thấy tài xế trong quận, tìm tài xế có ít đơn nhất
+    $fallbackStmt = $conn->prepare("
+        SELECT id, name, phone, current_orders 
+        FROM drivers 
+        WHERE current_orders < 10
+        ORDER BY current_orders ASC, RAND()
+        LIMIT 1
+    ");
+    $fallbackStmt->execute();
+    $fallbackResult = $fallbackStmt->get_result();
+    
+    if ($fallbackDriver = $fallbackResult->fetch_assoc()) {
+        // Tăng số đơn của tài xế này
+        $updateStmt = $conn->prepare("UPDATE drivers SET current_orders = current_orders + 1 WHERE id = ?");
+        $updateStmt->bind_param("s", $fallbackDriver['id']);
+        $updateStmt->execute();
+        
+        return $fallbackDriver['id'];
+    }
+    
+    return null; // Không tìm thấy tài xế phù hợp
+}
+
 // Lấy thông tin từ form
 $fullname = filter_input(INPUT_POST, 'fullname', FILTER_SANITIZE_STRING);
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -48,20 +134,25 @@ try {
     // Tạo order code
     $order_code = generateOrderCode();
     
-    // Thêm đơn hàng vào bảng orders (thêm trường order_code)
-    $stmt = $conn->prepare("INSERT INTO orders (order_code, user_id, billing_name, billing_email, billing_phone, billing_address, shipping_name, shipping_email, shipping_phone, shipping_address, payment_method, subtotal, shipping_cost, total, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'pending', NOW())");
+    // Tách quận từ địa chỉ và phân công tài xế
+    $district = extractDistrictFromAddress($address);
+    $driver_id = assignDriverByDistrict($district);
+    
+    // Thêm đơn hàng vào bảng orders (bao gồm driver_id)
+    $stmt = $conn->prepare("INSERT INTO orders (order_code, user_id, billing_name, billing_email, billing_phone, billing_address, shipping_name, shipping_email, shipping_phone, shipping_address, payment_method, subtotal, shipping_cost, total, status, driver_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'pending', ?, NOW())");
     
     $user_id = $_SESSION['user_id'] ?? 1;
     $total = $subtotal;
     
-    $stmt->bind_param("sisssssssssdd", 
+    $stmt->bind_param("sisssssssssdds", 
         $order_code,
         $user_id, 
         $fullname, $email, $phone, $address,
         $fullname, $email, $phone, $address,
         $payment_method,
         $subtotal,
-        $total
+        $total,
+        $driver_id
     );
     $stmt->execute();
     $order_id = $conn->insert_id;
@@ -89,6 +180,16 @@ try {
 
     // Commit transaction
     $conn->commit();
+    
+    // Lấy thông tin tài xế được phân công để hiển thị
+    $assignedDriver = null;
+    if ($driver_id) {
+        $driverStmt = $conn->prepare("SELECT name, phone FROM drivers WHERE id = ?");
+        $driverStmt->bind_param("s", $driver_id);
+        $driverStmt->execute();
+        $driverResult = $driverStmt->get_result();
+        $assignedDriver = $driverResult->fetch_assoc();
+    }
     
     // Xóa giỏ hàng
     unset($_SESSION['cart']);
@@ -149,6 +250,18 @@ try {
             </div>
             <h2 class="success-message">Đặt hàng thành công!</h2>
             <p class="order-number">Mã đơn hàng của bạn: #<?php echo $order_id; ?></p>
+            <?php if ($assignedDriver): ?>
+            <div class="driver-info" style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <h3 style="color: #333; margin-bottom: 10px;">Thông tin tài xế</h3>
+                <p style="margin: 5px 0;"><strong>Tên:</strong> <?php echo htmlspecialchars($assignedDriver['name']); ?></p>
+                <p style="margin: 5px 0;"><strong>SĐT:</strong> <?php echo htmlspecialchars($assignedDriver['phone']); ?></p>
+                <p style="margin: 5px 0; color: #666; font-size: 14px;">Tài xế sẽ liên hệ với bạn để giao hàng</p>
+            </div>
+            <?php else: ?>
+            <div class="driver-info" style="margin: 20px 0; padding: 15px; background: #fff3cd; border-radius: 8px; color: #856404;">
+                <p style="margin: 0;">Đang tìm kiếm tài xế phù hợp cho đơn hàng của bạn</p>
+            </div>
+            <?php endif; ?>
             <a href="08shop.php" class="back-to-shop">Tiếp tục mua sắm</a>
         </div>
     </body>

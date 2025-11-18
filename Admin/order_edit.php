@@ -9,6 +9,9 @@ $stmt = $conn->prepare("SELECT * FROM orders WHERE id = ?");
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
 $order = $stmt->get_result()->fetch_assoc();
+// Lưu lại trạng thái và tài xế hiện tại để đối chiếu sau khi cập nhật
+$old_status = isset($order['status']) ? strtolower($order['status']) : null;
+$order_driver_id = isset($order['driver_id']) ? $order['driver_id'] : null;
 
 // Xử lý khi người dùng gửi form
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -38,6 +41,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   );
 
   if ($stmt->execute()) {
+    // Sau khi cập nhật trạng thái, điều chỉnh current_orders của tài xế (nếu có)
+    $new_status = strtolower($status);
+    $active_statuses = ['pending', 'processing'];
+    $inactive_statuses = ['completed', 'cancelled'];
+
+    if (!empty($order_driver_id)) {
+      // Trường hợp chuyển từ trạng thái hoạt động sang không hoạt động: giảm 1
+      if (in_array($old_status, $active_statuses, true) && in_array($new_status, $inactive_statuses, true)) {
+        $dec = $conn->prepare("UPDATE drivers SET current_orders = GREATEST(current_orders - 1, 0) WHERE id = ?");
+        $dec->bind_param("s", $order_driver_id);
+        $dec->execute();
+        $dec->close();
+      }
+      // Trường hợp chuyển từ không hoạt động sang hoạt động: tăng 1
+      if (in_array($old_status, $inactive_statuses, true) && in_array($new_status, $active_statuses, true)) {
+        $inc = $conn->prepare("UPDATE drivers SET current_orders = current_orders + 1 WHERE id = ?");
+        $inc->bind_param("s", $order_driver_id);
+        $inc->execute();
+        $inc->close();
+      }
+    }
+
     echo "<script>alert('Cập nhật đơn hàng thành công!'); window.location.href='order.php';</script>";
   } else {
     echo "Lỗi: " . $stmt->error;
