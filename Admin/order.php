@@ -185,7 +185,6 @@ $totalPages = ceil($totalRows / $limit);
                     <span style="color:#999;">No driver</span>
                   <?php endif; ?>
                 </td>
-
                 <td>
                   <a href="#" 
                      onclick="showConfirmModal('order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"

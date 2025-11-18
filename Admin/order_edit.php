@@ -13,6 +13,12 @@ $order = $stmt->get_result()->fetch_assoc();
 $old_status = isset($order['status']) ? strtolower($order['status']) : null;
 $order_driver_id = isset($order['driver_id']) ? $order['driver_id'] : null;
 
+$drivers = [];
+$drRes = $conn->query("SELECT id, name, phone FROM drivers ORDER BY name ASC");
+if ($drRes) {
+  while ($dr = $drRes->fetch_assoc()) { $drivers[] = $dr; }
+}
+
 // Xử lý khi người dùng gửi form
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $shipping_name = $_POST['shipping_name'];
@@ -60,6 +66,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $inc->bind_param("s", $order_driver_id);
         $inc->execute();
         $inc->close();
+      }
+    }
+
+    $new_driver_id = (isset($_POST['driver_id']) && $_POST['driver_id'] !== '') ? $_POST['driver_id'] : null;
+    if ($new_status === 'pending' && $new_driver_id !== $order_driver_id) {
+      if ($new_driver_id === null) {
+        $ud = $conn->prepare("UPDATE orders SET driver_id = NULL WHERE id = ?");
+        $ud->bind_param("i", $order_id);
+        $ud->execute();
+        $ud->close();
+      } else {
+        $ud = $conn->prepare("UPDATE orders SET driver_id = ? WHERE id = ?");
+        $ud->bind_param("si", $new_driver_id, $order_id);
+        $ud->execute();
+        $ud->close();
+      }
+      if (!empty($order_driver_id)) {
+        $dec2 = $conn->prepare("UPDATE drivers SET current_orders = GREATEST(current_orders - 1, 0) WHERE id = ?");
+        $dec2->bind_param("s", $order_driver_id);
+        $dec2->execute();
+        $dec2->close();
+      }
+      if (!empty($new_driver_id)) {
+        $inc2 = $conn->prepare("UPDATE drivers SET current_orders = current_orders + 1 WHERE id = ?");
+        $inc2->bind_param("s", $new_driver_id);
+        $inc2->execute();
+        $inc2->close();
       }
     }
 
@@ -128,7 +161,7 @@ $orderCode = $today . '-' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
           <input type="text" id="order_code" value="<?php echo htmlspecialchars($order['order_code']); ?>" disabled>
       </div>
 
-        <div class="form-group">
+      <div class="form-group">
           <label for="shipping_phone">Phone <span style="color: red">*</span></label>
           <input type="text" id="shipping_phone" name="shipping_phone" value="<?php echo htmlspecialchars($order['shipping_phone']); ?>" required>
         </div>
@@ -136,6 +169,21 @@ $orderCode = $today . '-' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
         <div class="form-group">
           <label for="shipping_address">Address <span style="color: red">*</span></label>
           <textarea id="shipping_address" name="shipping_address" rows="3" required><?php echo htmlspecialchars($order['shipping_address']); ?></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="driver_id">Driver</label>
+          <select id="driver_id" name="driver_id" <?php echo strtolower($order['status']) !== 'pending' ? 'disabled' : ''; ?>>
+            <option value="">No driver</option>
+            <?php foreach ($drivers as $d): ?>
+              <option value="<?php echo htmlspecialchars($d['id']); ?>" <?php echo ($order['driver_id'] === $d['id']) ? 'selected' : ''; ?>>
+                <?php echo htmlspecialchars($d['name']) . ' (' . htmlspecialchars($d['phone']) . ')'; ?>
+              </option>
+            <?php endforeach; ?>
+          </select>
+          <?php if (strtolower($order['status']) !== 'pending'): ?>
+            <small>Chỉ sửa khi trạng thái Pending</small>
+          <?php endif; ?>
         </div>
 
         <div class="form-group">
