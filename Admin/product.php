@@ -33,9 +33,20 @@ $limit = 6;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
 
-// XỬ LÝ TÌM KIẾM + PHÂN TRANG
+// TÌM KIẾM THEO ID HOẶC TÊN SẢN PHẨM
 $search = trim($_GET['search'] ?? '');
-$where = $search ? "WHERE p.name LIKE '%" . $conn->real_escape_string($search) . "%'" : "";
+
+if ($search !== '') {
+    if (is_numeric($search)) {
+        // Nếu người dùng gõ số → tìm chính xác theo ID
+        $where = "WHERE p.id = " . intval($search);
+    } else {
+        // Nếu gõ chữ → tìm gần đúng theo tên
+        $where = "WHERE p.name LIKE '%" . $conn->real_escape_string($search) . "%'";
+    }
+} else {
+    $where = "";
+}
 
 // Lấy danh sách sản phẩm
 $sql = "SELECT p.*, c.name as category_name 
@@ -64,7 +75,7 @@ $totalPages = ceil($totalRows / $limit);
             <input type="text" 
                    name="search" 
                    value="<?= htmlspecialchars($_GET['search'] ?? '') ?>" 
-                   placeholder="Tìm kiếm sản phẩm..." 
+                   placeholder="Tìm theo ID hoặc tên sản phẩm..."
                    autocomplete="off">
             <i class="fas fa-search search-icon"></i>
             <?php if (!empty($_GET['search'])): ?>

@@ -1,329 +1,119 @@
 <?php
 include 'includes/header.php';
 
-// Lấy ngày giờ hiện tại
-$currentDateTime = new DateTime('now', new DateTimeZone('Asia/Ho_Chi_Minh'));
-$formattedDateTime = $currentDateTime->format('l, F j, Y, h:i A T'); // e.g., Sunday, November 16, 2025, 03:04 PM +07
+$driver_id = isset($_GET['id']) ? $_GET['id'] : '';
+$driver = null;
+$orders = [];
 
-// Kiểm tra nếu ID không được cung cấp
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    $_SESSION['error_message'] = "ID người dùng không hợp lệ!";
-    header("Location: driver.php");
-    exit;
-}
+if ($driver_id !== '') {
+    if ($stmt = $conn->prepare("SELECT id, name, email, phone, address, bank_account, current_orders, created_at FROM drivers WHERE id = ?")) {
+        $stmt->bind_param("s", $driver_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $driver = $result->fetch_assoc();
+        $stmt->close();
+    }
 
-$id = intval($_GET['id']);
-
-// Lấy thông tin chi tiết của driver
-$stmt = $conn->prepare("SELECT id, name, email, phone, bank_account FROM drivers WHERE id = ?");
-$stmt->bind_param("i", $id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 0) {
-    $_SESSION['error_message'] = "Không tìm thấy người dùng!";
-    header("Location: driver.php");
-    exit;
-}
-
-$driver = $result->fetch_assoc();
-$stmt->close();
-
-// Xử lý xóa driver
-if (isset($_GET['delete_id'])) {
-    $delete_id = intval($_GET['delete_id']);
-    if ($delete_id === $id) {
-        $delete_stmt = $conn->prepare("DELETE FROM drivers WHERE id = ?");
-        $delete_stmt->bind_param("i", $delete_id);
-        
-        if ($delete_stmt->execute()) {
-            $_SESSION['success_message'] = "Xóa người dùng thành công!";
-            header("Location: driver.php");
-        } else {
-            $_SESSION['error_message'] = "Có lỗi xảy ra khi xóa người dùng!";
-            header("Location: driver_detail.php?id=" . $id);
+    if ($stmt2 = $conn->prepare("SELECT id, order_code, status, order_date, total FROM orders WHERE driver_id = ? ORDER BY order_date DESC LIMIT 100")) {
+        $stmt2->bind_param("s", $driver_id);
+        $stmt2->execute();
+        $res2 = $stmt2->get_result();
+        while ($row = $res2->fetch_assoc()) {
+            $orders[] = $row;
         }
-        $delete_stmt->close();
-        exit;
+        $stmt2->close();
     }
 }
 ?>
-
-<main class="main-content">
-    <div class="header-row">
-        <h2>Driver Details</h2>
-        <div class="datetime-display">
-            <span>Updated: <?php echo $formattedDateTime; ?></span>
-        </div>
-        <a href="driver.php" class="btn-back">Back to List</a>
-    </div>
-
-    <div class="driver-detail-container">
-        <div class="detail-card">
-            <h3>Driver Information</h3>
-            <div class="detail-item">
-                <span class="detail-label">ID:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($driver['id']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Name:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($driver['name']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Email:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($driver['email']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Phone:</span>
-                <span class="detail-value"><?php echo htmlspecialchars($driver['phone']); ?></span>
-            </div>
-            <div class="detail-item">
-                <span class="detail-label">Bank Account (MBBANK):</span>
-                <span class="detail-value"><?php echo htmlspecialchars($driver['bank_account']); ?></span>
-            </div>
-            <div class="detail-actions">
-                <a href="driver_edit.php?id=<?php echo $driver['id']; ?>" class="edit-link">
-                    <i class="fas fa-edit"></i> Edit
-                </a>
-                <a href="#" 
-                   onclick="showConfirmModal('driver_detail.php?delete_id=<?php echo $driver['id']; ?>'); return false;"
-                   class="delete-link">
-                    <i class="fas fa-trash-alt"></i> Delete
-                </a>
-            </div>
-        </div>
-    </div>
-</main>
-
-<!-- Modal xác nhận xóa -->
-<div id="confirmModal" class="confirm-modal">
-    <div class="confirm-content">
-        <h3>Xác nhận xóa</h3>
-        <p>Bạn có chắc chắn muốn xóa người dùng này?</p>
-        <div class="confirm-buttons">
-            <button id="confirmDelete" class="btn-confirm">Xóa</button>
-            <button onclick="closeModal()" class="btn-cancel">Hủy</button>
-        </div>
-    </div>
-</div>
-
 <style>
-/* Detail Container */
-.driver-detail-container {
-    padding: 20px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+*{font-family:'Poppins',sans-serif;}
+.main-content{padding:32px;background:#f5f7fa;min-height:100vh;}
+
+.order-box{
+    background:#fff;
+    border-radius:14px;
+    padding:30px;
+    margin-bottom:28px;
+    box-shadow:0 4px 18px rgba(0,0,0,.06);
+    border:1px solid #e8e8e8;
 }
 
-.detail-card {
-    max-width: 600px;
-    margin: 0 auto;
+.order-title{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:22px;
+    color:#111;
+    border-left:4px solid #00b207;
+    padding-left:12px;
 }
 
-.detail-card h3 {
-    font-size: 1.5rem;
-    color: #2d3748;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
+.order-row{display:flex;gap:60px;flex-wrap:wrap;}
+.order-col{flex:1;min-width:300px;}
+.order-col h4{margin:0 0 14px;font-size:17px;font-weight:700;color:#00b207;letter-spacing:.3px;}
+.order-col p{margin:7px 0;font-size:15px;color:#333;}
+.order-col p b{color:#000;}
 
-.detail-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #e2e8f0;
-}
+.table-items{width:100%;border-collapse:collapse;font-size:15px;}
+.table-items th{background:#eef3ee;padding:12px;text-align:left;font-weight:600;border-bottom:1px solid #dcdcdc;}
+.table-items td{padding:12px;border-bottom:1px solid #f0f0f0;text-align:left;}
+.table-items tr:hover td{background:#f8faf8;}
 
-.detail-label {
-    font-weight: 500;
-    color: #64748b;
-}
-
-.detail-value {
-    color: #1e293b;
-    font-weight: 400;
-}
-
-.detail-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.edit-link, .delete-link {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.edit-link {
-    background: #4CAF50;
-    color: #fff;
-}
-
-.edit-link:hover {
-    background: #45a049;
-}
-
-.delete-link {
-    background: #dc3545;
-    color: #fff;
-}
-
-.delete-link:hover {
-    background: #c82333;
-}
-
-.btn-back {
-    padding: 8px 15px;
-    background: #6c757d;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.btn-back:hover {
-    background: #5a6268;
-}
-
-/* Header Row Enhancements */
-.header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.datetime-display {
-    color: #64748b;
-    font-size: 0.9rem;
-}
-
-.datetime-display span {
-    padding: 5px 10px;
-    background: #f8f9fa;
-    border-radius: 4px;
-}
-
-/* Modal Styles */
-.confirm-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Poppins', sans-serif;
-}
-
-.confirm-content {
-    background: white;
-    padding: 35px;
-    border-radius: 12px;
-    text-align: center;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.confirm-content h3 {
-    margin: 0 0 20px;
-    color: #333;
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.confirm-content p {
-    color: #666;
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 25px;
-}
-
-.confirm-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 25px;
-}
-
-.confirm-buttons button {
-    padding: 10px 25px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 15px;
-    transition: all 0.3s ease;
-}
-
-.btn-confirm {
-    background: #dc3545;
-    color: white;
-}
-
-.btn-confirm:hover {
-    background: #c82333;
-}
-
-.btn-cancel {
-    background: #6c757d;
-    color: white;
-}
-
-.btn-cancel:hover {
-    background: #5a6268;
-}
-
-/* Dark Mode */
-@media (prefers-color-scheme: dark) {
-    .driver-detail-container, .detail-card, .header-row {
-        background: #1e293b;
-    }
-    .detail-label { color: #94a3b8; }
-    .detail-value, .detail-card h3, .header-row h2 { color: #f1f5f9; }
-    .datetime-display { color: #94a3b8; }
-    .datetime-display span { background: #2d3748; }
-    .confirm-content { background: #1e293b; }
-    .confirm-content h3 { color: #e2e8f0; }
-    .confirm-content p { color: #94a3b8; }
-}
+.btn-back{display:inline-block;margin-top:14px;padding:10px 18px;background:#00b207;color:#fff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:600;transition:.2s;}
+.btn-back:hover{opacity:.85;transform:translateY(-1px);}
 </style>
 
-<script>
-function showConfirmModal(deleteUrl) {
-    document.getElementById('confirmModal').style.display = 'flex';
-    document.getElementById('confirmDelete').onclick = function() {
-        window.location.href = deleteUrl;
-    };
-}
+<main class="main-content">
+  <div class="order-box">
+    <div class="order-title">Chi tiết tài xế <?php echo $driver ? htmlspecialchars($driver['id']) : ''; ?></div>
+    <?php if (!$driver): ?>
+      <p>Không tìm thấy tài xế với ID đã cung cấp.</p>
+    <?php else: ?>
+    <div class="order-row">
+      <div class="order-col">
+        <h4>Thông tin cá nhân</h4>
+        <p><b>Tên:</b> <?php echo htmlspecialchars($driver['name']); ?></p>
+        <p><b>Email:</b> <?php echo htmlspecialchars($driver['email']); ?></p>
+        <p><b>SĐT:</b> <?php echo htmlspecialchars($driver['phone']); ?></p>
+        <p><b>Địa chỉ:</b> <?php echo htmlspecialchars($driver['address']); ?></p>
+      </div>
+      <div class="order-col">
+        <h4>Thông tin công việc</h4>
+        <p><b>Tài khoản MB Bank:</b> <?php echo htmlspecialchars($driver['bank_account']); ?></p>
+        <p><b>Đơn hiện tại:</b> <?php echo htmlspecialchars($driver['current_orders']); ?></p>
+        <p><b>Ngày tạo:</b> <?php echo htmlspecialchars($driver['created_at']); ?></p>
+      </div>
+    </div>
+    <?php endif; ?>
+  </div>
 
-function closeModal() {
-    document.getElementById('confirmModal').style.display = 'none';
-}
-
-// Đóng modal khi click ra ngoài
-window.onclick = function(event) {
-    let modal = document.getElementById('confirmModal');
-    if (event.target == modal) {
-        closeModal();
-    }
-}
-</script>
+  <div class="order-box">
+    <div class="order-title">Đơn hàng đã gán cho tài xế</div>
+    <?php if ($driver && count($orders) > 0): ?>
+      <table class="table-items">
+        <thead>
+          <tr>
+            <th>Mã đơn</th>
+            <th>Trạng thái</th>
+            <th>Ngày đặt</th>
+            <th>Tổng tiền</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($orders as $o): ?>
+            <tr onclick="window.location='order_detail.php?id=<?php echo urlencode($o['id']); ?>';" style="cursor:pointer;">
+              <td><?php echo htmlspecialchars($o['order_code']); ?></td>
+              <td><?php echo htmlspecialchars($o['status']); ?></td>
+              <td><?php echo htmlspecialchars($o['order_date']); ?></td>
+              <td><?php echo htmlspecialchars(number_format($o['total'], 2)); ?> $</td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    <?php else: ?>
+      <p>Chưa có đơn hàng nào được gán cho tài xế này.</p>
+    <?php endif; ?>
+    <a href="driver.php" class="btn-back">Quay lại</a>
+  </div>
+</main>
 
 <?php include 'includes/footer.php'; ?>
