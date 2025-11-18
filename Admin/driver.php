@@ -200,7 +200,7 @@ $totalPages = ceil($totalRows / $limit);
   }
   /* Row hover */
   .category-table tbody tr:hover {
-    background: #f8faf8;
+    background-color: #fff7e6;
   }
 </style>
 
