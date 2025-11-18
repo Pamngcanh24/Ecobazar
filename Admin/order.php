@@ -40,11 +40,29 @@ if (isset($_GET['delete_id'])) {
 $limit = 6;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
+// TÌM KIẾM ĐƠN HÀNG
+$search = trim($_GET['search'] ?? '');
+$where = "";
+
+if ($search !== '') {
+    $searchEsc = $conn->real_escape_string($search);
+    $where = "WHERE o.order_code LIKE '%$searchEsc%' 
+           OR o.billing_name LIKE '%$searchEsc%' 
+           OR o.billing_phone LIKE '%$searchEsc%' 
+           OR o.billing_email LIKE '%$searchEsc%'";
+}
+
+// Đếm tổng số có điều kiện tìm kiếm
+$countSql = "SELECT COUNT(*) AS total FROM orders o $where";
+$countResult = $conn->query($countSql);
+$totalRows = $countResult->fetch_assoc()['total'];
+$totalPages = ceil($totalRows / $limit);
 
 // Lấy dữ liệu đơn hàng có phân trang
 $sql = "SELECT o.*, u.email as user_email 
         FROM orders o 
         LEFT JOIN users u ON o.user_id = u.id 
+        $where 
         ORDER BY o.order_date DESC 
         LIMIT $start, $limit";
 $result = $conn->query($sql);
@@ -132,13 +150,133 @@ $totalPages = ceil($totalRows / $limit);
       .btn-cancel:hover {
           background: #5a6268;
       }
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.header-row h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Div bọc để căn giữa thanh tìm kiếm */
+.search-center-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* Form tìm kiếm */
+.order-search-form {
+    margin: 0;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+   max-width: 320px;  
+}
+
+.search-box input {
+    width: 100%;
+    height: 42px;                    /* nhỏ hơn */
+    padding: 0 42px 0 42px;          /* đủ chỗ cho icon + nút X */
+    border: 1.8px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;                 /* chữ nhỏ hơn, gọn gàng */
+    background: #ffffff;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+.search-box input::placeholder {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.search-box input:focus {
+   border-color: #4361ee;
+    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+}
+
+/* Icon tìm kiếm */
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #64748b;
+    pointer-events: none;
+}
+
+/* Nút X xóa – đẹp, không đè chữ */
+.search-clear {
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    background: #fee2e2;
+    color: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+.search-clear:hover {
+    background: #fca5a5;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.search-box input:not(:placeholder-shown) ~ .search-clear,
+.search-box input:focus ~ .search-clear {
+    opacity: 1;
+    visibility: visible;
+}
+
 </style>
 
     <main class="main-content">
-      <div class="header-row">
-        <h2>Orders Management</h2>
-      </div>
+     <div class="header-row">
+    <h2>Orders Management</h2>
 
+    <!-- CĂN GIỮA THANH TÌM KIẾM -->
+    <div class="search-center-wrapper">
+        <form method="GET" action="order.php" class="order-search-form">
+            <div class="search-box">
+                <input type="text" 
+                       name="search" 
+                       value="<?= htmlspecialchars($_GET['search'] ?? '') ?>" 
+                       placeholder="Tìm mã đơn, tên hoặc SĐT khách..." 
+                       autocomplete="off">
+                <i class="fas fa-search search-icon"></i>
+                <?php if (!empty($_GET['search'])): ?>
+                    <a href="order.php" class="search-clear" title="Xóa tìm kiếm">
+                        <i class="fas fa-times"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+</div>
       <table class="category-table">
         <thead>
           <tr>
