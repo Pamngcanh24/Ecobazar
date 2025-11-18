@@ -148,7 +148,6 @@ $totalPages = ceil($totalRows / $limit);
             <th>Date</th>
             <th>Total</th>
             <th>Status</th>
-            <th>Payment Method</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -173,7 +172,6 @@ $totalPages = ceil($totalRows / $limit);
                     <?php echo ucfirst($row['status']); ?>
                   </span>
                 </td>
-                <td><?php echo ucfirst($row['payment_method']); ?></td>
                 <td>
                   <a href="#" 
                      onclick="showConfirmModal('order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"

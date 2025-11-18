@@ -1,6 +1,7 @@
 <?php
 include 'includes/header.php';
 
+
 // Xử lý xóa sản phẩm (nếu có request delete)
 if (isset($_GET['delete_id'])) {
     $id = intval($_GET['delete_id']);
@@ -32,22 +33,50 @@ $limit = 6;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
 
-// Lấy danh sách sản phẩm có phân trang
-$sql = "SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id ASC LIMIT $start, $limit";
+// XỬ LÝ TÌM KIẾM + PHÂN TRANG
+$search = trim($_GET['search'] ?? '');
+$where = $search ? "WHERE p.name LIKE '%" . $conn->real_escape_string($search) . "%'" : "";
+
+// Lấy danh sách sản phẩm
+$sql = "SELECT p.*, c.name as category_name 
+        FROM products p 
+        LEFT JOIN categories c ON p.category_id = c.id 
+        $where 
+        ORDER BY p.id DESC 
+        LIMIT $start, $limit";
 $result = $conn->query($sql);
 
-// Đếm tổng số sản phẩm để phân trang
-$countSql = "SELECT COUNT(*) AS total FROM products";
+// Đếm tổng số để phân trang (cũng phải thêm điều kiện tìm kiếm)
+$countSql = "SELECT COUNT(*) AS total FROM products p $where";
 $countResult = $conn->query($countSql);
 $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
+
 ?>
 
     <main class="main-content">
       <div class="header-row">
-        <h2>Products Management</h2>
-        <a href="product_new.php" class="btn-new-category">New product</a>
-      </div>
+    <h2>Products Management</h2>
+
+    <!-- THANH TÌM KIẾM NHANH MỚI -->
+    <form method="GET" action="product.php" style="margin:0;">
+        <div class="search-box">
+            <input type="text" 
+                   name="search" 
+                   value="<?= htmlspecialchars($_GET['search'] ?? '') ?>" 
+                   placeholder="Tìm kiếm sản phẩm..." 
+                   autocomplete="off">
+            <i class="fas fa-search search-icon"></i>
+            <?php if (!empty($_GET['search'])): ?>
+                <a href="product.php" class="search-clear" title="Xóa tìm kiếm">
+                    <i class="fas fa-times"></i>
+                </a>
+            <?php endif; ?>
+        </div>
+    </form>
+
+    <a href="product_new.php" class="btn-new-category">New product</a>
+</div>
 
       <table class="category-table">
         <thead>
@@ -210,6 +239,63 @@ $totalPages = ceil($totalRows / $limit);
     .btn-cancel:hover {
       background: #5a6268;
     }
+    .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.search-box {
+    position: relative;
+    max-width: 350px;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+.search-box input:focus {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 17px;
+    pointer-events: none;
+}
+
+.search-clear {
+    position: absolute;
+    right: 38px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.search-clear:hover { color: #dc3545; }
+
+@media (max-width: 768px) {
+    .header-row { flex-direction: column; align-items: stretch; }
+    .search-box { order: 2; max-width: none; }
+    .btn-new-category { order: 3; }
+}
   </style>
 
   <script>

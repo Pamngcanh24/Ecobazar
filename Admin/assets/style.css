@@ -236,7 +236,7 @@ font-weight: bold;
 
 .sign-out-btn {
   margin-left: auto;
-  background-color: #f3f4f6;
+  background-color: #f6f3f3;
   border: none;
   padding: 8px 14px;
   border-radius: 6px;
@@ -403,7 +403,6 @@ font-weight: bold;
 .category-table tbody tr:hover {
   background-color: #fff7e6;
 }
-
 .category-table td .delete-link {
   color: #e03131;
   margin-right: 15px;
@@ -578,4 +577,48 @@ font-weight: bold;
 
 .view-link:hover {
   text-decoration: underline;
+}
+.search-box {
+    position: relative;
+    max-width: 380px;
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+    border-color: #4361ee;
+    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.search-clear {
+    position: absolute;
+    right: 38px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.search-clear:hover {
+    color: #dc3545;
 }

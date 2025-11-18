@@ -8,9 +8,9 @@ if(!isset($_GET['id'])){
 $order_id = intval($_GET['id']);
 
 // lấy thông tin đơn hàng
-$sql = "SELECT o.*, o.driver_id, d.name as driver_name, d.phone as driver_phone
+$sql = "SELECT o.*, o.id, d.name as driver_name, d.phone as driver_phone
         FROM orders o
-        LEFT JOIN drivers d ON o.driver_id = d.id
+        LEFT JOIN drivers d ON o.id = d.id
         WHERE o.id = $order_id";
 
 $order = $conn->query($sql)->fetch_assoc();
@@ -190,9 +190,9 @@ switch($status_class){
             <p><b>Tổng:</b> <?= number_format($order['total'],2) ?>$</p>
             <p><b>Tài xế:</b> 
             <?php 
-                if($order['driver_id']){
-                    echo '<a href="driver-detail.php?id='.$order['driver_id'].'" style="color:#00b207;font-weight:600;text-decoration:none">
-                            ' . $order['driver_name'] . ' - ' . $order['driver_phone'] . '
+                if($order['id']){
+                    echo '<a href="driver-detail.php?id='.$order['id'].'" style="color:#00b207;font-weight:600;text-decoration:none">
+                            ' . $order['driver_name'] . '-' . $order['driver_phone'] . '
                         </a>';
                 } else {
                     echo '<span style="color:#999">Chưa phân công</span>';

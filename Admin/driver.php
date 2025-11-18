@@ -69,7 +69,7 @@ $totalPages = ceil($totalRows / $limit);
         <tbody>
           <?php if ($result->num_rows > 0): ?>
             <?php while($row = $result->fetch_assoc()): ?>
-              <tr>
+              <tr onclick="window.location='driver_detail.php?id=<?php echo urlencode($row['id']); ?>';" style="cursor: pointer;">
                 <td><?php echo htmlspecialchars($row['id']); ?></td>
                 <td><?php echo htmlspecialchars($row['name']); ?></td>
                 <td><?php echo htmlspecialchars($row['email']); ?></td>
@@ -77,11 +77,11 @@ $totalPages = ceil($totalRows / $limit);
                 <td><?php echo htmlspecialchars($row['bank_account']); ?></td>
                 <td>
                   <a href="#" 
-                     onclick="showConfirmModal('driver.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
+                     onclick="event.stopPropagation(); showConfirmModal('driver.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
                      class="delete-link">
                     <i class="fas fa-trash-alt"></i> Delete
                   </a>
-                  <a href="driver_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
+                  <a href="driver_edit.php?id=<?php echo $row['id']; ?>" class="edit-link" onclick="event.stopPropagation();">
                     <i class="fas fa-edit"></i> Edit
                   </a>
                 </td>
@@ -197,6 +197,10 @@ $totalPages = ceil($totalRows / $limit);
 
   .btn-cancel:hover {
     background: #5a6268;
+  }
+  /* Row hover */
+  .category-table tbody tr:hover {
+  background-color: #fff7e6;
   }
 </style>
 
