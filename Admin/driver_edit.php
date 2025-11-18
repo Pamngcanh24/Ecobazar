@@ -1,12 +1,14 @@
 <?php
 include 'includes/header.php';
 
-// Lấy ID tài xế từ URL
-$driver_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Lấy ID tài xế
+$driver_id = $_SERVER['REQUEST_METHOD'] === 'POST'
+  ? (isset($_POST['id']) ? $_POST['id'] : '')
+  : (isset($_GET['id']) ? $_GET['id'] : '');
 
 // Lấy thông tin tài xế cần sửa
 $stmt = $conn->prepare("SELECT * FROM drivers WHERE id = ?");
-$stmt->bind_param("i", $driver_id);
+$stmt->bind_param("s", $driver_id);
 $stmt->execute();
 $driver_data = $stmt->get_result()->fetch_assoc();
 
@@ -21,14 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Kiểm tra xem có nhập mật khẩu mới không
   if (!empty($_POST['password'])) {
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    $sql = "UPDATE drivers SET phone = ?, password = ?, name = ?, email = ?, address = ?, citizen_id = ?, bank_account = ? WHERE id = ?";
+    $sql = "UPDATE drivers SET phone = ?, password = ?, name = ?, email = ?, address = ?, citizen_id = ?, bank_account = ? WHERE id = ? LIMIT 1";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssssi", $phone, $password, $name, $email, $address, $citizen_id, $bank_account, $driver_id);
+    $stmt->bind_param("ssssssss", $phone, $password, $name, $email, $address, $citizen_id, $bank_account, $driver_id);
   } else {
     // Không cập nhật mật khẩu
-    $sql = "UPDATE drivers SET phone = ?, name = ?, email = ?, address = ?, citizen_id = ?, bank_account = ? WHERE id = ?";
+    $sql = "UPDATE drivers SET phone = ?, name = ?, email = ?, address = ?, citizen_id = ?, bank_account = ? WHERE id = ? LIMIT 1";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssi", $phone, $name, $email, $address, $citizen_id, $bank_account, $driver_id);
+    $stmt->bind_param("sssssss", $phone, $name, $email, $address, $citizen_id, $bank_account, $driver_id);
   }
 
   if ($stmt->execute()) {
@@ -94,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (isset($message)) echo "<p class='message'>$message</p>"; ?>
 
     <form action="" method="POST">
+      <input type="hidden" name="id" value="<?php echo htmlspecialchars($driver_id); ?>">
       <label for="phone">Phone Number *</label>
       <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($driver_data['phone']); ?>" required>
 
@@ -141,4 +144,3 @@ function togglePassword() {
 }
 </script>
 <?php include 'includes/footer.php'; ?>
-
