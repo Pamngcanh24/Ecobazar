@@ -29,6 +29,97 @@ $item_sql = "SELECT oi.*, p.name as product_name,p.image
             WHERE oi.order_id = $order_id";
 
 $items = $conn->query($item_sql);
+
+// Helper: extract district from address
+function extractDistrictFromAddress($address) {
+    $hanoiDistricts = [
+        'Ba Đình', 'Hoàn Kiếm', 'Tây Hồ', 'Long Biên', 'Cầu Giấy',
+        'Đống Đa', 'Hai Bà Trưng', 'Hoàng Mai', 'Thanh Xuân', 'Nam Từ Liêm',
+        'Bắc Từ Liêm', 'Hà Đông', 'Thanh Trì', 'Gia Lâm', 'Đông Anh',
+        'Sóc Sơn', 'Mê Linh', 'Đan Phượng', 'Hoài Đức', 'Quốc Oai',
+        'Thạch Thất', 'Chương Mỹ', 'Thanh Oai', 'Thường Tín', 'Phú Xuyên',
+        'Ứng Hòa', 'Mỹ Đức', 'Ba Vì', 'Sơn Tây', 'Phúc Thọ'
+    ];
+    $address = mb_strtolower($address, 'UTF-8');
+    foreach ($hanoiDistricts as $district) {
+        $districtLower = mb_strtolower($district, 'UTF-8');
+        if (strpos($address, $districtLower) !== false) return $district;
+    }
+    if (preg_match('/quận\s+([\p{L}\s]+)/u', $address, $matches)) {
+        return ucwords(trim($matches[1]));
+    }
+    return null;
+}
+
+// Helper: assign driver by district and increment their current_orders
+function assignDriverByDistrict($conn, $district) {
+    if (!$district) return null;
+    $stmt = $conn->prepare("SELECT id, current_orders FROM drivers WHERE LOWER(address) LIKE LOWER(CONCAT('%', ?, '%')) AND current_orders < 10 ORDER BY current_orders ASC, RAND() LIMIT 1");
+    $stmt->bind_param("s", $district);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $driver = $res->fetch_assoc();
+    $stmt->close();
+    if ($driver) {
+        $up = $conn->prepare("UPDATE drivers SET current_orders = current_orders + 1 WHERE id = ?");
+        $up->bind_param("s", $driver['id']);
+        $up->execute();
+        $up->close();
+        return $driver['id'];
+    }
+    $fb = $conn->prepare("SELECT id FROM drivers WHERE current_orders < 10 ORDER BY current_orders ASC, RAND() LIMIT 1");
+    $fb->execute();
+    $fbRes = $fb->get_result();
+    $fbDriver = $fbRes->fetch_assoc();
+    $fb->close();
+    if ($fbDriver) {
+        $up2 = $conn->prepare("UPDATE drivers SET current_orders = current_orders + 1 WHERE id = ?");
+        $up2->bind_param("s", $fbDriver['id']);
+        $up2->execute();
+        $up2->close();
+        return $fbDriver['id'];
+    }
+    return null;
+}
+
+// Handle driver actions: accept or decline
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $logged_driver_id = $_SESSION['driver_id'] ?? null;
+    $action = $_POST['action'] ?? '';
+    if ($logged_driver_id && $order['driver_id'] === $logged_driver_id && strtolower($order['status']) === 'pending') {
+        if ($action === 'accept') {
+            $up = $conn->prepare("UPDATE orders SET status = 'processing' WHERE id = ? AND driver_id = ? AND status = 'pending'");
+            $up->bind_param("is", $order_id, $logged_driver_id);
+            $up->execute();
+            $up->close();
+            echo "<script>alert('Bạn đã nhận đơn thành công'); window.location.href='order.php';</script>";
+            exit;
+        }
+        if ($action === 'decline') {
+            if (!empty($order['driver_id'])) {
+                $dec = $conn->prepare("UPDATE drivers SET current_orders = GREATEST(current_orders - 1, 0) WHERE id = ?");
+                $dec->bind_param("s", $order['driver_id']);
+                $dec->execute();
+                $dec->close();
+            }
+            $district = extractDistrictFromAddress($order['shipping_address']);
+            $new_driver_id = assignDriverByDistrict($conn, $district);
+            if ($new_driver_id) {
+                $set = $conn->prepare("UPDATE orders SET driver_id = ? WHERE id = ?");
+                $set->bind_param("si", $new_driver_id, $order_id);
+                $set->execute();
+                $set->close();
+            } else {
+                $clr = $conn->prepare("UPDATE orders SET driver_id = NULL WHERE id = ?");
+                $clr->bind_param("i", $order_id);
+                $clr->execute();
+                $clr->close();
+            }
+            echo "<script>alert('Bạn đã từ chối đơn, hệ thống sẽ phân công lại'); window.location.href='order.php';</script>";
+            exit;
+        }
+    }
+}
 ?>
 <style>
 *{font-family:'Poppins',sans-serif;}
@@ -136,6 +227,7 @@ $items = $conn->query($item_sql);
 .btn-back{
     display:inline-block;
     margin-top:14px;
+    margin-bottom:24px;
     padding:10px 18px;
     background:#00b207;
     color:#fff;
@@ -149,6 +241,10 @@ $items = $conn->query($item_sql);
     opacity:.85;
     transform:translateY(-1px);
 }
+.action-row{ margin-top:16px; display:flex; gap:12px; }
+.btn-accept{ background:#00b207; color:#fff; padding:10px 18px; border-radius:8px; border:none; cursor:pointer; text-decoration:none; font-size:15px; font-weight:600; transition:.2s; }
+.btn-decline{ background:#dc3545; color:#fff; padding:10px 18px; border-radius:8px; border:none; cursor:pointer; text-decoration:none; font-size:15px; font-weight:600; transition:.2s; }
+.btn-accept:hover, .btn-decline:hover{ opacity:.85; transform:translateY(-1px); }
 </style>
 <?php
 $status_class = strtolower($order['status']);
@@ -171,6 +267,7 @@ switch($status_class){
 ?>
 
 <main class="main-content">
+<a href="order.php" class="btn-back">Quay lại</a>
 
 <div class="order-box">
     <div class="order-title">Chi tiết đơn hàng <?php echo $order['order_code']; ?></div>
@@ -189,14 +286,13 @@ switch($status_class){
             <p><b>Ngày tạo:</b> <?php echo $order['order_date']; ?></p>
             <p><b>Trạng thái:</b> <?= $status_badge ?></p>
             <p><b>Shipping Fee:</b> <?= number_format($order['shipping_cost'],2) ?>$</p>
-            <p><b>Discount:</b> <?= number_format($order['discount'],2) ?>%</p>
             <p><b>Tổng:</b> <?= number_format($order['total'],2) ?>$</p>
             <p><b>Tài xế:</b> 
-            <?php 
-                if(!empty($order['driver_id'])){
-                    echo '<a href="driver_detail.php?id='.htmlspecialchars($order['driver_id']).'" style="color:#00b207;font-weight:600;text-decoration:none">'
-                         . htmlspecialchars($order['driver_name']) . ' - ' . htmlspecialchars($order['driver_phone']) .
-                         '</a>';
+            <?php  
+                if (!empty($order['driver_id'])) {
+                    echo '<span style="color:#00b207;font-weight:600">'
+                        . htmlspecialchars($order['driver_name']) . ' - ' . htmlspecialchars($order['driver_phone']) .
+                        '</span>';
                 } else {
                     echo '<span style="color:#999">Chưa phân công</span>';
                 }
@@ -228,8 +324,18 @@ switch($status_class){
     </table>
 </div>
 
-<a href="order.php" class="btn-back">Quay lại</a>
-
+<?php if (strtolower($order['status']) === 'pending' && isset($_SESSION['driver_id']) && $_SESSION['driver_id'] === $order['driver_id']): ?>
+  <div class="action-row">
+    <form method="POST" style="display:inline">
+      <input type="hidden" name="action" value="accept">
+      <button type="submit" class="btn-accept">Nhận đơn</button>
+    </form>
+    <form method="POST" style="display:inline">
+      <input type="hidden" name="action" value="decline">
+      <button type="submit" class="btn-decline">Từ chối đơn</button>
+    </form>
+  </div>
+<?php endif; ?>
 </main>
 
 <?php include 'includes/footer.php'; ?>
