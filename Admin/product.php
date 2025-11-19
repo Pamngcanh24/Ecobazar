@@ -68,23 +68,23 @@ $totalPages = ceil($totalRows / $limit);
     <main class="main-content">
       <div class="header-row">
     <h2>Products Management</h2>
-
-    <!-- THANH TÌM KIẾM NHANH MỚI -->
-    <form method="GET" action="product.php" style="margin:0;">
-        <div class="search-box">
-            <input type="text" 
-                   name="search" 
-                   value="<?= htmlspecialchars($_GET['search'] ?? '') ?>" 
-                   placeholder="Tìm theo ID hoặc tên sản phẩm..."
-                   autocomplete="off">
-            <i class="fas fa-search search-icon"></i>
-            <?php if (!empty($_GET['search'])): ?>
-                <a href="product.php" class="search-clear" title="Xóa tìm kiếm">
-                    <i class="fas fa-times"></i>
-                </a>
-            <?php endif; ?>
-        </div>
-    </form>
+      <div class="search-center-wrapper">
+        <form method="GET" action="product.php" class="order-search-form">
+            <div class="search-box">
+                <input type="text" 
+                       name="search" 
+                       value="<?= htmlspecialchars($_GET['search'] ?? '') ?>" 
+                       placeholder="Tìm theo ID hoặc tên sản phẩm..." 
+                       autocomplete="off">
+                <i class="fas fa-search search-icon"></i>
+                <?php if (!empty($_GET['search'])): ?>
+                    <a href="product.php" class="search-clear" title="Xóa tìm kiếm">
+                        <i class="fas fa-times"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
 
     <a href="product_new.php" class="btn-new-category">New product</a>
 </div>
@@ -250,62 +250,106 @@ $totalPages = ceil($totalRows / $limit);
     .btn-cancel:hover {
       background: #5a6268;
     }
-    .header-row {
+   .header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 20px;
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.header-row h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Div bọc để căn giữa thanh tìm kiếm */
+.search-center-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* Form tìm kiếm */
+.order-search-form {
+    margin: 0;
 }
 
 .search-box {
     position: relative;
-    max-width: 350px;
     width: 100%;
+   max-width: 320px;  
 }
 
 .search-box input {
     width: 100%;
-    padding: 12px 45px 12px 15px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s;
+    height: 42px;                    /* nhỏ hơn */
+    padding: 0 42px 0 42px;          /* đủ chỗ cho icon + nút X */
+    border: 1.8px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;                 /* chữ nhỏ hơn, gọn gàng */
+    background: #ffffff;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+.search-box input::placeholder {
+    color: #94a3b8;
+    font-size: 14px;
 }
 
 .search-box input:focus {
-    border-color: #4361ee;
+   border-color: #4361ee;
     box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
-    outline: none;
 }
 
+/* Icon tìm kiếm */
 .search-icon {
     position: absolute;
-    right: 14px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
-    font-size: 17px;
+    font-size: 16px;
+    color: #64748b;
     pointer-events: none;
 }
 
+/* Nút X xóa – đẹp, không đè chữ */
 .search-clear {
     position: absolute;
-    right: 38px;
+    right: -50px;
     top: 50%;
     transform: translateY(-50%);
-    color: #aaa;
-    font-size: 16px;
+    width: 26px;
+    height: 26px;
+    background: #fee2e2;
+    color: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
     text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
 }
 
-.search-clear:hover { color: #dc3545; }
+.search-clear:hover {
+    background: #fca5a5;
+    transform: translateY(-50%) scale(1.1);
+}
 
-@media (max-width: 768px) {
-    .header-row { flex-direction: column; align-items: stretch; }
-    .search-box { order: 2; max-width: none; }
-    .btn-new-category { order: 3; }
+.search-box input:not(:placeholder-shown) ~ .search-clear,
+.search-box input:focus ~ .search-clear {
+    opacity: 1;
+    visibility: visible;
 }
   </style>
 

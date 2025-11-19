@@ -37,24 +37,52 @@ $limit = 8;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
 
-// Lấy dữ liệu user
-$sql = "SELECT * FROM drivers ORDER BY id ASC LIMIT $start, $limit";
+// TÌM KIẾM DRIVER
+$search = trim($_GET['search'] ?? '');
+$where = "";
+
+if ($search !== '') {
+    $searchEsc = $conn->real_escape_string($search);
+    $where = "WHERE name LIKE '%$searchEsc%' 
+            OR email LIKE '%$searchEsc%' 
+            OR phone LIKE '%$searchEsc%'";
+}
+
+// Cập nhật query lấy danh sách + đếm tổng
+$sql = "SELECT * FROM drivers $where ORDER BY id ASC LIMIT $start, $limit";
 $result = $conn->query($sql);
 
-// Tổng số user
-$countSql = "SELECT COUNT(*) AS total FROM drivers";
+$countSql = "SELECT COUNT(*) AS total FROM drivers $where";
 $countResult = $conn->query($countSql);
 $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
 ?>
 
-
     <main class="main-content">
       <div class="header-row">
-        <h2>Drivers Management</h2>
-        <a href="driver_new.php" class="btn-new-category">New driver</a>
-      </div>
+    <h2>Drivers Management</h2>
 
+    <!-- THANH TÌM KIẾM CĂN GIỮA ĐẸP NHƯ PRODUCT -->
+    <div class="search-center-wrapper">
+        <form method="GET" action="driver.php">
+            <div class="search-box">
+                <input type="text" 
+                       name="search" 
+                       value="<?= htmlspecialchars($_GET['search'] ?? '') ?>" 
+                       placeholder="Tìm tên, email hoặc số điện thoại..." 
+                       autocomplete="off">
+                <i class="fas fa-search search-icon"></i>
+                <?php if (!empty($_GET['search'])): ?>
+                    <a href="driver.php" class="search-clear" title="Xóa tìm kiếm">
+                        <i class="fas fa-times"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+
+    <a href="driver_new.php" class="btn-new-category">New driver</a>
+</div>
       <table class="category-table">
         <thead>
           <tr>
@@ -202,6 +230,108 @@ $totalPages = ceil($totalRows / $limit);
   .category-table tbody tr:hover {
     background-color: #fff7e6;
   }
+  
+ .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.header-row h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Div bọc để căn giữa thanh tìm kiếm */
+.search-center-wrapper {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* Form tìm kiếm */
+.order-search-form {
+    margin: 0;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+   max-width: 320px;  
+}
+
+.search-box input {
+    width: 100%;
+    height: 42px;                    /* nhỏ hơn */
+    padding: 0 42px 0 42px;          /* đủ chỗ cho icon + nút X */
+    border: 1.8px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 14px;                 /* chữ nhỏ hơn, gọn gàng */
+    background: #ffffff;
+    transition: all 0.3s ease;
+    outline: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+}
+
+.search-box input::placeholder {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.search-box input:focus {
+   border-color: #4361ee;
+    box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+}
+
+/* Icon tìm kiếm */
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: #64748b;
+    pointer-events: none;
+}
+
+/* Nút X xóa – đẹp, không đè chữ */
+.search-clear {
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    background: #fee2e2;
+    color: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    text-decoration: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+}
+
+.search-clear:hover {
+    background: #fca5a5;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.search-box input:not(:placeholder-shown) ~ .search-clear,
+.search-box input:focus ~ .search-clear {
+    opacity: 1;
+    visibility: visible;
+}
 </style>
 
 <!-- Thêm modal xác nhận xóa -->
