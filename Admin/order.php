@@ -59,16 +59,21 @@ $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
 
 // Lấy dữ liệu đơn hàng có phân trang
-$sql = "SELECT o.*, u.email as user_email 
-        FROM orders o 
-        LEFT JOIN users u ON o.user_id = u.id 
-        $where 
+$sql = "SELECT o.*, 
+               u.email AS user_email,
+               d.name AS driver_name,
+               d.phone AS driver_phone
+        FROM orders o
+        LEFT JOIN users u ON o.user_id = u.id
+        LEFT JOIN drivers d ON o.driver_id = d.id
+        $where
         ORDER BY o.order_date DESC 
         LIMIT $start, $limit";
+
 $result = $conn->query($sql);
 
-// Đếm tổng số dòng để phân trang
-$countSql = "SELECT COUNT(*) AS total FROM orders";
+// Đếm tổng số dòng để phân trang (có search)
+$countSql = "SELECT COUNT(*) AS total FROM orders o $where";
 $countResult = $conn->query($countSql);
 $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
@@ -286,6 +291,7 @@ $totalPages = ceil($totalRows / $limit);
             <th>Date</th>
             <th>Total</th>
             <th>Status</th>
+            <th>Driver</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -309,6 +315,14 @@ $totalPages = ceil($totalRows / $limit);
                   <span class="status-badge <?php echo strtolower($row['status']); ?>">
                     <?php echo ucfirst($row['status']); ?>
                   </span>
+                </td>
+                <td>
+                  <?php if (!empty($row['driver_name'])): ?>
+                    <?php echo htmlspecialchars($row['driver_name']); ?><br>
+                    <span style="color:#666;"><?php echo htmlspecialchars($row['driver_phone']); ?></span>
+                  <?php else: ?>
+                    <span style="color:#999;">No driver</span>
+                  <?php endif; ?>
                 </td>
                 <td>
                   <a href="#" 

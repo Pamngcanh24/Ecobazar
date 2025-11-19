@@ -6,7 +6,7 @@ $driver = null;
 $orders = [];
 
 if ($driver_id !== '') {
-    if ($stmt = $conn->prepare("SELECT id, name, email, phone, address, bank_account, current_orders, created_at FROM drivers WHERE id = ?")) {
+    if ($stmt = $conn->prepare("SELECT id, name, email, phone, address, citizen_id, bank_account, current_orders, created_at FROM drivers WHERE id = ?")) {
         $stmt->bind_param("s", $driver_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -22,6 +22,16 @@ if ($driver_id !== '') {
             $orders[] = $row;
         }
         $stmt2->close();
+    }
+
+    $current_orders_count = 0;
+    if ($stmt3 = $conn->prepare("SELECT COUNT(*) AS cnt FROM orders WHERE driver_id = ? AND LOWER(status) IN ('pending','processing')")) {
+        $stmt3->bind_param("s", $driver_id);
+        $stmt3->execute();
+        $res3 = $stmt3->get_result();
+        $row3 = $res3->fetch_assoc();
+        $current_orders_count = isset($row3['cnt']) ? (int)$row3['cnt'] : 0;
+        $stmt3->close();
     }
 }
 ?>
@@ -75,11 +85,12 @@ if ($driver_id !== '') {
         <p><b>Email:</b> <?php echo htmlspecialchars($driver['email']); ?></p>
         <p><b>SĐT:</b> <?php echo htmlspecialchars($driver['phone']); ?></p>
         <p><b>Địa chỉ:</b> <?php echo htmlspecialchars($driver['address']); ?></p>
+        <p><b>Citizen ID:</b> <?php echo htmlspecialchars($driver['citizen_id']); ?></p>
       </div>
       <div class="order-col">
         <h4>Thông tin công việc</h4>
         <p><b>Tài khoản MB Bank:</b> <?php echo htmlspecialchars($driver['bank_account']); ?></p>
-        <p><b>Đơn hiện tại:</b> <?php echo htmlspecialchars($driver['current_orders']); ?></p>
+        <p><b>Đơn hiện tại:</b> <?php echo htmlspecialchars($current_orders_count); ?></p>
         <p><b>Ngày tạo:</b> <?php echo htmlspecialchars($driver['created_at']); ?></p>
       </div>
     </div>
@@ -117,3 +128,4 @@ if ($driver_id !== '') {
 </main>
 
 <?php include 'includes/footer.php'; ?>
+

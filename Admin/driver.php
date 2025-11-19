@@ -3,18 +3,18 @@ include 'includes/header.php';
 
 // Xử lý xóa user
 if (isset($_GET['delete_id'])) {
-    $id = intval($_GET['delete_id']);
+    $id = isset($_GET['delete_id']) ? $_GET['delete_id'] : '';
     
     // Kiểm tra user có tồn tại không
     $check_stmt = $conn->prepare("SELECT id FROM drivers WHERE id = ?");
-    $check_stmt->bind_param("i", $id);
+    $check_stmt->bind_param("s", $id);
     $check_stmt->execute();
     $check_result = $check_stmt->get_result();
     
     if ($check_result->num_rows > 0) {
         // Xóa user bằng prepared statement
-        $delete_stmt = $conn->prepare("DELETE FROM drivers WHERE id = ?");
-        $delete_stmt->bind_param("i", $id);
+        $delete_stmt = $conn->prepare("DELETE FROM drivers WHERE id = ? LIMIT 1");
+        $delete_stmt->bind_param("s", $id);
         
         if ($delete_stmt->execute()) {
             $_SESSION['success_message'] = "Xóa người dùng thành công!";
@@ -228,7 +228,7 @@ $totalPages = ceil($totalRows / $limit);
   }
   /* Row hover */
   .category-table tbody tr:hover {
-  background-color: #fff7e6;
+    background-color: #fff7e6;
   }
   
  .header-row {

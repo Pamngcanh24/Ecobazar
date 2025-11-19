@@ -1,21 +1,6 @@
 <?php
 include 'includes/header.php';
 
-// Hàm tạo order code
-function generateOrderCode() {
-    global $conn;
-    $today = date('Ymd'); // Format: YYYYMMDD
-    
-    // Đếm số đơn trong ngày
-    $sql = "SELECT COUNT(*) as count FROM orders WHERE DATE(order_date) = CURDATE()";
-    $result = $conn->query($sql);
-    $row = $result->fetch_assoc();
-    $orderNumber = $row['count'] + 1;
-    
-    // Format: ODyyyymmdd-XX (XX là số thứ tự đơn trong ngày)
-    return 'OD' . date('Ymd') . '-' . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
-}
-
 // Xử lý xóa đơn hàng
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
@@ -41,17 +26,27 @@ $limit = 6;
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $start = ($page - 1) * $limit;
 
-// Lấy dữ liệu đơn hàng có phân trang
+// Lấy ID tài xế đã đăng nhập
+$driver_id = $_SESSION['driver_id'];
+
+// Lấy dữ liệu đơn hàng có phân trang, lọc theo tài xế
 $sql = "SELECT o.*, u.email as user_email 
         FROM orders o 
         LEFT JOIN users u ON o.user_id = u.id 
+        WHERE o.driver_id = ?
         ORDER BY o.order_date DESC 
-        LIMIT $start, $limit";
-$result = $conn->query($sql);
+        LIMIT ?, ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sii", $driver_id, $start, $limit);
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Đếm tổng số dòng để phân trang
-$countSql = "SELECT COUNT(*) AS total FROM orders";
-$countResult = $conn->query($countSql);
+$countSql = "SELECT COUNT(*) AS total FROM orders WHERE driver_id = ?";
+$countStmt = $conn->prepare($countSql);
+$countStmt->bind_param("s", $driver_id);
+$countStmt->execute();
+$countResult = $countStmt->get_result();
 $totalRows = $countResult->fetch_assoc()['total'];
 $totalPages = ceil($totalRows / $limit);
 ?>
@@ -175,11 +170,6 @@ $totalPages = ceil($totalRows / $limit);
                 </td>
                 <td><?php echo ucfirst($row['payment_method']); ?></td>
                 <td>
-                  <a href="#" 
-                     onclick="showConfirmModal('order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
-                     class="delete-link">
-                      <i class="fas fa-trash-alt"></i> Delete
-                  </a>
                   <a href="order_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
                     <i class="fas fa-edit"></i> Edit
                   </a>
@@ -223,39 +213,6 @@ $totalPages = ceil($totalRows / $limit);
       </div>
     </main>
   
-
-    <!-- Modal xác nhận xóa -->
-    <div id="confirmModal" class="confirm-modal">
-        <div class="confirm-content">
-            <h3>Xác nhận xóa</h3>
-            <p>Bạn có chắc chắn muốn xóa đơn hàng này?</p>
-            <div class="confirm-buttons">
-                <button id="confirmDelete" class="btn-confirm">Xóa</button>
-                <button onclick="closeModal()" class="btn-cancel">Hủy</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-    function showConfirmModal(deleteUrl) {
-        document.getElementById('confirmModal').style.display = 'flex';
-        document.getElementById('confirmDelete').onclick = function() {
-            window.location.href = deleteUrl;
-        };
-    }
-
-    function closeModal() {
-        document.getElementById('confirmModal').style.display = 'none';
-    }
-
-    // Đóng modal khi click ra ngoài
-    window.onclick = function(event) {
-        let modal = document.getElementById('confirmModal');
-        if (event.target == modal) {
-            closeModal();
-        }
-    }
-    </script>
 <?php
 include 'includes/footer.php';
 ?>
