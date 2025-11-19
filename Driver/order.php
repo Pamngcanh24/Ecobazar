@@ -30,11 +30,11 @@ $start = ($page - 1) * $limit;
 $driver_id = $_SESSION['driver_id'];
 
 // Lấy dữ liệu đơn hàng có phân trang, lọc theo tài xế
-$sql = "SELECT o.*, u.email as user_email 
+$sql = "SELECT o.*, u.email as user_email, COALESCE(o.order_date, o.created_at) AS display_date 
         FROM orders o 
         LEFT JOIN users u ON o.user_id = u.id 
         WHERE o.driver_id = ?
-        ORDER BY o.order_date DESC 
+        ORDER BY display_date DESC 
         LIMIT ?, ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sii", $driver_id, $start, $limit);
@@ -144,13 +144,13 @@ $totalPages = ceil($totalRows / $limit);
             <th>Total</th>
             <th>Status</th>
             <th>Payment Method</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <?php if ($result->num_rows > 0): ?>
             <?php while($row = $result->fetch_assoc()): ?>
               <tr>
+                <tr onclick="window.location='dr_order_detail.php?id=<?php echo $row['id']; ?>';" style="cursor:pointer;">
                 <td><?php echo $row['id']; ?></td>
                 <td><?php echo htmlspecialchars($row['order_code']); ?></td>
                 <td>
@@ -161,7 +161,7 @@ $totalPages = ceil($totalRows / $limit);
                     <div class="customer-address"><?php echo htmlspecialchars($row['shipping_address']); ?></div>
                   </div>
                 </td>
-                <td><?php echo date('d M Y', strtotime($row['order_date'])); ?></td>
+                <td><?php echo date('d M Y', strtotime($row['display_date'])); ?></td>
                 <td>$<?php echo number_format($row['total'], 2); ?></td>
                 <td>
                   <span class="status-badge <?php echo strtolower($row['status']); ?>">
@@ -169,11 +169,6 @@ $totalPages = ceil($totalRows / $limit);
                   </span>
                 </td>
                 <td><?php echo ucfirst($row['payment_method']); ?></td>
-                <td>
-                  <a href="order_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
-                    <i class="fas fa-edit"></i> Edit
-                  </a>
-                </td>
               </tr>
             <?php endwhile; ?>
           <?php else: ?>
