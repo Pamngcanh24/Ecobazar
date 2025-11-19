@@ -1,5 +1,6 @@
 <?php
 include 'includes/check_login.php';
+
 // Hiển thị thông báo nếu có
 $success_message = isset($_SESSION['success_message']) ? $_SESSION['success_message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
@@ -99,7 +100,11 @@ $menu_name = explode('.', $menu_item)[0];
             'order' => [
                 'icon' => 'fas fa-shopping-cart',
                 'name' => 'Orders'
-            ]
+            ],
+            'account_driver' => [
+                'icon' => 'fas fa-user',
+                'name' => 'Account'
+            ],
         ];
         
         foreach ($menus as $key => $menu) {
