@@ -301,6 +301,9 @@ body {
     display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;
     background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     min-height: 120px; /* Increased height for a larger header */
+    box-shadow: 0 10px 20px #c0e9caff;
+    border: 1px solid #28a745;
+
 }
 .dashboard-header h1 { 
     font-size: 2rem; /* Increased font size for title */
@@ -411,8 +414,9 @@ body {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;
 }
 .chart-box {
-    background: #fff; padding: 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    background: #fff; padding: 34px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.06);
     height: 300px; /* Fixed height to align charts */
+    border: 1px solid #28a745;
 }
 .chart-box h3 { margin-bottom: 12px; color: #1e293b; font-size: 1rem; font-weight: 600; }
 

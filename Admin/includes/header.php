@@ -114,6 +114,10 @@ $menu_name = explode('.', $menu_item)[0];
                 'icon' => 'fas fa-shopping-cart',
                 'name' => 'Orders'
             ],
+            'tracking' => [
+                'icon' => 'fas fa-route',
+                'name' => 'Tracking'
+            ],
             'driver' => [
                 'icon' => 'fas fa-truck',
                 'name' => 'Drivers'

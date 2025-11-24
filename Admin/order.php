@@ -256,6 +256,32 @@ $totalPages = ceil($totalRows / $limit);
     opacity: 1;
     visibility: visible;
 }
+status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.processing {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
 
 </style>
 
