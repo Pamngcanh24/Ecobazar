@@ -23,12 +23,23 @@ if(!$order){
 }
 
 // lấy danh sách sản phẩm trong đơn
-$item_sql = "SELECT oi.*, p.name as product_name,p.image
+$item_sql = "SELECT oi.*, p.name as product_name, p.image
             FROM order_items oi
             LEFT JOIN products p ON oi.product_id = p.id
             WHERE oi.order_id = $order_id";
 
 $items = $conn->query($item_sql);
+
+// === TÍNH LẠI TỔNG TIỀN CHÍNH XÁC 100% TỪ order_items (không tin cột total cũ nữa) ===
+$real_subtotal = 0;
+$items_for_calc = $conn->query($item_sql); // query lại để tính
+while($row = $items_for_calc->fetch_assoc()){
+    $real_subtotal += $row['price'] * $row['quantity'];
+}
+$discount_amount = $real_subtotal * $order['discount'] / 100;
+$correct_total   = $real_subtotal + $order['shipping_cost'] - $discount_amount;
+// ========================================================================
+
 ?>
 <style>
 *{font-family:'Poppins',sans-serif;}
@@ -66,7 +77,7 @@ $items = $conn->query($item_sql);
     margin:0 0 14px;
     font-size:17px;
     font-weight:700;
-    color:#00b207;
+    color:#00b50b;
     letter-spacing:.3px;
 }
 .order-col p{
@@ -166,8 +177,9 @@ switch($status_class){
     case "cancelled":
         $status_badge = '<span class="status-badge Cancelled">Cancelled</span>';
         break;
+    default:
+        $status_badge = '<span class="status-badge Processing">'.ucfirst($status_class).'</span>';
 }
-
 ?>
 
 <main class="main-content">
@@ -190,7 +202,9 @@ switch($status_class){
             <p><b>Trạng thái:</b> <?= $status_badge ?></p>
             <p><b>Shipping Fee:</b> <?= number_format($order['shipping_cost'],2) ?>$</p>
             <p><b>Discount:</b> <?= number_format($order['discount'],2) ?>%</p>
-            <p><b>Tổng:</b> <?= number_format($order['total'],2) ?>$</p>
+            <!-- ĐÃ SỬA: DÙNG TỔNG ĐÚNG THAY VÌ $order['total'] -->
+            <p><b>Tổng:</b> <?= number_format($correct_total, 2) ?>$</p>
+            <!-- =============================================== -->
             <p><b>Tài xế:</b> 
             <?php 
                 if(!empty($order['driver_id'])){
@@ -221,8 +235,9 @@ switch($status_class){
             <td class="img-cell"><img src="../img/<?php echo $i['image']; ?>" alt=""></td>
             <td><?php echo $i['product_name']; ?></td>
             <td><?php echo $i['quantity']; ?></td>
-            <td><?php echo number_format($i['price'],0,",",".")." $"; ?></td>
-            <td><?php echo number_format($i['price'] * $i['quantity'],0,",",".")." $"; ?></td>
+            <!-- ĐÃ SỬA: hiện giá thật có 2 chữ số thập phân -->
+            <td><?php echo number_format($i['price'], 2, ".", "") ?> $</td>
+            <td><?php echo number_format($i['price'] * $i['quantity'], 2, ".", "") ?> $</td>
         </tr>
         <?php endwhile; ?>
     </table>
