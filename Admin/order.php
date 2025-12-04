@@ -352,11 +352,11 @@ status-badge {
                 </td>
                 <td>
                   <a href="#" 
-                     onclick="showConfirmModal('order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
+                     onclick="event.stopPropagation(); showConfirmModal('order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"
                      class="delete-link">
                       <i class="fas fa-trash-alt"></i> Delete
                   </a>
-                  <a href="order_edit.php?id=<?php echo $row['id']; ?>" class="edit-link">
+                  <a href="order_edit.php?id=<?php echo $row['id']; ?>" onclick="event.stopPropagation();" class="edit-link">
                     <i class="fas fa-edit"></i> Edit
                   </a>
                 </td>
