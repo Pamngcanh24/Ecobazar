@@ -89,8 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (isset($message)) echo "<p class='message'>$message</p>"; ?>
 
     <form action="" method="POST">
+      <label for="first_name">Name</label>
+        <input type="first_name" id="first_name" name="first_name" value="<?php echo htmlspecialchars($user_data['first_name']); ?>" disabled>
       <label for="email">Email *</label>
-      <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user_data['email']); ?>" required>
+        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user_data['email']); ?>" disabled>
 
       <label for="password">Mật khẩu</label>
       <div class="password-wrapper">

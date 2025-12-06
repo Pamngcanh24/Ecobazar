@@ -154,7 +154,7 @@ $orderCode = $today . '-' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
         <h2>Shipping Information</h2>
         <div class="form-group">
           <label for="shipping_name">Name <span style="color: red">*</span></label>
-          <input type="text" id="shipping_name" name="shipping_name" value="<?php echo htmlspecialchars($order['shipping_name']); ?>" required>
+          <input type="text" id="shipping_name" name="shipping_name" value="<?php echo htmlspecialchars($order['shipping_name']); ?>" disabled>
         </div>
       <div class="form-group">
           <label for="order_code">Order Code</label>
@@ -163,7 +163,7 @@ $orderCode = $today . '-' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
 
       <div class="form-group">
           <label for="shipping_phone">Phone <span style="color: red">*</span></label>
-          <input type="text" id="shipping_phone" name="shipping_phone" value="<?php echo htmlspecialchars($order['shipping_phone']); ?>" required>
+          <input type="text" id="shipping_phone" name="shipping_phone" value="<?php echo htmlspecialchars($order['shipping_phone']); ?>" disabled>
         </div>
 
         <div class="form-group">

@@ -98,25 +98,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form action="" method="POST">
       <input type="hidden" name="id" value="<?php echo htmlspecialchars($driver_id); ?>">
       <label for="phone">Phone Number *</label>
-      <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($driver_data['phone']); ?>" required>
+      <input type="text" id="phone" name="phone" value="<?php echo htmlspecialchars($driver_data['phone']); ?>" disabled>
 
       <label for="password">Password</label>
       <div class="password-wrapper">
           <input type="password" id="password" name="password">
           <i class="fas fa-eye toggle-password" onclick="togglePassword()"></i>
+          <small>(Để trống nếu không muốn thay đổi mật khẩu)</small>
       </div>
 
       <label for="name">Full Name *</label>
-      <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($driver_data['name']); ?>" required>
+      <input type="text" id="name" name="name" value="<?php echo htmlspecialchars($driver_data['name']); ?>" disabled>
 
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($driver_data['email']); ?>">
+      <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($driver_data['email']); ?>"disabled>
 
       <label for="address">Address</label>
       <input type="text" id="address" name="address" value="<?php echo htmlspecialchars($driver_data['address']); ?>">
 
       <label for="citizen_id">Citizen ID</label>
-      <input type="text" id="citizen_id" name="citizen_id" value="<?php echo htmlspecialchars($driver_data['citizen_id']); ?>">
+      <input type="text" id="citizen_id" name="citizen_id" value="<?php echo htmlspecialchars($driver_data['citizen_id']); ?>"disabled>
 
       <label for="bank_account">Bank Account</label>
       <input type="text" id="bank_account" name="bank_account" value="<?php echo htmlspecialchars($driver_data['bank_account']); ?>">
