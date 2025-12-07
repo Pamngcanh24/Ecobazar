@@ -20,7 +20,7 @@ if (isset($_POST['confirm_accept'])) {
     if ($res->num_rows > 0) {
         $row = $res->fetch_assoc();
         if (in_array($row['status'], ['pending', 'confirmed'])) {
-            $update = $conn->prepare("UPDATE orders SET status = 'processing', accepted_at = NOW() WHERE id = ?");
+            $update = $conn->prepare("UPDATE orders SET status = 'processing' WHERE id = ?");
             $update->bind_param("i", $order_id);
             $update->execute();
             $update->close();

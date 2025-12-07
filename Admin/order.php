@@ -18,21 +18,37 @@ function generateOrderCode() {
 
 if (isset($_POST['assign_driver'])) {
     $order_id   = intval($_POST['order_id']);
-    $driver_id  = $_POST['driver_id'];  // ID tài xế được chọn từ dropdown
-    $status     = 'processing';         // Chuyển sang trạng thái đang giao
+    $driver_id  = $_POST['driver_id'];
+    $prev_driver_id = null;
+    $prev_status = null;
 
-    // BẮT BUỘC CẬP NHẬT CẢ driver_id VÀ status
-    // KHI ADMIN GÁN TÀI XẾ → CŨNG PHẢI SET accepted_at = NOW() ĐỂ HIỆN Ở order_today.php
-    $update = $conn->prepare("UPDATE orders SET 
-    status = 'processing', 
-    driver_id = ?, 
-    accepted_at = NOW() 
-    WHERE id = ?");
+    $check = $conn->prepare("SELECT driver_id, status FROM orders WHERE id = ?");
+    $check->bind_param("i", $order_id);
+    $check->execute();
+    $res = $check->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $prev_driver_id = $row['driver_id'];
+        $prev_status = strtolower($row['status']);
+    }
+    $check->close();
 
-    $update->bind_param("si", $driver_id, $order_id); // s = string, i = int
+    $update = $conn->prepare("UPDATE orders SET driver_id = ? WHERE id = ?");
+    $update->bind_param("si", $driver_id, $order_id);
 
     if ($update->execute() && $update->affected_rows > 0) {
-        $_SESSION['success_message'] = "Đã gán tài xế và chuyển đơn thành công!";
+        if (!empty($prev_driver_id) && $prev_driver_id !== $driver_id) {
+            $dec = $conn->prepare("UPDATE drivers SET current_orders = GREATEST(current_orders - 1, 0) WHERE id = ?");
+            $dec->bind_param("s", $prev_driver_id);
+            $dec->execute();
+            $dec->close();
+        }
+        if (!empty($driver_id)) {
+            $inc = $conn->prepare("UPDATE drivers SET current_orders = current_orders + 1 WHERE id = ?");
+            $inc->bind_param("s", $driver_id);
+            $inc->execute();
+            $inc->close();
+        }
+        $_SESSION['success_message'] = "Đã gán tài xế cho đơn";
     } else {
         $_SESSION['error_message'] = "Lỗi khi gán tài xế! (Có thể đơn đã được nhận)";
     }
@@ -308,6 +324,10 @@ status-badge {
   color: #721c24;
 }
 
+/* Dropdown list chọn tài xế nhanh */
+.driver-assign { display:inline-block; }
+.driver-select { width: 180px; font-size: 12px; padding: 6px 8px; border: 1.8px solid #e2e8f0; border-radius: 8px; background:#fff; }
+
 </style>
 
     <main class="main-content">
@@ -368,25 +388,21 @@ status-badge {
                   </span>
                 </td>
                 <td>
-  <?php if (!empty($row['driver_name'])): ?>
+                  <?php if (!empty($row['driver_name'])): ?>
     <strong><?= htmlspecialchars($row['driver_name']) ?></strong><br>
     <small><?= htmlspecialchars($row['driver_phone']) ?></small>
   <?php else: ?>
-    <form method="POST" style="margin:0;">
-      <input type="hidden" name="order_id" value="<?= $row['id'] ?>">
-      <select name="driver_id" required style="width:120px;font-size:12px;padding:4px;border-radius:4px;">
+    <div class="driver-assign" onclick="event.stopPropagation();">
+      <select class="driver-select" onclick="event.stopPropagation();" onchange="if(this.value){assignDriverQuick(<?= $row['id'] ?>, this.value)}">
         <option value="">Chọn tài xế</option>
         <?php
-        $drivers_q = $conn->query("SELECT id, name, phone FROM drivers ORDER BY id");
+        $drivers_q = $conn->query("SELECT id, name, phone FROM drivers ORDER BY name ASC");
         while ($d = $drivers_q->fetch_assoc()) {
-          echo "<option value=\"".$d['id']."\">".$d['id']." - ".$d['name']."</option>";
+          echo '<option value="'.htmlspecialchars($d['id']).'">'.htmlspecialchars($d['name']).' - '.htmlspecialchars($d['phone']).'</option>';
         }
         ?>
       </select>
-      <button type="submit" name="assign_driver" style="margin-top:4px;padding:4px 8px;font-size:11px;background:#4361ee;color:white;border:none;border-radius:4px;">
-        Gán
-      </button>
-    </form>
+    </div>
   <?php endif; ?>
 </td>
                 <td>
@@ -452,6 +468,17 @@ status-badge {
     </div>
 
     <script>
+    function assignDriverQuick(orderId, driverId) {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'order.php';
+      const assign = document.createElement('input'); assign.type = 'hidden'; assign.name = 'assign_driver'; assign.value = '1';
+      const oid = document.createElement('input'); oid.type = 'hidden'; oid.name = 'order_id'; oid.value = String(orderId);
+      const did = document.createElement('input'); did.type = 'hidden'; did.name = 'driver_id'; did.value = String(driverId);
+      form.appendChild(assign); form.appendChild(oid); form.appendChild(did);
+      document.body.appendChild(form);
+      form.submit();
+    }
     function showConfirmModal(deleteUrl) {
         document.getElementById('confirmModal').style.display = 'flex';
         document.getElementById('confirmDelete').onclick = function() {
