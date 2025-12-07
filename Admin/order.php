@@ -16,6 +16,31 @@ function generateOrderCode() {
     return 'OD' . date('Ymd') . '-' . str_pad($orderNumber, 2, '0', STR_PAD_LEFT);
 }
 
+if (isset($_POST['assign_driver'])) {
+    $order_id   = intval($_POST['order_id']);
+    $driver_id  = $_POST['driver_id'];  // ID tài xế được chọn từ dropdown
+    $status     = 'processing';         // Chuyển sang trạng thái đang giao
+
+    // BẮT BUỘC CẬP NHẬT CẢ driver_id VÀ status
+    // KHI ADMIN GÁN TÀI XẾ → CŨNG PHẢI SET accepted_at = NOW() ĐỂ HIỆN Ở order_today.php
+    $update = $conn->prepare("UPDATE orders SET 
+    status = 'processing', 
+    driver_id = ?, 
+    accepted_at = NOW() 
+    WHERE id = ?");
+
+    $update->bind_param("si", $driver_id, $order_id); // s = string, i = int
+
+    if ($update->execute() && $update->affected_rows > 0) {
+        $_SESSION['success_message'] = "Đã gán tài xế và chuyển đơn thành công!";
+    } else {
+        $_SESSION['error_message'] = "Lỗi khi gán tài xế! (Có thể đơn đã được nhận)";
+    }
+    $update->close();
+    header("Location: order.php");
+    exit;
+}
+
 // Xử lý xóa đơn hàng
 if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']);
@@ -343,13 +368,27 @@ status-badge {
                   </span>
                 </td>
                 <td>
-                  <?php if (!empty($row['driver_name'])): ?>
-                    <?php echo htmlspecialchars($row['driver_name']); ?><br>
-                    <span style="color:#666;"><?php echo htmlspecialchars($row['driver_phone']); ?></span>
-                  <?php else: ?>
-                    <span style="color:#999;">No driver</span>
-                  <?php endif; ?>
-                </td>
+  <?php if (!empty($row['driver_name'])): ?>
+    <strong><?= htmlspecialchars($row['driver_name']) ?></strong><br>
+    <small><?= htmlspecialchars($row['driver_phone']) ?></small>
+  <?php else: ?>
+    <form method="POST" style="margin:0;">
+      <input type="hidden" name="order_id" value="<?= $row['id'] ?>">
+      <select name="driver_id" required style="width:120px;font-size:12px;padding:4px;border-radius:4px;">
+        <option value="">Chọn tài xế</option>
+        <?php
+        $drivers_q = $conn->query("SELECT id, name, phone FROM drivers ORDER BY id");
+        while ($d = $drivers_q->fetch_assoc()) {
+          echo "<option value=\"".$d['id']."\">".$d['id']." - ".$d['name']."</option>";
+        }
+        ?>
+      </select>
+      <button type="submit" name="assign_driver" style="margin-top:4px;padding:4px 8px;font-size:11px;background:#4361ee;color:white;border:none;border-radius:4px;">
+        Gán
+      </button>
+    </form>
+  <?php endif; ?>
+</td>
                 <td>
                   <a href="#" 
                      onclick="event.stopPropagation(); showConfirmModal('order.php?delete_id=<?php echo $row['id']; ?>&page=<?php echo $page; ?>'); return false;"

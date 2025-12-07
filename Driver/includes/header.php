@@ -101,7 +101,15 @@ $menu_name = explode('.', $menu_item)[0];
                 'icon' => 'fas fa-shopping-cart',
                 'name' => 'Orders'
             ],
-            'account_driver' => [
+             'order_today' => [
+                'icon' => 'fas fa-calendar-day',
+                'name' => 'Today Orders'
+            ],
+            'delivery_history' => [
+                'icon' => 'fas fa-history',
+                'name' => 'Delivery history'
+            ],
+             'account_driver' => [
                 'icon' => 'fas fa-user',
                 'name' => 'Account'
             ],

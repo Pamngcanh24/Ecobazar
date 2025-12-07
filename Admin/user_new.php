@@ -76,7 +76,6 @@ $conn->close();
 
       <div class="form-actions">
         <button type="submit" class="btn-create">Create</button>
-        <button type="submit" class="btn-another">Create & create another</button>
         <button type="button" class="btn-cancel" onclick="window.location.href='user.php'">Cancel</button>
       </div>
     </form>

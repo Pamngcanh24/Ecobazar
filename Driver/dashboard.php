@@ -201,7 +201,7 @@ foreach ($period as $date) {
             display: grid; grid-template-columns: 2fr 1fr; gap: 25px;
         }
         .chart-box {
-            background: #fff; padding: 30px; border-radius: 10px; 
+            background: #fff; padding: 55px; border-radius: 10px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
             height: 380px; border: 1px solid #28a745;
         }
