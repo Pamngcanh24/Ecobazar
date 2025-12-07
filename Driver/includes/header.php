@@ -99,7 +99,7 @@ $menu_name = explode('.', $menu_item)[0];
             ],
             'order' => [
                 'icon' => 'fas fa-shopping-cart',
-                'name' => 'Orders'
+                'name' => 'New Orders'
             ],
              'order_today' => [
                 'icon' => 'fas fa-calendar-day',
